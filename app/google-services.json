@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "863312970164",
+    "firebase_url": "https://cpscapp2.firebaseio.com",
+    "project_id": "cpscapp2",
+    "storage_bucket": "cpscapp2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863312970164:android:161833bcfbdc70fb",
+        "android_client_info": {
+          "package_name": "net.jsaistudios.cpsc.cpsc_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "863312970164-gmo6ap1gqeij70mionbiajl8spv5rl7r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.jsaistudios.cpsc.cpsc_app",
+            "certificate_hash": "914176437b2dd4f87599527b0b064c98173359a9"
+          }
+        },
+        {
+          "client_id": "863312970164-pomgl6pphcrghsre5cq0hprec1nhe2hd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0XEkQBYG3ohmKvEjBGgX138lH_poNY2g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "863312970164-pomgl6pphcrghsre5cq0hprec1nhe2hd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

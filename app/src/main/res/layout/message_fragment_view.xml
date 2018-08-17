@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="15dp"
+    android:elevation="2dp"
+    android:background="@drawable/card_background"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    >
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/frag_root">
+
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:scaleType="fitXY"
+        android:src="@android:drawable/divider_horizontal_dark" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="9dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/location_image"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/fireston_img" />
+
+
+
+
+
+
+            <RelativeLayout
+                android:id="@+id/perkInfoHolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/location_image"
+                android:orientation="vertical"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+
+                >
+
+                <TextView
+                    android:id="@+id/perk_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Firestone"
+                    android:textColor="#008489"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/perk_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/perk_name"
+                    android:text="20% off all beers"
+                    android:textColor="#232323"
+                    android:textSize="13sp" />
+
+
+
+
+            </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
+
+
+            <ImageView
+                android:id="@+id/edit_button"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="12dp"
+                android:layout_toLeftOf="@id/delete_perk"
+                android:src="@drawable/ic_edit"
+                android:tint="@color/gray0.5"
+                />
+            <ImageView
+                android:id="@+id/delete_perk"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_delete"
+                android:tint="@color/gray0.5"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/edit_layout_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:visibility="gone"
+            android:gravity="center_horizontal"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            >
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/location_image2"
+                android:layout_centerHorizontal="true"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/fireston_img" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="16sp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="9dp"
+                />
+            <EditText
+                android:id="@+id/edit_perk_name"
+                android:hint="McDonald's"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp"
+                android:background="@drawable/edit_text_background"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textSize="16sp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="9dp"
+                />
+
+            <EditText
+                android:id="@+id/edit_perk_info"
+                android:hint="20% off burgers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp"
+                android:background="@drawable/edit_text_background"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:textSize="16sp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="9dp"
+                />
+            <EditText
+                android:id="@+id/edit_perk_address"
+                android:hint="123 Sesame Street"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_background"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="10dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    >
+
+                    <TextView
+                        android:id="@+id/cancel_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/button_bg"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+
+                        android:text="CANCEL"/>
+
+                    <TextView
+                        android:id="@+id/save_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/button_bg_red"
+                        android:textColor="@color/red"
+
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="15dp"
+                        android:textStyle="bold"
+                        android:paddingRight="15dp"
+                        android:text="SAVE CHANGES"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
