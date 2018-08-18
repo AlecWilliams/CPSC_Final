@@ -50,7 +50,7 @@
 
 
             <RelativeLayout
-                android:id="@+id/perkInfoHolder"
+                android:id="@+id/cardInfoHolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -62,7 +62,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/perk_name"
+                    android:id="@+id/card_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Firestone"
@@ -71,10 +71,10 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/perk_description"
+                    android:id="@+id/card_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/perk_name"
+                    android:layout_below="@+id/card_name"
                     android:text="20% off all beers"
                     android:textColor="#232323"
                     android:textSize="13sp" />
@@ -95,12 +95,12 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginRight="12dp"
-                android:layout_toLeftOf="@id/delete_perk"
+                android:layout_toLeftOf="@id/delete_card"
                 android:src="@drawable/ic_edit"
                 android:tint="@color/gray0.5"
                 />
             <ImageView
-                android:id="@+id/delete_perk"
+                android:id="@+id/delete_card"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentRight="true"
@@ -139,7 +139,7 @@
                 android:layout_marginBottom="9dp"
                 />
             <EditText
-                android:id="@+id/edit_perk_name"
+                android:id="@+id/edit_card_name"
                 android:hint="McDonald's"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
                 />
 
             <EditText
-                android:id="@+id/edit_perk_info"
+                android:id="@+id/edit_card_info"
                 android:hint="20% off burgers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
