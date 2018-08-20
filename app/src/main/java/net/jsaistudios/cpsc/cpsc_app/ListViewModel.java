@@ -26,6 +26,7 @@ public class ListViewModel extends android.support.v4.app.Fragment {
         recyclerView = baseFragmentView.findViewById(R.id.message_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
+        //Here ListViewController will set RecyclerViewAdapter
         if(creationObserver!=null) {
             creationObserver.update();
         }

@@ -27,6 +27,14 @@ public class ListViewController {
         pageSpecificFunctions = funcs;
         createListFragment(fragHolder, manager, pageSpecificFunctions.getListFragTag());
         this.context = context;
+
+        RecyclerModel pm = new RecyclerModel();
+        pm.setItemObject(pageSpecificFunctions.getExampleItemObject());
+        RecyclerModel pm2 = new RecyclerModel();
+        pm2.setItemObject(pageSpecificFunctions.getExampleItemObject());
+        listViewModel.getModelView().getDataModelList().clear();
+        listViewModel.getModelView().getDataModelList().add(pm);
+        listViewModel.getModelView().getDataModelList().add(pm2);
         getDatabaseList();
     }
 
@@ -34,10 +42,6 @@ public class ListViewController {
         FirebaseApp.initializeApp(context);
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference myRef = db.getReference(pageSpecificFunctions.getListDatabaseKey());
-
-        String id = myRef.push().getKey();
-        BoardObject obj = new BoardObject("Kurtis Barth", "Media", R.drawable.bulls);
-        myRef.child(id).setValue(obj);
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -47,13 +51,12 @@ public class ListViewController {
                 while(iterable.iterator().hasNext()){
                     RecyclerModel pm = new RecyclerModel();
                     DataSnapshot child = iterable.iterator().next();
-                    pm.setPerkDatabaseNode(child);
+                    pm.setDatabaseNodeReference(child);
 
                     pm.setItemObject(pageSpecificFunctions.getListItemObject(child));
 
                     responseList.add(pm);
                 }
-                listViewModel.getModelView().getDataModelList().clear();
                 listViewModel.getModelView().getDataModelList().addAll(responseList);
             }
 
@@ -74,6 +77,7 @@ public class ListViewController {
             }
         });
         fragmentTransaction.add(holder, listViewModel, tag);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commitAllowingStateLoss();
         return listViewModel;
     }

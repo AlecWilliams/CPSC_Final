@@ -7,5 +7,6 @@
     <color name="gray1">#313131</color>
     <color name="red">#9d2b27</color>
     <color name="panelBg">#F2F2F2</color>
+    <color name="headerBlue">#3491d9</color>
 
 </resources>

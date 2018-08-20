@@ -1,4 +1,4 @@
-package net.jsaistudios.cpsc.cpsc_app;
+package net.jsaistudios.cpsc.cpsc_app.EventsPage;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,38 +16,41 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 
+import net.jsaistudios.cpsc.cpsc_app.R;
+import net.jsaistudios.cpsc.cpsc_app.RecyclerModel;
+
 import java.util.List;
 
 /**
- * Created by Alec on 5/18/2018.
+ * Created by ip on 8/18/18.
  */
 
-public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapter.ViewHolder> {
-
+public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAdapter.ViewHolder> {
     private List<RecyclerModel> mData;
     private LayoutInflater mInflater;
     private ImageButton deleteButton;
 
-    PerkRecyclerAdapter(Context context, List<RecyclerModel> data) {
+    EventsRecyclerAdapter(Context context, List<RecyclerModel> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.message_fragment_view, parent, false);
+        View view = mInflater.inflate(R.layout.event_item_view, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(PerkRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(EventsRecyclerAdapter.ViewHolder holder, int position) {
         String animal = mData.get(position).getItemObject().getName();
 
-        PerkObject perkObject = (PerkObject) mData.get(position).getItemObject();
-        holder.myLocationInfo.setText(perkObject.getInfo());
+        EventsObject eventsObject = (EventsObject) mData.get(position).getItemObject();
+
+        holder.myLocationInfo.setText(eventsObject.getInfo());
         holder.myTextView.setText(animal);
-        holder.myDatabaseRef = mData.get(position).getPerkDatabaseNode();
-        holder.myImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.fireston_img));
+        holder.myDatabaseRef = mData.get(position).getDatabaseNodeReference();
+        holder.myImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.firestone));
     }
 
     @Override
@@ -152,5 +155,4 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
             });
         }
     }
-
 }

@@ -1,4 +1,4 @@
-package net.jsaistudios.cpsc.cpsc_app;
+package net.jsaistudios.cpsc.cpsc_app.PerkPage;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,18 +16,22 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 
+import net.jsaistudios.cpsc.cpsc_app.R;
+import net.jsaistudios.cpsc.cpsc_app.RecyclerModel;
+
 import java.util.List;
 
 /**
- * Created by ip on 8/18/18.
+ * Created by Alec on 5/18/2018.
  */
 
-public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdapter.ViewHolder> {
+public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapter.ViewHolder> {
+
     private List<RecyclerModel> mData;
     private LayoutInflater mInflater;
     private ImageButton deleteButton;
 
-    BoardRecyclerAdapter(Context context, List<RecyclerModel> data) {
+    PerkRecyclerAdapter(Context context, List<RecyclerModel> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -39,12 +43,11 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
     }
 
     @Override
-    public void onBindViewHolder(BoardRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(PerkRecyclerAdapter.ViewHolder holder, int position) {
         String animal = mData.get(position).getItemObject().getName();
 
-        BoardObject object = (BoardObject) mData.get(position).getItemObject();
-
-        holder.myLocationInfo.setText(object.getInfo());
+        PerkObject perkObject = (PerkObject) mData.get(position).getItemObject();
+        holder.myLocationInfo.setText(perkObject.getInfo());
         holder.myTextView.setText(animal);
         holder.myDatabaseRef = mData.get(position).getDatabaseNodeReference();
         holder.myImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.fireston_img));
@@ -152,4 +155,5 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
             });
         }
     }
+
 }
