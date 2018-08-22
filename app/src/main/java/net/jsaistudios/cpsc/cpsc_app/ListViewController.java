@@ -20,14 +20,20 @@ import java.util.List;
  */
 
 public class ListViewController {
-    ListViewModel listViewModel = new ListViewModel();
+    ListViewModel listViewModel;
     Context context;
     private PageSpecificFunctions pageSpecificFunctions;
 
-    public ListViewController(PageSpecificFunctions funcs, int fragHolder, FragmentManager manager, Context context) {
+    public ListViewController(PageSpecificFunctions funcs, Context c, ListViewModel lm) {
+        listViewModel = lm;
+        this.context = c;
+        listViewModel.setCreationObserver(new Observer() {
+            @Override
+            public void update() {
+                listViewModel.setRecyclerAdapter(pageSpecificFunctions.getRecyclerAdapter(context, listViewModel));
+            }
+        });
         pageSpecificFunctions = funcs;
-        this.context = context;
-
         listViewModel.getModelView().getDataModelList().clear();
         getDatabaseList();
     }
