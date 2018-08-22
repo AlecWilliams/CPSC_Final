@@ -1,6 +1,7 @@
 package net.jsaistudios.cpsc.cpsc_app;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -19,22 +20,15 @@ import java.util.List;
  */
 
 public class ListViewController {
-    ListViewModel listViewModel;
+    ListViewModel listViewModel = new ListViewModel();
     Context context;
     private PageSpecificFunctions pageSpecificFunctions;
 
     public ListViewController(PageSpecificFunctions funcs, int fragHolder, FragmentManager manager, Context context) {
         pageSpecificFunctions = funcs;
-        createListFragment(fragHolder, manager, pageSpecificFunctions.getListFragTag());
         this.context = context;
 
-        RecyclerModel pm = new RecyclerModel();
-        pm.setItemObject(pageSpecificFunctions.getExampleItemObject());
-        RecyclerModel pm2 = new RecyclerModel();
-        pm2.setItemObject(pageSpecificFunctions.getExampleItemObject());
         listViewModel.getModelView().getDataModelList().clear();
-        listViewModel.getModelView().getDataModelList().add(pm);
-        listViewModel.getModelView().getDataModelList().add(pm2);
         getDatabaseList();
     }
 
@@ -80,5 +74,13 @@ public class ListViewController {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commitAllowingStateLoss();
         return listViewModel;
+    }
+
+    public ListViewModel getListViewModel() {
+        return listViewModel;
+    }
+
+    public void setListViewModel(ListViewModel listViewModel) {
+        this.listViewModel = listViewModel;
     }
 }

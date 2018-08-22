@@ -5,43 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="net.jsaistudios.cpsc.cpsc_app.MainActivity">
-    <LinearLayout
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/menuHolder">
+        android:layout_gravity="bottom"
+        android:layout_above="@+id/bottom_nav_holder"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_plus2"
+        android:layout_margin="16dp" />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Board" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/button4"
-            android:layout_toRightOf="@+id/button4"
-            android:text="Events" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/button2"
-            android:layout_toRightOf="@+id/button2"
-            android:text="Perks" />
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/test_holder"
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/menuHolder">
-
+        android:layout_height="match_parent" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_nav_holder"
+        android:layout_alignParentBottom="true">
+        <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </FrameLayout>
 
 </RelativeLayout>
