@@ -3,8 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CPSC_App2.iml" filepath="$PROJECT_DIR$/CPSC_App2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/CPSC_Final.iml" filepath="$PROJECT_DIR$/CPSC_Final.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\Alec\StudioProjects\ClutchRides\CPSC_App2\CPSC_Final.iml" filepath="C:\Users\Alec\StudioProjects\ClutchRides\CPSC_App2\CPSC_Final.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -34,7 +34,7 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.message_fragment_view, parent, false);
+        View view = mInflater.inflate(R.layout.board_fragment_view, parent, false);
         return new ViewHolder(view);
     }
 
