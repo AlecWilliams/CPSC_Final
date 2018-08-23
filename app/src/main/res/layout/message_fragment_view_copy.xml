@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginBottom="15dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="0dp"
     android:elevation="2dp"
     android:background="@drawable/card_background"
     android:clipChildren="false"
@@ -36,24 +36,20 @@
         android:clipToPadding="false"
         >
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/location_image"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginLeft="15dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginLeft="9dp"
             android:layout_marginRight="14dp"
             android:src="@drawable/fireston_img" />
-
-
-
-
 
 
             <RelativeLayout
                 android:id="@+id/cardInfoHolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:paddingTop="5dp"
                 android:layout_toRightOf="@+id/location_image"
                 android:orientation="vertical"
                 android:clipChildren="false"
@@ -65,8 +61,8 @@
                     android:id="@+id/card_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Firestone"
-                    android:textColor="@color/headerBlue"
+                    android:text="Lucas Newcomb"
+                    android:textColor="@color/caldroid_black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -74,10 +70,20 @@
                     android:id="@+id/card_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/card_name"
-                    android:text="20% off all beers"
+                    android:layout_toRightOf="@+id/card_name"
+                    android:paddingLeft="5dp"
+                    android:textStyle="italic"
+                    android:text="President"
                     android:textColor="#232323"
-                    android:textSize="13sp" />
+                    android:textSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/card_name"
+                    android:paddingTop="2dp"
+                    android:text="Short Bio about person"
+
+                    />
 
 
 
@@ -87,27 +93,21 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true">
 
 
             <ImageView
                 android:id="@+id/edit_button"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginRight="12dp"
                 android:layout_toLeftOf="@id/delete_card"
                 android:src="@drawable/ic_edit"
                 android:tint="@color/gray0"
                 />
-            <ImageView
-                android:id="@+id/delete_card"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/ic_delete"
-                android:tint="@color/gray0"
-                />
+
         </LinearLayout>
         <LinearLayout
             android:id="@+id/edit_layout_holder"
@@ -242,7 +242,6 @@
 
 
     </RelativeLayout>
-
 
 
     </RelativeLayout>

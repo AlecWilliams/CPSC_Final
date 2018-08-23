@@ -1,17 +1,19 @@
-package net.jsaistudios.cpsc.cpsc_app;
+package net.jsaistudios.cpsc.cpsc_app.EventsPage;
+
+import net.jsaistudios.cpsc.cpsc_app.ItemObject;
 
 /**
  * Created by ip on 8/18/18.
  */
 
-public class PerkObject extends ItemObject {
+public class EventsObject extends ItemObject {
     private String info;
     private int image;
 
-    public PerkObject() {
+    public EventsObject() {
         super();
     }
-    public PerkObject(String n, String inf, int im) {
+    public EventsObject(String n, String inf, int im) {
         super(n);
         info = inf;
         image = im;

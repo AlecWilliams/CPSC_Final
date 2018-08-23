@@ -27,7 +27,9 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.alexvasilkov:foldable-layout:1.2.1'
     compile 'com.sothree.slidinguppanel:library:3.3.1'
-
+    compile 'com.roomorama:caldroid:3.0.1'
+    compile 'com.aurelhubert:ahbottomnavigation:2.1.0'
+    compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
 
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])

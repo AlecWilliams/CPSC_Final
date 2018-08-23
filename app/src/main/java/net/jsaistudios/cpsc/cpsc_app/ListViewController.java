@@ -1,6 +1,7 @@
 package net.jsaistudios.cpsc.cpsc_app;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -23,10 +24,17 @@ public class ListViewController {
     Context context;
     private PageSpecificFunctions pageSpecificFunctions;
 
-    public ListViewController(PageSpecificFunctions funcs, int fragHolder, FragmentManager manager, Context context) {
+    public ListViewController(PageSpecificFunctions funcs, Context c, ListViewModel lm) {
+        listViewModel = lm;
+        this.context = c;
+        listViewModel.setCreationObserver(new Observer() {
+            @Override
+            public void update() {
+                listViewModel.setRecyclerAdapter(pageSpecificFunctions.getRecyclerAdapter(context, listViewModel));
+            }
+        });
         pageSpecificFunctions = funcs;
-        createListFragment(fragHolder, manager, pageSpecificFunctions.getListFragTag());
-        this.context = context;
+        listViewModel.getModelView().getDataModelList().clear();
         getDatabaseList();
     }
 
@@ -34,10 +42,6 @@ public class ListViewController {
         FirebaseApp.initializeApp(context);
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference myRef = db.getReference(pageSpecificFunctions.getListDatabaseKey());
-
-        String id = myRef.push().getKey();
-        BoardObject obj = new BoardObject("Kurtis Barth", "Media", R.drawable.bulls);
-        myRef.child(id).setValue(obj);
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -47,13 +51,12 @@ public class ListViewController {
                 while(iterable.iterator().hasNext()){
                     RecyclerModel pm = new RecyclerModel();
                     DataSnapshot child = iterable.iterator().next();
-                    pm.setPerkDatabaseNode(child);
+                    pm.setDatabaseNodeReference(child);
 
                     pm.setItemObject(pageSpecificFunctions.getListItemObject(child));
 
                     responseList.add(pm);
                 }
-                listViewModel.getModelView().getDataModelList().clear();
                 listViewModel.getModelView().getDataModelList().addAll(responseList);
             }
 
@@ -74,7 +77,16 @@ public class ListViewController {
             }
         });
         fragmentTransaction.add(holder, listViewModel, tag);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commitAllowingStateLoss();
         return listViewModel;
+    }
+
+    public ListViewModel getListViewModel() {
+        return listViewModel;
+    }
+
+    public void setListViewModel(ListViewModel listViewModel) {
+        this.listViewModel = listViewModel;
     }
 }

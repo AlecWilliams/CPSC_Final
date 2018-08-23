@@ -8,14 +8,14 @@ import com.google.firebase.database.DataSnapshot;
 
 public class RecyclerModel {
     private ItemObject itemObject;
-    private DataSnapshot perkDatabaseNode;
+    private DataSnapshot databaseNodeReference;
 
-    public DataSnapshot getPerkDatabaseNode() {
-        return perkDatabaseNode;
+    public DataSnapshot getDatabaseNodeReference() {
+        return databaseNodeReference;
     }
 
-    public void setPerkDatabaseNode(DataSnapshot perkDatabaseNode) {
-        this.perkDatabaseNode = perkDatabaseNode;
+    public void setDatabaseNodeReference(DataSnapshot databaseNodeReference) {
+        this.databaseNodeReference = databaseNodeReference;
     }
 
     public ItemObject getItemObject() {

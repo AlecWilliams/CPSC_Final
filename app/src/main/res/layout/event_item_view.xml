@@ -30,58 +30,78 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
         android:layout_marginBottom="9dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         >
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="90dp"
+            android:clipChildren="true"
+            android:id="@+id/imageHolder"
+            android:clipToPadding="true">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/location_image"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="14dp"
-            android:src="@drawable/fireston_img" />
-
-
-
-
-
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:id="@+id/location_image"
+                android:src="@drawable/firestone" />
+        </FrameLayout>
 
             <RelativeLayout
                 android:id="@+id/cardInfoHolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/location_image"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="14dp"
+                android:layout_below="@+id/imageHolder"
                 android:orientation="vertical"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-
                 >
 
                 <TextView
                     android:id="@+id/card_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Firestone"
+                    android:text="Hausboating"
                     android:textColor="@color/headerBlue"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="24sp"/>
 
                 <TextView
                     android:id="@+id/card_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/card_name"
-                    android:text="20% off all beers"
-                    android:textColor="#232323"
+                    android:text="Littest time of your life. Three boats, one lake. And most importantly, unlimited beer bongs."
+                    android:layout_marginTop="3dp"
+                    android:textColor="#505050"
                     android:textSize="13sp" />
 
+                <TextView
+                    android:id="@+id/more_info_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/card_description"
+                    android:text="See more info"
+                    android:layout_marginTop="13dp"
+                    android:textColor="@color/headerBlue"
+                    android:textStyle="bold"
+                    android:textSize="13sp" />
 
-
-
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_toRightOf="@id/more_info_link"
+                    android:layout_alignTop="@id/more_info_link"
+                    android:layout_alignBottom="@id/more_info_link"
+                    android:padding="4dp"
+                    android:rotation="90"
+                    android:layout_marginTop="1dp"
+                    android:src="@drawable/uparrow"
+                    android:tint="@color/headerBlue"
+                    />
             </RelativeLayout>
 
         <LinearLayout
