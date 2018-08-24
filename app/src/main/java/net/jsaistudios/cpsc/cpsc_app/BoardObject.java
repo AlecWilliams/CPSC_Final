@@ -7,6 +7,15 @@ package net.jsaistudios.cpsc.cpsc_app;
 public class BoardObject extends ItemObject {
     private String info;
     private int image;
+    private String bio;
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
 
     public BoardObject() {
         super();

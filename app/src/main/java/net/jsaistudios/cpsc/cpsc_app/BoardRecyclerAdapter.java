@@ -2,6 +2,8 @@ package net.jsaistudios.cpsc.cpsc_app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +20,8 @@ import com.google.firebase.database.DataSnapshot;
 
 import java.util.List;
 
+import static android.support.v4.content.ContextCompat.startActivity;
+
 /**
  * Created by ip on 8/18/18.
  */
@@ -25,10 +29,11 @@ import java.util.List;
 public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdapter.ViewHolder> {
     private List<RecyclerModel> mData;
     private LayoutInflater mInflater;
-    private ImageButton deleteButton;
-
+    //private ImageButton deleteButton;
+    private Context context;
     BoardRecyclerAdapter(Context context, List<RecyclerModel> data) {
         this.mInflater = LayoutInflater.from(context);
+        this.context = context;
         this.mData = data;
     }
 
@@ -46,8 +51,11 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
 
         holder.myLocationInfo.setText(object.getInfo());
         holder.myTextView.setText(animal);
+        holder.myBoardBio.setText(object.getBio());
         holder.myDatabaseRef = mData.get(position).getDatabaseNodeReference();
-        holder.myImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.fireston_img));
+        holder.myImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.board_pic2));
+
+
     }
 
     @Override
@@ -58,6 +66,7 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
     public class ViewHolder extends RecyclerView.ViewHolder  {
         TextView myTextView;
         TextView myLocationInfo;
+        TextView myBoardBio;
         //ImageView myDeleteButton;
         DataSnapshot myDatabaseRef;
         EditText editName, editInfo;
@@ -73,6 +82,8 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
             super(itemView);
             myTextView = itemView.findViewById(R.id.card_name);
             myLocationInfo = itemView.findViewById(R.id.card_description);
+            myBoardBio = itemView.findViewById(R.id.card_bio);
+
             //myDeleteButton = itemView.findViewById(R.id.delete_card);
             myEditButton = itemView.findViewById(R.id.edit_button);
             fragRoot = itemView.getRootView();
@@ -93,6 +104,8 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
                 public void onClick(View view) {
                     final int dur = 500;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
+                        /**
                         rLayout.animate().alpha(0).setDuration(dur).withEndAction(new Runnable() {
                             @SuppressLint("NewApi")
                             @Override
@@ -108,6 +121,8 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
 
                             }
                         });
+
+
                         myImage.animate().alpha(0).setDuration(dur);
                         editName.setText(myTextView.getText());
                         editInfo.setText(myLocationInfo.getText());
@@ -116,7 +131,16 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
                         rLayout.setVisibility(View.VISIBLE);
                         editLayout.setVisibility(View.VISIBLE);
                         editLayout.setVisibility(View.GONE);
+                         **/
                     }
+                        String phoneNumber;
+                    phoneNumber = "7863091616";
+                        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                    sendIntent.setData(Uri.parse("sms:" + phoneNumber));
+                    context.startActivity(sendIntent);
+
+
+
                 }
             });
             myEditCancel.setOnClickListener(new View.OnClickListener() {

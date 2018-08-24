@@ -86,7 +86,7 @@
                     android:layout_height="20dp"
                     android:layout_marginRight="12dp"
                     android:layout_toLeftOf="@id/delete_card"
-                    android:src="@drawable/ic_edit"
+                    android:src="@drawable/text_message_icon"
                     android:tint="@color/gray0.5" />
 
                 <ImageView

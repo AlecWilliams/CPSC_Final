@@ -22,6 +22,7 @@ public class BoardFunctions extends PageSpecificFunctions {
         BoardObject object = new BoardObject();
         object.setName(child.child("name").getValue(String.class));
         object.setInfo(child.child("info").getValue(String.class));
+        object.setBio(child.child("bio").getValue(String.class));
         try {
             object.setImage(Integer.valueOf(child.child("image").getValue(String.class)));
         } catch (Exception e) {
