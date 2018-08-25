@@ -17,5 +17,5 @@ public abstract class PageSpecificFunctions {
     public abstract String getListDatabaseKey();
     public abstract ItemObject getListItemObject(DataSnapshot child);
     public abstract RecyclerView.Adapter  getRecyclerAdapter(Context context, ListViewModel listViewModel);
-    public abstract ItemObject getExampleItemObject();
+    public abstract ItemObject getAddItemObject();
 }

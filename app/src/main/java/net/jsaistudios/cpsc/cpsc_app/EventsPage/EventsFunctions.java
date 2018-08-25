@@ -36,7 +36,7 @@ public class EventsFunctions extends PageSpecificFunctions {
         return object;
     }
 
-    public ItemObject getExampleItemObject() {
+    public ItemObject getAddItemObject() {
         return new EventsObject("Events Fireston", "free pizza", R.drawable.fireston_img);
     }
 

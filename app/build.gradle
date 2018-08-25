@@ -30,6 +30,7 @@ dependencies {
     compile 'com.roomorama:caldroid:3.0.1'
     compile 'com.aurelhubert:ahbottomnavigation:2.1.0'
     compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
 
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])

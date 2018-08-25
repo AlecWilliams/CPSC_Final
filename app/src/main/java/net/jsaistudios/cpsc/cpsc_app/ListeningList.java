@@ -27,6 +27,14 @@ public class ListeningList<E> extends ArrayList<E> {
         }
     }
 
+    public boolean remove(Object o){
+        super.remove(o);
+        if(listObserver!=null) {
+            listObserver.notifyDataSetChanged();
+        }
+        return true;
+    }
+
     public boolean addAll(Collection<? extends E> c) {
         super.addAll(c);
         if(listObserver!=null) {

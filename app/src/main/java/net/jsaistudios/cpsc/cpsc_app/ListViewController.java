@@ -26,6 +26,8 @@ public class ListViewController {
 
     public ListViewController(PageSpecificFunctions funcs, Context c, ListViewModel lm) {
         listViewModel = lm;
+        pageSpecificFunctions = funcs;
+        lm.setPageSpecificFunctions(pageSpecificFunctions);
         this.context = c;
         listViewModel.setCreationObserver(new Observer() {
             @Override
@@ -33,8 +35,6 @@ public class ListViewController {
                 listViewModel.setRecyclerAdapter(pageSpecificFunctions.getRecyclerAdapter(context, listViewModel));
             }
         });
-        pageSpecificFunctions = funcs;
-        listViewModel.getModelView().getDataModelList().clear();
         getDatabaseList();
     }
 
@@ -51,12 +51,11 @@ public class ListViewController {
                 while(iterable.iterator().hasNext()){
                     RecyclerModel pm = new RecyclerModel();
                     DataSnapshot child = iterable.iterator().next();
-                    pm.setDatabaseNodeReference(child);
-
+                    pm.setDatabaseNodeReference(child.getRef());
                     pm.setItemObject(pageSpecificFunctions.getListItemObject(child));
-
                     responseList.add(pm);
                 }
+                listViewModel.getModelView().getDataModelList().clear();
                 listViewModel.getModelView().getDataModelList().addAll(responseList);
             }
 
@@ -65,21 +64,6 @@ public class ListViewController {
                 // Failed to read value
             }
         });
-    }
-
-    private ListViewModel createListFragment(int holder, FragmentManager manager, String tag) {
-        FragmentTransaction fragmentTransaction = manager.beginTransaction();
-        listViewModel = new ListViewModel();
-        listViewModel.setCreationObserver(new Observer() {
-            @Override
-            public void update() {
-                listViewModel.setRecyclerAdapter(pageSpecificFunctions.getRecyclerAdapter(context, listViewModel));
-            }
-        });
-        fragmentTransaction.add(holder, listViewModel, tag);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commitAllowingStateLoss();
-        return listViewModel;
     }
 
     public ListViewModel getListViewModel() {

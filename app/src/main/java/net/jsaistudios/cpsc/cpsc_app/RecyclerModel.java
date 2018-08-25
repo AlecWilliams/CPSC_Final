@@ -1,6 +1,7 @@
 package net.jsaistudios.cpsc.cpsc_app;
 
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 
 /**
  * Created by Alec on 7/4/2018.
@@ -8,13 +9,13 @@ import com.google.firebase.database.DataSnapshot;
 
 public class RecyclerModel {
     private ItemObject itemObject;
-    private DataSnapshot databaseNodeReference;
+    private DatabaseReference databaseNodeReference=null;
 
-    public DataSnapshot getDatabaseNodeReference() {
+    public DatabaseReference getDatabaseNodeReference() {
         return databaseNodeReference;
     }
 
-    public void setDatabaseNodeReference(DataSnapshot databaseNodeReference) {
+    public void setDatabaseNodeReference(DatabaseReference databaseNodeReference) {
         this.databaseNodeReference = databaseNodeReference;
     }
 

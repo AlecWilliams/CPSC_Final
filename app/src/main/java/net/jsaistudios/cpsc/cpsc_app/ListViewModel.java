@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 public class ListViewModel extends android.support.v4.app.Fragment {
     private View baseFragmentView;
+    private PageSpecificFunctions pageSpecificFunctions;
     private RecyclerView recyclerView;
     private ListModelView modelView = new ListModelView();
     private Observer creationObserver;
@@ -49,6 +50,12 @@ public class ListViewModel extends android.support.v4.app.Fragment {
         });
     }
 
+    public void addCard() {
+        RecyclerModel pm = new RecyclerModel();
+        pm.setItemObject(getPageSpecificFunctions().getAddItemObject());
+        getModelView().getDataModelList().add(pm);
+    }
+
     public ListModelView getModelView() {
         return modelView;
     }
@@ -71,5 +78,13 @@ public class ListViewModel extends android.support.v4.app.Fragment {
 
     public void setCreationObserver(Observer creationObserver) {
         this.creationObserver = creationObserver;
+    }
+
+    public PageSpecificFunctions getPageSpecificFunctions() {
+        return pageSpecificFunctions;
+    }
+
+    public void setPageSpecificFunctions(PageSpecificFunctions pageSpecificFunctions) {
+        this.pageSpecificFunctions = pageSpecificFunctions;
     }
 }

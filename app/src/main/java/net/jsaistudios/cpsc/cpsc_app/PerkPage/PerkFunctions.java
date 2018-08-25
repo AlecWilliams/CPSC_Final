@@ -35,13 +35,13 @@ public class PerkFunctions extends PageSpecificFunctions {
         return perkObject;
     }
 
-    public ItemObject getExampleItemObject() {
-        return new PerkObject("Perks Fireston", "free pizza", R.drawable.fireston_img);
+    public ItemObject getAddItemObject() {
+        return new PerkObject("", "", R.drawable.fireston_img);
     }
 
     @Override
     public RecyclerView.Adapter getRecyclerAdapter(Context context, ListViewModel listViewModel) {
-        return new PerkRecyclerAdapter(context, listViewModel.getModelView().getDataModelList());
+        return new PerkRecyclerAdapter(context, listViewModel.getModelView().getDataModelList(), this, listViewModel.getModelView());
     }
 
 }

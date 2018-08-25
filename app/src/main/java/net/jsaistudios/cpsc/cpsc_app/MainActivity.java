@@ -12,7 +12,9 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -28,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Context context;
     private ViewPager mPager;
-    private PagerAdapter mPagerAdapter;
+    private ScreenSlidePagerAdapter mPagerAdapter;
+    private FloatingActionButton fab;
     private static FragmentManager fragmentManager=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,16 @@ public class MainActivity extends AppCompatActivity {
         mPager.setAdapter(mPagerAdapter);
         mPager.setOffscreenPageLimit(4);
 
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         createBottomMenu();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ListViewModel fragment = (ListViewModel)mPagerAdapter.getRegisteredFragment(mPager.getCurrentItem());
+                fragment.addCard();
+            }
+        });
     }
 
     public static FragmentManager getFragManager() {
@@ -51,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
     void createBottomMenu() {
         AHBottomNavigation bottomNavigationBar = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         bottomNavigationBar.addItem(new AHBottomNavigationItem("Events", R.drawable.event));
         bottomNavigationBar.addItem(new AHBottomNavigationItem("Perks", R.drawable.tag));
@@ -87,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+        SparseArray<Fragment> registeredFragments = new SparseArray<>();
+
         public ScreenSlidePagerAdapter() {
             super(getFragManager());
         }
@@ -94,6 +107,23 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             return PageController.getInstance().createPageFragment(position, context);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            registeredFragments.put(position, fragment);
+            return fragment;
+        }
+
+        public Fragment getRegisteredFragment(int position) {
+            return registeredFragments.get(position);
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            registeredFragments.remove(position);
+            super.destroyItem(container, position, object);
         }
 
         @Override

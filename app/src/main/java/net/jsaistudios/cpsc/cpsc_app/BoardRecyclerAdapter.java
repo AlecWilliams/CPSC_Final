@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
         holder.myTextView.setText(animal);
         holder.myBoardBio.setText(object.getBio());
         holder.myDatabaseRef = mData.get(position).getDatabaseNodeReference();
-        holder.myImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.board_pic2));
+        holder.myImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.kurtis_barth));
 
 
     }
@@ -68,7 +69,7 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
         TextView myLocationInfo;
         TextView myBoardBio;
         //ImageView myDeleteButton;
-        DataSnapshot myDatabaseRef;
+        DatabaseReference myDatabaseRef;
         EditText editName, editInfo;
         LinearLayout editLayout;
         RelativeLayout rLayout;

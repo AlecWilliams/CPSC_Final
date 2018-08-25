@@ -10,10 +10,15 @@
 
     <color name="gray1">#313131</color>
     <color name="red">#9d2b27</color>
+    <color name="blue">#016fa6</color>
+    <color name="red2">#d80041</color>
+    <color name="red3">#b61315</color>
     <color name="white">#fff</color>
+    <color name="black">#000</color>
     <color name="panelBg">#F2F2F2</color>
     <color name="headerBlue">#3491d9</color>
     <color name="darkerBlue">#0f7ccf</color>
     <color name="bottomMenuBackground">#495A65</color>
+
 
 </resources>

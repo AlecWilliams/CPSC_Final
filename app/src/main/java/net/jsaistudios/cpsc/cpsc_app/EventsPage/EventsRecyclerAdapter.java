@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 
 import net.jsaistudios.cpsc.cpsc_app.R;
 import net.jsaistudios.cpsc.cpsc_app.RecyclerModel;
@@ -62,10 +63,10 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
         TextView myTextView;
         TextView myLocationInfo;
         ImageView myDeleteButton;
-        DataSnapshot myDatabaseRef;
+        DatabaseReference myDatabaseRef;
         EditText editName, editInfo;
         LinearLayout editLayout;
-        RelativeLayout rLayout;
+        RelativeLayout rLayout, defaultLayout;
         ImageView myImage, myEditButton;
         ImageView myEditImage;
         TextView myEditSave, myEditCancel;
@@ -83,6 +84,7 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
             editName = itemView.findViewById(R.id.edit_card_name);
             editInfo = itemView.findViewById(R.id.edit_card_info);
             editLayout = itemView.findViewById(R.id.edit_layout_holder);
+            defaultLayout = itemView.findViewById(R.id.default_layout);
 
             rLayout = itemView.findViewById(R.id.cardInfoHolder);
             myImage = itemView.findViewById(R.id.location_image);
@@ -96,29 +98,16 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
                 public void onClick(View view) {
                     final int dur = 500;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        rLayout.animate().alpha(0).setDuration(dur).withEndAction(new Runnable() {
-                            @SuppressLint("NewApi")
+                        defaultLayout.setAlpha(1);
+                        myDeleteButton.animate().alpha(0);
+                        defaultLayout.animate().alpha(0).setDuration(dur).withEndAction(new Runnable() {
                             @Override
                             public void run() {
-                                myImage.setVisibility(View.GONE);
-                                editLayout.setAlpha(0);
-                                myEditImage.setAlpha(0);
-                                editLayout.animate().alpha(1).setDuration(dur);
                                 editLayout.setVisibility(View.VISIBLE);
-                                myEditImage.setVisibility(View.VISIBLE);
-                                myEditImage.animate().alpha(1).setDuration(dur);
-                                rLayout.setVisibility(View.GONE);
-
+                                editLayout.animate().alpha(1).setDuration(dur);
+                                defaultLayout.setVisibility(View.GONE);
                             }
                         });
-                        myImage.animate().alpha(0).setDuration(dur);
-                        editName.setText(myTextView.getText());
-                        editInfo.setText(myLocationInfo.getText());
-                        myEditButton.setVisibility(View.GONE);
-                        fragRoot.animate().scaleY(1);
-                        rLayout.setVisibility(View.VISIBLE);
-                        editLayout.setVisibility(View.VISIBLE);
-                        editLayout.setVisibility(View.GONE);
                     }
                 }
             });
@@ -147,7 +136,6 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
             myDeleteButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
-
                     if(myDatabaseRef != null){
                         myDatabaseRef.getRef().removeValue();
                     }
