@@ -87,4 +87,12 @@ public class ListViewModel extends android.support.v4.app.Fragment {
     public void setPageSpecificFunctions(PageSpecificFunctions pageSpecificFunctions) {
         this.pageSpecificFunctions = pageSpecificFunctions;
     }
+
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
+
+    public void setRecyclerView(RecyclerView recyclerView) {
+        this.recyclerView = recyclerView;
+    }
 }

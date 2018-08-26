@@ -1,8 +1,12 @@
 package net.jsaistudios.cpsc.cpsc_app.PerkPage;
 
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +16,21 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import net.jsaistudios.cpsc.cpsc_app.ItemObject;
-import net.jsaistudios.cpsc.cpsc_app.ListModelView;
+import net.jsaistudios.cpsc.cpsc_app.AutocompleteFragment;
+import net.jsaistudios.cpsc.cpsc_app.ListViewModel;
+import net.jsaistudios.cpsc.cpsc_app.MainActivity;
 import net.jsaistudios.cpsc.cpsc_app.PageSpecificFunctions;
 import net.jsaistudios.cpsc.cpsc_app.R;
 import net.jsaistudios.cpsc.cpsc_app.RecyclerModel;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by Alec on 5/18/2018.
@@ -31,15 +40,21 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
     private PageSpecificFunctions pageSpecificFunctions;
     private List<RecyclerModel> mData;
     private LayoutInflater mInflater;
-    private ListModelView modelView;
+    private AppCompatActivity myActivity;
+    private MainActivity mainActivity;
+    private ListViewModel viewModel;
     final int dur = 500;
+    final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
 
-    PerkRecyclerAdapter(Context context, List<RecyclerModel> data, PageSpecificFunctions functions, ListModelView mv) {
+    PerkRecyclerAdapter(Context context, List<RecyclerModel> data, PageSpecificFunctions functions, ListViewModel vm, AppCompatActivity activity,
+                        MainActivity ma) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.pageSpecificFunctions = functions;
-        modelView = mv;
+        myActivity = activity;
+        mainActivity = ma;
+        viewModel = vm;
     }
 
     @Override
@@ -112,7 +127,7 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
                 public void onClick(View view) {
                     if(myDatabaseRef==null) {
                         int pos=getAdapterPosition();
-                        modelView.getDataModelList().remove(pos);
+                        viewModel.getModelView().getDataModelList().remove(pos);
                         notifyDataSetChanged();
                     } else {
                         enterDefaultState();
@@ -140,6 +155,13 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
                     }
                     int pos=getAdapterPosition();
                     mData.remove(pos);
+                }
+            });
+            nameEditText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    viewModel.getRecyclerView().setVisibility(View.INVISIBLE);
+                    mainActivity.createAutocompleteFrag("autoFrag", nameEditText.getText().toString());
                 }
             });
         }

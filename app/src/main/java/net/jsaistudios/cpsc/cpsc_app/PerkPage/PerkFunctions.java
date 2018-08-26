@@ -1,6 +1,8 @@
 package net.jsaistudios.cpsc.cpsc_app.PerkPage;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -8,6 +10,7 @@ import com.google.firebase.database.DataSnapshot;
 import net.jsaistudios.cpsc.cpsc_app.BoardObject;
 import net.jsaistudios.cpsc.cpsc_app.ItemObject;
 import net.jsaistudios.cpsc.cpsc_app.ListViewModel;
+import net.jsaistudios.cpsc.cpsc_app.MainActivity;
 import net.jsaistudios.cpsc.cpsc_app.PageSpecificFunctions;
 import net.jsaistudios.cpsc.cpsc_app.R;
 
@@ -16,6 +19,12 @@ import net.jsaistudios.cpsc.cpsc_app.R;
  */
 
 public class PerkFunctions extends PageSpecificFunctions {
+    private AppCompatActivity myActivity;
+    private MainActivity mainActivity;
+    public PerkFunctions(AppCompatActivity activity, MainActivity ma) {
+        myActivity = activity;
+        mainActivity = ma;
+    }
     public String getListFragTag() {
         return "perkPageListFragment";
     }
@@ -41,7 +50,10 @@ public class PerkFunctions extends PageSpecificFunctions {
 
     @Override
     public RecyclerView.Adapter getRecyclerAdapter(Context context, ListViewModel listViewModel) {
-        return new PerkRecyclerAdapter(context, listViewModel.getModelView().getDataModelList(), this, listViewModel.getModelView());
+        return new PerkRecyclerAdapter(context, listViewModel.getModelView().getDataModelList(), this, listViewModel, myActivity, mainActivity);
     }
 
+    public MainActivity getMainActivity() {
+        return mainActivity;
+    }
 }
