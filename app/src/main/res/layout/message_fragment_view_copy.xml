@@ -18,6 +18,7 @@
         android:divider = "#000"
         >
 
+
         <View
             android:layout_width="match_parent"
             android:paddingLeft="5dp"
@@ -26,20 +27,53 @@
             android:background="@android:color/darker_gray"/>
 
 
+        <com.daimajia.swipe.SwipeLayout
+            android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@id/content_holder"
+            android:layout_alignTop="@+id/content_holder"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/edit_button2"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:background="@color/colorPrimary"
+                android:src="@drawable/ic_edit"
+                android:tint="@color/white"
+                />
+            <ImageView
+                android:id="@+id/delete_card"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:src="@drawable/ic_delete"
+                android:tint="@color/white"
+
+                android:background="@drawable/right_button"
+                android:backgroundTint="@color/red3"
+                />
+        </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
-        android:layout_marginBottom="9dp"
+        android:layout_marginBottom="1dp"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:id="@+id/default_layout"
         >
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/location_image"
             android:layout_width="65dp"
             android:layout_height="65dp"
+            android:layout_marginTop="15dp"
             android:layout_marginLeft="9dp"
             android:layout_marginRight="14dp"
             android:src="@drawable/fireston_img" />
@@ -49,7 +83,7 @@
                 android:id="@+id/cardInfoHolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
+                android:paddingTop="15dp"
                 android:layout_toRightOf="@+id/location_image"
                 android:orientation="vertical"
                 android:clipChildren="false"
@@ -86,28 +120,182 @@
 
                     />
 
-            </RelativeLayout>
 
+
+
+                <TextView
+                    android:id="@+id/message_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_bg_red"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:textStyle="bold"
+                    android:layout_alignRight="@+id/card_description"
+                    android:layout_marginTop="10dp"
+                    android:paddingRight="15dp"
+                    android:text="MESSAGE"/>
+
+
+
+            </RelativeLayout>
+    </RelativeLayout>
+       </com.daimajia.swipe.SwipeLayout>
+
+        <!--
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true">
+
+
+
+                        <ImageView
+                            android:id="@+id/edit_button"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_marginRight="12dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_toLeftOf="@id/delete_card"
+                            android:src="@drawable/text_message_icon"
+                            android:tint="@color/gray0"
+                            />
+
+
+
+
+
+                </LinearLayout>
+        -->
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/edit_layout_holder"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true">
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:visibility="gone"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            >
 
-
-            <ImageView
-                android:id="@+id/edit_button"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginRight="12dp"
-                android:layout_toLeftOf="@id/delete_card"
-                android:src="@drawable/text_message_icon"
-                android:tint="@color/gray0"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/location_image2"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="3dp"
+                    android:src="@drawable/fireston_img" />
+            </RelativeLayout>
+            <TextView
+                style="@style/EditFormTextboxTitle"
+                android:text="Name"
+                />
+            <EditText
+                android:id="@+id/edit_card_name"
+                android:hint="John Smith"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp"
+                android:background="@drawable/edit_text_background"
                 />
 
+            <TextView
+                android:text="Description"
+                style="@style/EditFormTextboxTitle"
+                />
+
+            <EditText
+                android:id="@+id/edit_card_info"
+                android:hint="Bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp"
+                android:background="@drawable/edit_text_background"
+                />
+            <!--
+         <TextView
+             android:text="Address"
+             style="@style/EditFormTextboxTitle"
+             />
+
+         <EditText
+             android:id="@+id/edit_perk_address"
+             android:hint="123 Sesame Street"
+             android:textColor="#000"
+             android:textSize="16sp"
+             android:paddingLeft="15dp"
+             android:paddingBottom="9dp"
+             android:paddingTop="9dp"
+             android:layout_marginBottom="10dp"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="@drawable/edit_text_background"
+             />
+             -->
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="30dp"
+                >
+                <TextView
+                    android:id="@+id/save_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/button_bg_red"
+                    android:textColor="@color/white"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:textStyle="bold"
+                    android:paddingRight="15dp"
+                    android:text="SAVE CHANGES"/>
+                <TextView
+                    android:id="@+id/cancel_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textStyle="bold"
+                    android:text="CANCEL"/>
+            </LinearLayout>
+
         </LinearLayout>
+
+
+
+
+
+
+
+
+
+        <!--
         <LinearLayout
             android:id="@+id/edit_layout_holder"
             android:layout_width="match_parent"
@@ -239,11 +427,10 @@
 
 
         </LinearLayout>
-
-
-    </RelativeLayout>
+-->
 
     </RelativeLayout>
 
+    </RelativeLayout>
 
-</RelativeLayout>
+

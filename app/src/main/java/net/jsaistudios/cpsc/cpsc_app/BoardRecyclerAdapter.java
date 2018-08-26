@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
+import net.jsaistudios.cpsc.cpsc_app.PerkPage.PerkObject;
+
 import java.util.List;
 
 import static android.support.v4.content.ContextCompat.startActivity;
@@ -55,6 +57,8 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
         holder.myBoardBio.setText(object.getBio());
         holder.myDatabaseRef = mData.get(position).getDatabaseNodeReference();
         holder.myImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.kurtis_barth));
+        holder.myEditImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.kurtis_barth));
+
 
 
     }
@@ -72,25 +76,40 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
         DatabaseReference myDatabaseRef;
         EditText editName, editInfo;
         LinearLayout editLayout;
-        RelativeLayout rLayout;
-        ImageView myImage, myEditButton;
+        ImageView myDeleteButton;
+        RelativeLayout rLayout, defaultLayout;
+        ImageView myImage;// myEditButton;
         ImageView myEditImage;
+        TextView myMessageButton;
+        ImageView myEditButton;
         TextView myEditSave, myEditCancel;
         View fragRoot;
+        EditText nameEditText, descriptionEditText;
+
+        final int dur = 500;
+
 
 
         ViewHolder(final View itemView) {
             super(itemView);
+
+            nameEditText = itemView.findViewById(R.id.edit_card_name);
+            descriptionEditText = itemView.findViewById(R.id.edit_card_info);
+
             myTextView = itemView.findViewById(R.id.card_name);
             myLocationInfo = itemView.findViewById(R.id.card_description);
             myBoardBio = itemView.findViewById(R.id.card_bio);
 
-            //myDeleteButton = itemView.findViewById(R.id.delete_card);
-            myEditButton = itemView.findViewById(R.id.edit_button);
+            myDeleteButton = itemView.findViewById(R.id.delete_card);
+            myEditButton = itemView.findViewById(R.id.edit_button2);
+            myMessageButton= itemView.findViewById(R.id.message_button);
+
             fragRoot = itemView.getRootView();
 
             editName = itemView.findViewById(R.id.edit_card_name);
             editInfo = itemView.findViewById(R.id.edit_card_info);
+
+            defaultLayout = itemView.findViewById(R.id.default_layout);
             editLayout = itemView.findViewById(R.id.edit_layout_holder);
 
             rLayout = itemView.findViewById(R.id.cardInfoHolder);
@@ -100,39 +119,13 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
             myEditSave = itemView.findViewById(R.id.save_edit);
             myEditCancel = itemView.findViewById(R.id.cancel_edit);
 
-            myEditButton.setOnClickListener(new View.OnClickListener() {
+            myMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     final int dur = 500;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 
-                        /**
-                        rLayout.animate().alpha(0).setDuration(dur).withEndAction(new Runnable() {
-                            @SuppressLint("NewApi")
-                            @Override
-                            public void run() {
-                                myImage.setVisibility(View.GONE);
-                                editLayout.setAlpha(0);
-                                myEditImage.setAlpha(0);
-                                editLayout.animate().alpha(1).setDuration(dur);
-                                editLayout.setVisibility(View.VISIBLE);
-                                myEditImage.setVisibility(View.VISIBLE);
-                                myEditImage.animate().alpha(1).setDuration(dur);
-                                rLayout.setVisibility(View.GONE);
 
-                            }
-                        });
-
-
-                        myImage.animate().alpha(0).setDuration(dur);
-                        editName.setText(myTextView.getText());
-                        editInfo.setText(myLocationInfo.getText());
-                        myEditButton.setVisibility(View.GONE);
-                        fragRoot.animate().scaleY(1);
-                        rLayout.setVisibility(View.VISIBLE);
-                        editLayout.setVisibility(View.VISIBLE);
-                        editLayout.setVisibility(View.GONE);
-                         **/
                     }
                         String phoneNumber;
                     phoneNumber = "7863091616";
@@ -144,15 +137,38 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
 
                 }
             });
+
+            myEditButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+
+                    enterEditState();
+                    BoardObject perkObject = (BoardObject)mData.get(getAdapterPosition()).getItemObject();
+                    //nameEditText.setText(perkObject.getName());
+                    //descriptionEditText.setText(perkObject.getInfo());
+                }
+            });
             myEditCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    editLayout.setVisibility(View.GONE);
+
+
+                    if(myDatabaseRef==null) {
+                        int pos=getAdapterPosition();
+                        //modelView.getDataModelList().remove(pos);
+                        notifyDataSetChanged();
+                    } else {
+                        enterDefaultState();
+                    }
+                    /**editLayout.setVisibility(View.GONE);
                     myImage.setVisibility(View.VISIBLE);
                     rLayout.setVisibility(View.VISIBLE);
                     myImage.setAlpha(1);
                     rLayout.setAlpha(1);
-                    myEditButton.setVisibility(View.VISIBLE);
+                    myMessageButton.setVisibility(View.VISIBLE);
+                     **/
                 }
             });
             myEditSave.setOnClickListener(new View.OnClickListener() {
@@ -178,5 +194,42 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
             });
             **/
         }
+
+        protected void enterEditState() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                myDeleteButton.animate().alpha(0).setDuration(dur);
+                myEditButton.animate().alpha(0).setDuration(dur);
+
+                defaultLayout.setAlpha(1);
+                defaultLayout.animate().alpha(0).setDuration(dur).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        editLayout.setAlpha(0);
+                        editLayout.setVisibility(View.VISIBLE);
+                        editLayout.animate().alpha(1).setDuration(dur);
+                        defaultLayout.setVisibility(View.GONE);
+                    }
+                });
+            }
+        }
+
+        private void enterDefaultState() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                editLayout.animate().alpha(0).setDuration(dur).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        editLayout.setVisibility(View.GONE);
+                        defaultLayout.setVisibility(View.VISIBLE);
+                        defaultLayout.setAlpha(1);
+                        myEditButton.animate().alpha(1).setDuration(dur);
+                        myDeleteButton.animate().alpha(1).setDuration(dur);
+                    }
+                });
+            }
+        }
+
+
     }
+
+
 }
