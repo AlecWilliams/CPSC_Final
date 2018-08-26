@@ -84,7 +84,7 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
         ImageView myEditButton;
         TextView myEditSave, myEditCancel;
         View fragRoot;
-        EditText nameEditText, descriptionEditText;
+        EditText nameEditText, descriptionEditText, bioEditText;
 
         final int dur = 500;
 
@@ -102,6 +102,7 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
 
             myDeleteButton = itemView.findViewById(R.id.delete_card);
             myEditButton = itemView.findViewById(R.id.edit_button2);
+            bioEditText = itemView.findViewById(R.id.edit_perk_address);
             myMessageButton= itemView.findViewById(R.id.message_button);
 
             fragRoot = itemView.getRootView();
@@ -145,9 +146,10 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
 
 
                     enterEditState();
-                    BoardObject perkObject = (BoardObject)mData.get(getAdapterPosition()).getItemObject();
-                    //nameEditText.setText(perkObject.getName());
-                    //descriptionEditText.setText(perkObject.getInfo());
+                    BoardObject boardObject = (BoardObject)mData.get(getAdapterPosition()).getItemObject();
+                    nameEditText.setText(boardObject.getName());
+                    bioEditText.setText(boardObject.getBio());
+                    descriptionEditText.setText(boardObject.getInfo());
                 }
             });
             myEditCancel.setOnClickListener(new View.OnClickListener() {
@@ -174,12 +176,24 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
             myEditSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+
+                    if(myDatabaseRef==null) {
+                        int pos=getAdapterPosition();
+                        //modelView.getDataModelList().remove(pos);
+                        notifyDataSetChanged();
+                    } else {
+                        enterDefaultState();
+                    }
+
                     myDatabaseRef.getRef().child("name").setValue(editName.getText().toString());
                     myDatabaseRef.getRef().child("info").setValue(editInfo.getText().toString());
-                    editLayout.setVisibility(View.GONE);
+
+                 /**   editLayout.setVisibility(View.GONE);
                     myEditImage.setVisibility(View.GONE);
                     myImage.setVisibility(View.VISIBLE);
                     rLayout.setVisibility(View.VISIBLE);
+                     **/
                 }
             });
 

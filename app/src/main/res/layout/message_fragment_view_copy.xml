@@ -136,6 +136,7 @@
                     android:textStyle="bold"
                     android:layout_alignRight="@+id/card_description"
                     android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
                     android:paddingRight="15dp"
                     android:text="MESSAGE"/>
 
@@ -215,13 +216,13 @@
                 />
 
             <TextView
-                android:text="Description"
+                android:text="Position"
                 style="@style/EditFormTextboxTitle"
                 />
 
             <EditText
                 android:id="@+id/edit_card_info"
-                android:hint="Bio"
+                android:hint="Position"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#000"
@@ -231,15 +232,15 @@
                 android:paddingTop="9dp"
                 android:background="@drawable/edit_text_background"
                 />
-            <!--
+
          <TextView
-             android:text="Address"
+             android:text="Bio"
              style="@style/EditFormTextboxTitle"
              />
 
          <EditText
              android:id="@+id/edit_perk_address"
-             android:hint="123 Sesame Street"
+             android:hint="A short bio"
              android:textColor="#000"
              android:textSize="16sp"
              android:paddingLeft="15dp"
@@ -250,7 +251,7 @@
              android:layout_height="wrap_content"
              android:background="@drawable/edit_text_background"
              />
-             -->
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
