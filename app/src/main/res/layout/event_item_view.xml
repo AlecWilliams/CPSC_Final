@@ -47,6 +47,9 @@
                 android:scaleType="centerCrop"
                 android:id="@+id/location_image"
                 android:src="@drawable/firestone" />
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp" />
         </FrameLayout>
 
             <RelativeLayout
@@ -69,6 +72,7 @@
                     android:textColor="@color/headerBlue"
                     android:textSize="24sp"/>
 
+
                 <TextView
                     android:id="@+id/card_description"
                     android:layout_width="match_parent"
@@ -85,6 +89,25 @@
                     android:layout_marginTop="22dp"
                     android:layout_marginBottom="5dp"
                     >
+                    <TextView
+                        android:id="@+id/chat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Event Board"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/colorAccent"
+                        android:layout_toLeftOf="@id/chat_icon"
+                        android:layout_marginRight="26dp"
+                        android:layout_marginTop="8dp"
+                        android:textSize="13sp" />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/chat_icon"
+                        android:src="@drawable/chat"
+                        android:tint="@color/colorAccent"
+                        android:layout_marginTop="8dp"
+                        android:layout_alignParentRight="true"/>
                     <TextView
                         android:id="@+id/sign_up"
                         android:layout_width="wrap_content"

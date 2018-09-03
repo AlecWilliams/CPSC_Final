@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationBar.addItem(new AHBottomNavigationItem("Events", R.drawable.event));
         bottomNavigationBar.addItem(new AHBottomNavigationItem("Perks", R.drawable.tag));
         bottomNavigationBar.addItem(new AHBottomNavigationItem("Board", R.drawable.board));
+        bottomNavigationBar.addItem(new AHBottomNavigationItem("Chat", R.drawable.chat));
         bottomNavigationBar.manageFloatingActionButtonBehavior(fab);
         bottomNavigationBar.setAccentColor(ContextCompat.getColor(this, R.color.colorAccent));
         bottomNavigationBar.setInactiveColor(ContextCompat.getColor(this, R.color.gray_1));

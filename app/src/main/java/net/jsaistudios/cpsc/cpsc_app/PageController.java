@@ -16,7 +16,7 @@ public class PageController {
     private static PageController instance=null;
 
     public enum PageType {
-        EVENTS, PERKS, BOARD;
+        EVENTS, PERKS, BOARD, MESSAGING;
         private final int value;
         PageType() {
             this.value = ordinal();
@@ -38,6 +38,8 @@ public class PageController {
             case BOARD:
                 new ListViewController(new BoardFunctions(), context, listViewModel);
                 return listViewModel;
+            case MESSAGING:
+                return new MessagingFragment();
         }
         return null;
     }
