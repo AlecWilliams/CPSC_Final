@@ -1,5 +1,6 @@
 package net.jsaistudios.cpsc.cpsc_app;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -32,12 +34,16 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
     private FloatingActionButton fab;
+    private  MainActivity mainActivity;
+    private AppCompatActivity activity;
     private static FragmentManager fragmentManager=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
+        activity = this;
+        mainActivity = this;
 
         fragmentManager = getSupportFragmentManager();
         mPager = (ViewPager) findViewById(R.id.main_pager);
@@ -67,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationBar.addItem(new AHBottomNavigationItem("Events", R.drawable.event));
         bottomNavigationBar.addItem(new AHBottomNavigationItem("Perks", R.drawable.tag));
         bottomNavigationBar.addItem(new AHBottomNavigationItem("Board", R.drawable.board));
+        bottomNavigationBar.addItem(new AHBottomNavigationItem("Chat", R.drawable.chat));
         bottomNavigationBar.manageFloatingActionButtonBehavior(fab);
         bottomNavigationBar.setAccentColor(ContextCompat.getColor(this, R.color.colorAccent));
         bottomNavigationBar.setInactiveColor(ContextCompat.getColor(this, R.color.gray_1));
@@ -85,16 +92,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public AutocompleteFragment createAutocompleteFrag(String tag, String initText) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        AutocompleteFragment fragment = new AutocompleteFragment();
+        fragment.setInitialText(initText);
+        fragmentTransaction.add(R.id.autocomplete_frag_holder, fragment, tag);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commitAllowingStateLoss();
+        return fragment;
+    }
+
     @Override
     public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed();
-        } else {
-            // Otherwise, select the previous step.
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-        }
+//        if (mPager.getCurrentItem() == 0) {
+//            // If the user is currently looking at the first step, allow the system to handle the
+//            // Back button. This calls finish() on this activity and pops the back stack.
+//
+//        } else {
+//            // Otherwise, select the previous step.
+//            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+//        }
+        super.onBackPressed();
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
@@ -106,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return PageController.getInstance().createPageFragment(position, context);
+            return PageController.getInstance().createPageFragment(position, context, activity, mainActivity);
         }
 
         @Override

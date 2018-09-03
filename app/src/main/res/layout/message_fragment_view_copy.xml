@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
-    android:layout_marginBottom="0dp"
+    android:layout_marginBottom="10dp"
     android:elevation="2dp"
     android:background="@drawable/card_background"
     android:clipChildren="false"
@@ -95,9 +95,9 @@
                     android:id="@+id/card_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lucas Newcomb"
+                    android:text="Austin"
                     android:textColor="@color/caldroid_black"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -109,7 +109,7 @@
                     android:textStyle="italic"
                     android:text="President"
                     android:textColor="#232323"
-                    android:textSize="16sp" />
+                    android:textSize="17sp" />
                 <TextView
                     android:id="@+id/card_bio"
                     android:layout_width="wrap_content"
@@ -168,6 +168,7 @@
 
 
 
+<<<<<<< HEAD
                         <ImageView
                             android:id="@+id/edit_button"
                             android:layout_width="35dp"
@@ -309,6 +310,21 @@
 
 
         <!--
+=======
+        <ImageView
+            android:id="@+id/edit_button"
+            android:layout_width="70dp"
+            android:layout_height="31dp"
+            android:layout_marginRight="12dp"
+            android:layout_toLeftOf="@id/delete_card"
+            android:src="@drawable/chat"
+            android:tint="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/button_bg_red"
+            android:padding="7dp"
+            />
+>>>>>>> b0d71b85ff30ac328e623b639ca0c4d63c83e57c
         <LinearLayout
             android:id="@+id/edit_layout_holder"
             android:layout_width="match_parent"

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:layout_height="wrap_content"
+    android:paddingTop="6dp">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/gray0.5"
+        android:layout_below="@+id/content_holder"
+        android:id="@+id/autocomplete_item_divider"
+        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/content_holder"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="9dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/left_icon_holder"
+            android:layout_centerVertical="true">
+
+
+            <TextView
+                android:id="@+id/location_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:layout_toRightOf="@+id/icon_image"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:textColor="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/location_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:maxLines="1"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/left_icon_holder"
+            android:layout_marginRight="12dp"
+            android:layout_centerVertical="true">
+            <ImageView
+                android:id="@+id/icon_image"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerHorizontal="true"
+                android:tint="@color/gray2"
+                app:srcCompat="@drawable/marker_empty" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

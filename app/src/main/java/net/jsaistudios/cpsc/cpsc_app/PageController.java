@@ -1,7 +1,9 @@
 package net.jsaistudios.cpsc.cpsc_app;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 
 import net.jsaistudios.cpsc.cpsc_app.EventsPage.EventsFragment;
 import net.jsaistudios.cpsc.cpsc_app.PerkPage.PerkFunctions;
@@ -14,7 +16,7 @@ public class PageController {
     private static PageController instance=null;
 
     public enum PageType {
-        EVENTS, PERKS, BOARD;
+        EVENTS, PERKS, BOARD, MESSAGING;
         private final int value;
         PageType() {
             this.value = ordinal();
@@ -22,7 +24,7 @@ public class PageController {
         public static final int size = PageType.values().length;
     }
 
-    public Fragment createPageFragment(int type, Context context) {
+    public Fragment createPageFragment(int type, Context context, AppCompatActivity activity, MainActivity mainActivity) {
         PageType enumType = PageType.values()[type];
         ListViewModel listViewModel = new ListViewModel();
         switch (enumType) {
@@ -31,11 +33,13 @@ public class PageController {
                 fragment.setContext(context);
                 return fragment;
             case PERKS:
-                new ListViewController(new PerkFunctions(), context, listViewModel);
+                new ListViewController(new PerkFunctions(activity, mainActivity), context, listViewModel);
                 return listViewModel;
             case BOARD:
                 new ListViewController(new BoardFunctions(), context, listViewModel);
                 return listViewModel;
+            case MESSAGING:
+                return new MessagingFragment();
         }
         return null;
     }
