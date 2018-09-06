@@ -16,11 +16,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import net.jsaistudios.cpsc.cpsc_app.AutocompleteFragment;
 import net.jsaistudios.cpsc.cpsc_app.ListViewModel;
@@ -89,6 +94,7 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
         View fragRoot;
         ViewHolder me;
         EditText addressEditText, nameEditText, descriptionEditText;
+        SwipeLayout swipeLayout;
 
 
         ViewHolder(final View itemView) {
@@ -109,10 +115,40 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
             addressEditText = itemView.findViewById(R.id.edit_perk_address);
             nameEditText = itemView.findViewById(R.id.edit_card_name);
             descriptionEditText = itemView.findViewById(R.id.edit_card_info);
+            swipeLayout = itemView.findViewById(R.id.swipeToEdit);
 
             myEditSave = itemView.findViewById(R.id.save_edit);
             myEditCancel = itemView.findViewById(R.id.cancel_edit);
             me = this;
+
+
+
+            //If user is not admin, dont allow swipe
+            //Check if ifAdmin == true
+            swipeLayout.setSwipeEnabled(false);
+
+
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference userAdminCheck = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("isAdmin");
+            userAdminCheck.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()) {
+                        if ((Boolean.valueOf(dataSnapshot.getValue().toString()))) {
+                            //Disable swipe layout
+                            swipeLayout.setSwipeEnabled(true);
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
             myEditButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

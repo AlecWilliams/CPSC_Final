@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -16,8 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import net.jsaistudios.cpsc.cpsc_app.PerkPage.PerkObject;
 
@@ -85,7 +92,7 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
         TextView myEditSave, myEditCancel;
         View fragRoot;
         EditText nameEditText, descriptionEditText, bioEditText;
-
+        SwipeLayout swipeLayout;
         final int dur = 500;
 
 
@@ -119,6 +126,33 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
 
             myEditSave = itemView.findViewById(R.id.save_edit);
             myEditCancel = itemView.findViewById(R.id.cancel_edit);
+
+            swipeLayout = itemView.findViewById(R.id.swipeToEdit);
+
+            swipeLayout.setSwipeEnabled(false);
+
+
+            //If user is not admin, dont allow swipe
+            //Check if ifAdmin == true
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference userAdminCheck = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("isAdmin");
+            userAdminCheck.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()) {
+                        if ((Boolean.valueOf(dataSnapshot.getValue().toString()))) {
+                            //Disable swipe layout
+                            swipeLayout.setSwipeEnabled(true);
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
 
             myMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override

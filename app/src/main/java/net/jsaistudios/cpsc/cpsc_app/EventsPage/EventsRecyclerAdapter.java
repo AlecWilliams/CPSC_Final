@@ -14,8 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import net.jsaistudios.cpsc.cpsc_app.R;
 import net.jsaistudios.cpsc.cpsc_app.RecyclerModel;
@@ -71,6 +76,7 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
         ImageView myEditImage;
         TextView myEditSave, myEditCancel;
         View fragRoot;
+        SwipeLayout swipeLayout;
 
 
         ViewHolder(final View itemView) {
@@ -85,6 +91,7 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
             editInfo = itemView.findViewById(R.id.edit_card_info);
             editLayout = itemView.findViewById(R.id.edit_layout_holder);
             defaultLayout = itemView.findViewById(R.id.default_layout);
+            swipeLayout = itemView.findViewById(R.id.swipeToEdit);
 
             rLayout = itemView.findViewById(R.id.cardInfoHolder);
             myImage = itemView.findViewById(R.id.location_image);
@@ -92,6 +99,7 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
 
             myEditSave = itemView.findViewById(R.id.save_edit);
             myEditCancel = itemView.findViewById(R.id.cancel_edit);
+
 
             myEditButton.setOnClickListener(new View.OnClickListener() {
                 @Override
