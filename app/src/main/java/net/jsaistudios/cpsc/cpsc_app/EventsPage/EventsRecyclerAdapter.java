@@ -2,7 +2,10 @@ package net.jsaistudios.cpsc.cpsc_app.EventsPage;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,10 +38,12 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
     private List<RecyclerModel> mData;
     private LayoutInflater mInflater;
     private ImageButton deleteButton;
+    private Context context;
 
     EventsRecyclerAdapter(Context context, List<RecyclerModel> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+        this.context= context;
     }
 
     @Override
@@ -49,14 +54,15 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
 
     @Override
     public void onBindViewHolder(EventsRecyclerAdapter.ViewHolder holder, int position) {
-        String animal = mData.get(position).getItemObject().getName();
 
-        EventsObject eventsObject = (EventsObject) mData.get(position).getItemObject();
+        final EventsObject eventsObject = (EventsObject) mData.get(position).getItemObject();
 
         holder.myLocationInfo.setText(eventsObject.getInfo());
-        holder.myTextView.setText(animal);
+        holder.myTextView.setText(eventsObject.getName());
         holder.myDatabaseRef = mData.get(position).getDatabaseNodeReference();
         holder.myImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.firestone));
+        holder.dateAndPlace.setText(eventsObject.getDate() + " • " + eventsObject.getPlace());
+
     }
 
     @Override
@@ -66,7 +72,7 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
 
     public class ViewHolder extends RecyclerView.ViewHolder  {
         TextView myTextView;
-        TextView myLocationInfo;
+        TextView myLocationInfo, dateAndPlace, moreInfo;
         ImageView myDeleteButton;
         DatabaseReference myDatabaseRef;
         EditText editName, editInfo;
@@ -83,11 +89,19 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
             super(itemView);
             myTextView = itemView.findViewById(R.id.card_name);
             myLocationInfo = itemView.findViewById(R.id.card_description);
+            dateAndPlace = itemView.findViewById(R.id.dateandplace);
             fragRoot = itemView.getRootView();
-
             rLayout = itemView.findViewById(R.id.cardInfoHolder);
             myImage = itemView.findViewById(R.id.location_image);
-
+            moreInfo = itemView.findViewById(R.id.more_info);
+            moreInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri uri = Uri.parse("https://www.facebook.com/events/" + ((EventsObject)mData.get(getAdapterPosition()).getItemObject()).getId());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

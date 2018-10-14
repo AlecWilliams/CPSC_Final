@@ -32,6 +32,7 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
     private ImageView qrImage;
     private TextView emailView, titleView, userResult;
     private CheckInFragment context;
+    private View adminPanel, memberPanel;
     private QRCodeReaderView qrCodeReaderView;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,6 +42,8 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
         userResult =  baseFragmentView.findViewById(R.id.userResultView);
         qrCodeReaderView = (QRCodeReaderView) baseFragmentView.findViewById(R.id.qrdecoderview);
         qrImage = baseFragmentView.findViewById(R.id.qr_code);
+        adminPanel = baseFragmentView.findViewById(R.id.adminCheckIn);
+        memberPanel = baseFragmentView.findViewById(R.id.memberCheckIn);
         emailView = baseFragmentView.findViewById(R.id.email);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -52,8 +55,8 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         if (dataSnapshot.getValue().toString().equals("admin")) {
-                            qrImage.setVisibility(View.GONE);
-                            emailView.setVisibility(View.GONE);
+                            memberPanel.setVisibility(View.GONE);
+                            adminPanel.setVisibility(View.VISIBLE);
                             titleView.setText("Scan a member's qr code below.");
                             qrCodeReaderView.setOnQRCodeReadListener(context);
 
@@ -72,9 +75,9 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
                             // Use this function to set back camera preview
                             qrCodeReaderView.setBackCamera();
                         } else {
-                            qrCodeReaderView.setVisibility(View.GONE);
-                            userResult.setVisibility(View.GONE);
-                            titleView.setText("Show a board member this code to check in to an event.");
+                            memberPanel.setVisibility(View.VISIBLE);
+                            adminPanel.setVisibility(View.GONE);
+                            titleView.setText("Show a board member this code or tell them your email to check in to an event.");
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if(user!=null) {
                                 QRGEncoder qrgEncoder = new QRGEncoder("1", null, QRGContents.Type.TEXT, 1);

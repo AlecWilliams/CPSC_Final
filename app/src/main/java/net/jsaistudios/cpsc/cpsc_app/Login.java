@@ -98,38 +98,6 @@ public class Login extends Fragment {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                PasswordGenerator passwordGenerator = new PasswordGenerator.PasswordGeneratorBuilder()
-//                        .useDigits(true)
-//                        .useLower(true)
-//                        .useUpper(true)
-//                        .build();
-//                final String password = passwordGenerator.generate(12);
-//
-//                FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailLogin.getText().toString(), password)
-//                        .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<AuthResult> task) {
-//                                if (task.isSuccessful()) {
-//                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                                    DatabaseReference myRef = database.getReference("users");
-//                                    DatabaseReference userRef = myRef.child(user.getUid());
-//                                    userRef.child("pass").setValue(password);
-//                                    userRef.child("email").setValue(emailLogin.getText().toString());
-//                                    userRef.child("uid").setValue(user.getUid());
-//                                    loginListener.loggedIn(false, true);
-//                                } else {
-//                                    Log.w("shit", "createUserWithEmail:failure", task.getException());
-//
-//                                }
-//                            }
-//                    }).addOnFailureListener(activity, new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.w("shit", "createUserWithEmail:failure"+ e.toString());
-//                    }
-//                });
-
                 Uri uri = Uri.parse("https://cpsconline.com/join/"); // missing 'http://' will cause crashed
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);

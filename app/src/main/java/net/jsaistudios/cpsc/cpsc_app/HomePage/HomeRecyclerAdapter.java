@@ -68,21 +68,27 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder  {
-        TextView myTextView;
-        TextView myLocationInfo;
+        TextView titleText;
+        TextView bodyText, dateText;
 
 
         ViewHolder(final View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.card_name);
-            myLocationInfo = itemView.findViewById(R.id.card_description);
-
+            titleText = itemView.findViewById(R.id.card_name);
+            bodyText = itemView.findViewById(R.id.card_body);
+            dateText = itemView.findViewById(R.id.card_date);
         }
 
         private void fillViewModel(RecyclerModel model) {
             HomeObject perkObject = (HomeObject) model.getItemObject();
-            this.myLocationInfo.setText(perkObject.getInfo());
-            this.myTextView.setText(model.getItemObject().getName());
+            this.bodyText.setText(perkObject.getBody());
+            if(perkObject.getName()==null || perkObject.getName().equals("")) {
+                this.titleText.setVisibility(View.GONE);
+            } else {
+                this.titleText.setVisibility(View.VISIBLE);
+                this.titleText.setText(perkObject.getName());
+            }
+            this.dateText.setText(perkObject.getDate());
         }
     }
 }

@@ -1,6 +1,7 @@
 package net.jsaistudios.cpsc.cpsc_app;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import net.jsaistudios.cpsc.cpsc_app.EventsPage.EventsFunctions;
 import net.jsaistudios.cpsc.cpsc_app.PerkPage.PerkFunctions;
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             createApp();
+            FirebaseMessaging.getInstance().subscribeToTopic("pushNotifications");
         } else {
             createLogin();
         }
@@ -96,6 +99,31 @@ public class MainActivity extends AppCompatActivity {
         return fragment;
     }
 
+    private void handleNewPage(int position, boolean admin) {
+        if(position==1 || position==3) {
+            fab.setVisibility(View.GONE);
+        } else {
+            fab.setVisibility(View.VISIBLE);
+            if (position == 2) {
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ListViewModel fragment = (ListViewModel) mPagerAdapter.getRegisteredFragment(mPager.getCurrentItem());
+                        fragment.addCard();
+                    }
+                });
+            } else if (position == 0) {
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new NotificationCreationDialog().show(getFragmentManager(), "Make Notif");
+                    }
+                });
+            }
+        }
+    }
+    private boolean admin = false;
+    private int position = 0;
 
     private void createApp() {
         fragmentManager = getSupportFragmentManager();
@@ -103,7 +131,9 @@ public class MainActivity extends AppCompatActivity {
         mPagerAdapter = new ScreenSlidePagerAdapter();
         mPager.setAdapter(mPagerAdapter);
         mPager.setOffscreenPageLimit(4);
-
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
+        handleNewPage(position, admin);
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -111,12 +141,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageSelected(int position) {
-                if(position!=0) {
-                    topBar.setVisibility(View.GONE);
-                } else {
-                    topBar.setVisibility(View.VISIBLE);
-                }
+            public void onPageSelected(int pos) {
+                position=pos;
+                handleNewPage(position, admin);
             }
 
             @Override
@@ -133,12 +160,16 @@ public class MainActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         if (dataSnapshot.getValue().toString().equals("admin")) {
+                            admin=true;
+                            handleNewPage(position, admin);
                             if(mPager.getCurrentItem()!=0) {
                                 topBar.setVisibility(View.GONE);
                             } else {
                                 topBar.setVisibility(View.VISIBLE);
                             }
 
+                        } else {
+                            admin=false;
                         }
                     }
 
@@ -149,19 +180,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.VISIBLE);
         createBottomMenu();
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ListViewModel fragment = (ListViewModel)mPagerAdapter.getRegisteredFragment(mPager.getCurrentItem());
-                fragment.addCard();
-            }
-        });
     }
+
 
     public static FragmentManager getFragManager() {
         return fragmentManager;

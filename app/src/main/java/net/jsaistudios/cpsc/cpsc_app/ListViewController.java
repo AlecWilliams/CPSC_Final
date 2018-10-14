@@ -41,7 +41,7 @@ public class ListViewController {
         getDatabaseList();
     }
 
-    private void getDatabaseList() {
+    protected void getDatabaseList() {
         FirebaseApp.initializeApp(context);
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference myRef = db.getReference(pageSpecificFunctions.getListDatabaseKey());

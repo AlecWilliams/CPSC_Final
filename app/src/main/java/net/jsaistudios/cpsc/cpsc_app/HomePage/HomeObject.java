@@ -3,44 +3,30 @@ package net.jsaistudios.cpsc.cpsc_app.HomePage;
 import net.jsaistudios.cpsc.cpsc_app.ItemObject;
 
 public class HomeObject extends ItemObject {
-    private String info, address;
-    private int image;
+    private String body, date;
 
     public HomeObject() {
         super();
     }
-    public HomeObject(String n, String inf, int im) {
+    public HomeObject(String n, String bod, String dat) {
         super(n);
-        info = inf;
-        image = im;
+        body =bod;
+        date = dat;
     }
 
-    public HomeObject(String n, String a) {
-        super(n);
-        setAddress(a);
+    public String getDate() {
+        return date;
     }
 
-    public String getInfo() {
-        return info;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    public String getBody() {
+        return body;
     }
 
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setBody(String body) {
+        this.body = body;
     }
 }

@@ -5,7 +5,7 @@ package net.jsaistudios.cpsc.cpsc_app;
  */
 
 public class ItemObject {
-    private String name;
+    private String name="";
     public ItemObject() {
 
     }

@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/card_name"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="5dp"
                 android:text="Littest time of your life. Three boats, one lake. And most importantly, unlimited beer bongs."
                 android:textColor="#505050"
                 android:ellipsize="end"
@@ -64,10 +64,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/card_description"
                 android:layout_marginBottom="5dp"
-                android:layout_marginTop="22dp">
+                android:layout_marginTop="18dp"
+                android:id="@+id/sign_up_holder">
 
                 <TextView
-                    android:id="@+id/sign_up"
+                    android:id="@+id/more_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_bg_red"
@@ -80,6 +81,16 @@
                     android:textColor="@color/white"
                     android:textStyle="bold" />
             </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/dateandplace"
+                android:layout_toRightOf="@id/sign_up_holder"
+                android:layout_marginLeft="20dp"
+                android:maxLines="2"
+                android:text="9/27"
+                android:layout_alignParentRight="true"
+                android:layout_alignBottom="@id/sign_up_holder"/>
 
 
         </RelativeLayout>

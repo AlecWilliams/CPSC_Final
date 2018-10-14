@@ -29,13 +29,14 @@ public class HomeFunctions extends PageSpecificFunctions {
 
     public ItemObject getListItemObject(DataSnapshot child) {
         HomeObject perkObject = new HomeObject();
-        perkObject.setName(child.child("name").getValue(String.class));
-        perkObject.setInfo(child.child("info").getValue(String.class));
+        perkObject.setName(child.child("title").getValue(String.class));
+        perkObject.setBody(child.child("body").getValue(String.class));
+        perkObject.setDate(child.child("date").getValue(String.class));
         return perkObject;
     }
 
     public ItemObject getAddItemObject() {
-        return new HomeObject("", "", R.drawable.fireston_img);
+        return new HomeObject("", "", "");
     }
 
     @Override

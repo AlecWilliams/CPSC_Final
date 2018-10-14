@@ -29,10 +29,9 @@ public class EventsFunctions extends PageSpecificFunctions {
         EventsObject object = new EventsObject();
         object.setName(child.child("name").getValue(String.class));
         object.setInfo(child.child("info").getValue(String.class));
-        try {
-            object.setImage(Integer.valueOf(child.child("image").getValue(String.class)));
-        } catch (Exception e) {
-        }
+        object.setPlace(child.child("place").getValue(String.class));
+        object.setDate(child.child("date").getValue(String.class));
+        object.setId(child.child("fbId").getValue(String.class));
         return object;
     }
 

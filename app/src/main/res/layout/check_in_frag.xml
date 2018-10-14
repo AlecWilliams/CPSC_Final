@@ -3,47 +3,62 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:id="@+id/title_checkin"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_centerHorizontal="true"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title_checkin"
-        android:id="@+id/email"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_marginTop="50dp"/>
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/email"
-        android:layout_marginTop="20dp"
-        android:id="@+id/qr_code"/>
-    <com.dlazaro66.qrcodereaderview.QRCodeReaderView
-        android:id="@+id/qrdecoderview"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@id/title_checkin"
-        android:layout_marginTop="30dp"/>
 
     <TextView
-        android:id="@+id/userResultView"
+        android:id="@+id/title_checkin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="176dp"
-        android:text="TextView" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textSize="18sp" />
+
+    <RelativeLayout
+        android:id="@+id/memberCheckIn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_checkin"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/qr_code"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/email"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/adminCheckIn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.dlazaro66.qrcodereaderview.QRCodeReaderView
+            android:id="@+id/qrdecoderview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/title_checkin"
+            android:layout_marginTop="30dp" />
+
+        <TextView
+            android:id="@+id/userResultView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="176dp"
+            android:text="TextView" />
+    </RelativeLayout>
 
 </RelativeLayout>

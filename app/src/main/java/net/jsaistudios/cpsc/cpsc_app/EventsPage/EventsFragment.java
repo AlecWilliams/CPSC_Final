@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.roomorama.caldroid.CaldroidFragment;
 
+import net.jsaistudios.cpsc.cpsc_app.Calendar.CaldroidSampleCustomFragment;
 import net.jsaistudios.cpsc.cpsc_app.EventListViewController;
 import net.jsaistudios.cpsc.cpsc_app.ListViewController;
 import net.jsaistudios.cpsc.cpsc_app.ListViewModel;
@@ -59,12 +60,13 @@ public class EventsFragment extends Fragment {
                 new EventListViewController(new EventsFunctions(), context, listViewModel);
                 return listViewModel;
             } else {
-                CaldroidFragment caldroidFragment = new CaldroidFragment();
+                CaldroidSampleCustomFragment caldroidFragment = new CaldroidSampleCustomFragment();
                 Bundle args = new Bundle();
                 Calendar cal = Calendar.getInstance();
                 args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
                 args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
                 caldroidFragment.setArguments(args);
+
                 return caldroidFragment;
             }
         }

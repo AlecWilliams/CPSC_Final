@@ -7,8 +7,8 @@ import net.jsaistudios.cpsc.cpsc_app.ItemObject;
  */
 
 public class EventsObject extends ItemObject {
-    private String info;
-    private int image;
+    private String info, date, place;
+    private String id;
 
     public EventsObject() {
         super();
@@ -16,7 +16,6 @@ public class EventsObject extends ItemObject {
     public EventsObject(String n, String inf, int im) {
         super(n);
         info = inf;
-        image = im;
     }
 
     public String getInfo() {
@@ -27,11 +26,27 @@ public class EventsObject extends ItemObject {
         this.info = info;
     }
 
-    public int getImage() {
-        return image;
+    public String getDate() {
+        return date;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
     }
 }

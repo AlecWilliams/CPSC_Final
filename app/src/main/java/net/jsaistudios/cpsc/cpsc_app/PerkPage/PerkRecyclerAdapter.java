@@ -1,9 +1,11 @@
 package net.jsaistudios.cpsc.cpsc_app.PerkPage;
 
+import android.net.Uri;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -49,6 +51,7 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
     private AppCompatActivity myActivity;
     private MainActivity mainActivity;
     private ListViewModel viewModel;
+    private Context context;
     final int dur = 500;
     final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
@@ -59,6 +62,7 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
         this.mData = data;
         this.pageSpecificFunctions = functions;
         myActivity = activity;
+        this.context = context;
         mainActivity = ma;
         viewModel = vm;
     }
@@ -70,11 +74,20 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(PerkRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(PerkRecyclerAdapter.ViewHolder holder, final int position) {
         holder.fillViewModel(mData.get(position));
         if(holder.myDatabaseRef==null) {
             holder.enterEditStateNoAnimations();
         }
+        holder.googleLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri gmmIntentUri = Uri.parse("geo:35.2827,-120.6596?q=" + mData.get(position).getItemObject().getName());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                context.startActivity(mapIntent);
+            }
+        });
     }
 
     @Override
@@ -89,8 +102,8 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
         DatabaseReference myDatabaseRef;
         LinearLayout editLayout;
         RelativeLayout rLayout, defaultLayout;
-        ImageView myImage, myEditButton;
-        ImageView myEditImage;
+        ImageView myEditButton;
+        ImageView myEditImage, googleLogo;
         TextView myEditSave, myEditCancel;
         View fragRoot;
         ViewHolder me;
@@ -101,6 +114,7 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
         ViewHolder(final View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.card_name);
+            googleLogo = itemView.findViewById(R.id.googlelogo);
             myLocationInfo = itemView.findViewById(R.id.card_description);
             myDeleteButton = itemView.findViewById(R.id.delete_card);
             myEditButton = itemView.findViewById(R.id.edit_button);
@@ -110,7 +124,6 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
             defaultLayout = itemView.findViewById(R.id.default_layout);
 
             rLayout = itemView.findViewById(R.id.cardInfoHolder);
-            myImage = itemView.findViewById(R.id.location_image);
             myEditImage = itemView.findViewById(R.id.location_image2);
 
             addressEditText = itemView.findViewById(R.id.edit_perk_address);
@@ -154,7 +167,7 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
                 @Override
                 public void onClick(View view) {
                     enterEditState();
-                    PerkObject perkObject = (PerkObject)mData.get(getAdapterPosition()).getItemObject();
+                    final PerkObject perkObject = (PerkObject)mData.get(getAdapterPosition()).getItemObject();
                     nameEditText.setText(perkObject.getName());
                     descriptionEditText.setText(perkObject.getInfo());
                 }
@@ -208,7 +221,6 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
             this.myLocationInfo.setText(perkObject.getInfo());
             this.myTextView.setText(model.getItemObject().getName());
             this.myDatabaseRef = model.getDatabaseNodeReference();
-            this.myImage.setImageDrawable(this.itemView.getResources().getDrawable(R.drawable.fireston_img));
         }
 
         protected void enterEditStateNoAnimations() {
