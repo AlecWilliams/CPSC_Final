@@ -83,72 +83,11 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
             super(itemView);
             myTextView = itemView.findViewById(R.id.card_name);
             myLocationInfo = itemView.findViewById(R.id.card_description);
-            myDeleteButton = itemView.findViewById(R.id.delete_card);
-            myEditButton = itemView.findViewById(R.id.edit_button);
             fragRoot = itemView.getRootView();
-
-            editName = itemView.findViewById(R.id.edit_card_name);
-            editInfo = itemView.findViewById(R.id.edit_card_info);
-            editLayout = itemView.findViewById(R.id.edit_layout_holder);
-            defaultLayout = itemView.findViewById(R.id.default_layout);
-            swipeLayout = itemView.findViewById(R.id.swipeToEdit);
 
             rLayout = itemView.findViewById(R.id.cardInfoHolder);
             myImage = itemView.findViewById(R.id.location_image);
-            myEditImage = itemView.findViewById(R.id.location_image2);
 
-            myEditSave = itemView.findViewById(R.id.save_edit);
-            myEditCancel = itemView.findViewById(R.id.cancel_edit);
-
-
-            myEditButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final int dur = 500;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        defaultLayout.setAlpha(1);
-                        myDeleteButton.animate().alpha(0);
-                        defaultLayout.animate().alpha(0).setDuration(dur).withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                editLayout.setVisibility(View.VISIBLE);
-                                editLayout.animate().alpha(1).setDuration(dur);
-                                defaultLayout.setVisibility(View.GONE);
-                            }
-                        });
-                    }
-                }
-            });
-            myEditCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    editLayout.setVisibility(View.GONE);
-                    myImage.setVisibility(View.VISIBLE);
-                    rLayout.setVisibility(View.VISIBLE);
-                    myImage.setAlpha(1);
-                    rLayout.setAlpha(1);
-                    myEditButton.setVisibility(View.VISIBLE);
-                }
-            });
-            myEditSave.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    myDatabaseRef.getRef().child("name").setValue(editName.getText().toString());
-                    myDatabaseRef.getRef().child("info").setValue(editInfo.getText().toString());
-                    editLayout.setVisibility(View.GONE);
-                    myEditImage.setVisibility(View.GONE);
-                    myImage.setVisibility(View.VISIBLE);
-                    rLayout.setVisibility(View.VISIBLE);
-                }
-            });
-            myDeleteButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    if(myDatabaseRef != null){
-                        myDatabaseRef.getRef().removeValue();
-                    }
-                }
-            });
         }
     }
 }

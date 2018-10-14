@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import net.jsaistudios.cpsc.cpsc_app.EventsPage.EventsFragment;
+import net.jsaistudios.cpsc.cpsc_app.HomePage.HomeFunctions;
 import net.jsaistudios.cpsc.cpsc_app.PerkPage.PerkFunctions;
 
 /**
@@ -16,7 +17,7 @@ public class PageController {
     private static PageController instance=null;
 
     public enum PageType {
-        EVENTS, PERKS, BOARD, MESSAGING;
+        HOME, EVENTS, PERKS, BOARD, MESSAGING;
         private final int value;
         PageType() {
             this.value = ordinal();
@@ -28,6 +29,9 @@ public class PageController {
         PageType enumType = PageType.values()[type];
         ListViewModel listViewModel = new ListViewModel();
         switch (enumType) {
+            case HOME:
+                new ListViewController(new HomeFunctions(activity, mainActivity), context, listViewModel);
+                return listViewModel;
             case EVENTS:
                 EventsFragment fragment = new EventsFragment();
                 fragment.setContext(context);

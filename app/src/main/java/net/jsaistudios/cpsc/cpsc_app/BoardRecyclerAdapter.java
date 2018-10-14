@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -134,25 +135,29 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
 
             //If user is not admin, dont allow swipe
             //Check if ifAdmin == true
-            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference userAdminCheck = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("isAdmin");
-            userAdminCheck.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()) {
-                        if ((Boolean.valueOf(dataSnapshot.getValue().toString()))) {
-                            //Disable swipe layout
-                            swipeLayout.setSwipeEnabled(true);
+
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                String userID = user.getUid();
+                DatabaseReference userAdminCheck = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("isAdmin");
+                userAdminCheck.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            if ((Boolean.valueOf(dataSnapshot.getValue().toString()))) {
+                                //Disable swipe layout
+                                swipeLayout.setSwipeEnabled(true);
+                            }
                         }
+
                     }
 
-                }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
+                    }
+                });
+            }
 
             myMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -22,6 +22,13 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import net.jsaistudios.cpsc.cpsc_app.EventsPage.EventsFunctions;
 import net.jsaistudios.cpsc.cpsc_app.PerkPage.PerkFunctions;
@@ -36,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private  MainActivity mainActivity;
     private AppCompatActivity activity;
+    private View topBar, checkInButton;
     private static FragmentManager fragmentManager=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +52,108 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         activity = this;
         mainActivity = this;
+        topBar = findViewById(R.id.top_bar);
+        checkInButton = findViewById(R.id.checkin_button);
+        checkInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createCheckIn();
+            }
+        });
 
+        FirebaseAuth.getInstance().signOut();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            createApp();
+        } else {
+            createLogin();
+        }
+    }
+
+    private Login createLogin() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Login fragment = new Login();
+        fragment.loginListener = new Login.LoginListener() {
+            @Override
+            public void loggedIn(boolean isAdmin, boolean isNew) {
+                createApp();
+                findViewById(R.id.login_holder).setVisibility(View.GONE);
+            }
+        };
+        fragment.activity = activity;
+        fragment.context = this;
+        fragmentTransaction.add(R.id.login_holder, fragment, "Login Frag");
+        fragmentTransaction.commitAllowingStateLoss();
+        return fragment;
+    }
+
+    private CheckInFragment createCheckIn() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        CheckInFragment fragment = new CheckInFragment();
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.add(R.id.checkin_holder, fragment, "CheckIn Frag");
+        fragmentTransaction.commitAllowingStateLoss();
+        return fragment;
+    }
+
+
+    private void createApp() {
         fragmentManager = getSupportFragmentManager();
         mPager = (ViewPager) findViewById(R.id.main_pager);
         mPagerAdapter = new ScreenSlidePagerAdapter();
         mPager.setAdapter(mPagerAdapter);
         mPager.setOffscreenPageLimit(4);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        createBottomMenu();
+        topBar.setVisibility(View.GONE);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userID = user.getUid();
+            DatabaseReference userAdminCheck = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("clearance");
+            userAdminCheck.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        if (dataSnapshot.getValue().toString().equals("admin")) {
+                            if(mPager.getCurrentItem()!=0) {
+                                topBar.setVisibility(View.GONE);
+                            } else {
+                                topBar.setVisibility(View.VISIBLE);
+                            }
+                            mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                                @Override
+                                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+                                }
+
+                                @Override
+                                public void onPageSelected(int position) {
+                                    if(position!=0) {
+                                        topBar.setVisibility(View.GONE);
+                                    } else {
+                                        topBar.setVisibility(View.VISIBLE);
+                                    }
+                                }
+
+                                @Override
+                                public void onPageScrollStateChanged(int state) {
+
+                                }
+                            });
+                        }
+                    }
+
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
+        createBottomMenu();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,10 +170,10 @@ public class MainActivity extends AppCompatActivity {
     void createBottomMenu() {
         AHBottomNavigation bottomNavigationBar = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
 
+        bottomNavigationBar.addItem(new AHBottomNavigationItem("Home", R.drawable.home));
         bottomNavigationBar.addItem(new AHBottomNavigationItem("Events", R.drawable.event));
         bottomNavigationBar.addItem(new AHBottomNavigationItem("Perks", R.drawable.tag));
         bottomNavigationBar.addItem(new AHBottomNavigationItem("Board", R.drawable.board));
-        bottomNavigationBar.addItem(new AHBottomNavigationItem("Chat", R.drawable.chat));
         bottomNavigationBar.manageFloatingActionButtonBehavior(fab);
         bottomNavigationBar.setAccentColor(ContextCompat.getColor(this, R.color.colorAccent));
         bottomNavigationBar.setInactiveColor(ContextCompat.getColor(this, R.color.gray_1));

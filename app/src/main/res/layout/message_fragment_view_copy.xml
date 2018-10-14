@@ -7,7 +7,6 @@
     android:layout_marginRight="5dp"
     android:layout_marginBottom="10dp"
     android:elevation="2dp"
-    android:background="@drawable/card_background"
     android:clipChildren="false"
     android:clipToPadding="false"
     >
@@ -98,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Austin"
-                    android:textColor="@color/caldroid_black"
+                    android:textColor="@color/white"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
@@ -110,7 +109,7 @@
                     android:paddingLeft="5dp"
                     android:textStyle="italic"
                     android:text="President"
-                    android:textColor="#232323"
+                    android:textColor="@color/gray_1"
                     android:textSize="17sp" />
                 <TextView
                     android:id="@+id/card_bio"
@@ -118,7 +117,11 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/card_name"
                     android:paddingTop="2dp"
+                    android:textColor="@color/white"
                     android:text="Short Bio about person"
+                    android:layout_toLeftOf="@id/message_button"
+                    android:layout_alignLeft="@id/card_name"
+                    android:layout_marginRight="12dp"
 
                     />
 

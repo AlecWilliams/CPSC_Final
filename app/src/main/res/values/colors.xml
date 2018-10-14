@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#008cd2</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#0070a7</color>
     <color name="colorAccent">#009688</color>
     <color name="gray_1">#aeaeae</color>
+    <color name="gray_2">#8e8e8e</color>
     <color name="gray0">#5c5c5c</color>
 
     <color name="gray0.5">#5c5c5c</color>
     <color name="gray1">#313131</color>
     <color name="gray2">#c7c7c7</color>
+    <color name="gray_3">#ededed</color>
 
     <color name="red">#9d2b27</color>
     <color name="blue">#016fa6</color>
@@ -16,10 +18,10 @@
     <color name="red3">#b61315</color>
     <color name="white">#fff</color>
     <color name="black">#000</color>
-    <color name="panelBg">#F2F2F2</color>
     <color name="headerBlue">#3491d9</color>
     <color name="darkerBlue">#0f7ccf</color>
     <color name="bottomMenuBackground">#495A65</color>
+    <color name="panelBg">#F2F2F2</color>
 
 
 </resources>

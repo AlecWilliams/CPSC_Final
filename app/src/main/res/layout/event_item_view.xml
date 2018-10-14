@@ -16,300 +16,73 @@
         android:layout_height="wrap_content"
         android:id="@+id/frag_root">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/location_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:cropToPadding="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/firestone" />
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="2dp"
-        android:scaleType="fitXY"
-        android:src="@android:drawable/divider_horizontal_dark" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="9dp"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        >
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="90dp"
-            android:clipChildren="true"
-            android:id="@+id/imageHolder"
-            android:clipToPadding="true">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:id="@+id/location_image"
-                android:src="@drawable/firestone" />
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp" />
-        </FrameLayout>
-
-            <RelativeLayout
-                android:id="@+id/cardInfoHolder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="14dp"
-                android:layout_below="@+id/imageHolder"
-                android:orientation="vertical"
-                >
-
-                <TextView
-                    android:id="@+id/card_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hausboating"
-                    android:textColor="@color/headerBlue"
-                    android:textSize="24sp"/>
-
-
-                <TextView
-                    android:id="@+id/card_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/card_name"
-                    android:text="Littest time of your life. Three boats, one lake. And most importantly, unlimited beer bongs."
-                    android:layout_marginTop="3dp"
-                    android:textColor="#505050"
-                    android:textSize="13sp" />
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/card_description"
-                    android:layout_marginTop="22dp"
-                    android:layout_marginBottom="5dp"
-                    >
-                    <TextView
-                        android:id="@+id/chat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Event Board"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/colorAccent"
-                        android:layout_toLeftOf="@id/chat_icon"
-                        android:layout_marginRight="26dp"
-                        android:layout_marginTop="8dp"
-                        android:textSize="13sp" />
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:id="@+id/chat_icon"
-                        android:src="@drawable/chat"
-                        android:tint="@color/colorAccent"
-                        android:layout_marginTop="8dp"
-                        android:layout_alignParentRight="true"/>
-                    <TextView
-                        android:id="@+id/sign_up"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/button_bg_red"
-                        android:backgroundTint="@color/colorPrimary"
-                        android:textColor="@color/white"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="15dp"
-                        android:textStyle="bold"
-                        android:paddingRight="15dp"
-                        android:text="SIGN UP"/>
-
-                    <TextView
-                        android:id="@+id/more_info_link"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="13dp"
-                        android:layout_toRightOf="@id/sign_up"
-                        android:text="See more info"
-                        android:layout_centerVertical="true"
-                        android:textColor="@color/headerBlue"
-                        android:textStyle="bold"
-                        android:textSize="13sp" />
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_toRightOf="@id/more_info_link"
-                        android:layout_alignTop="@id/more_info_link"
-                        android:layout_alignBottom="@id/more_info_link"
-                        android:padding="4dp"
-                        android:rotation="90"
-                        android:layout_marginTop="1dp"
-                        android:layout_marginBottom="-1dp"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/uparrow"
-                        android:tint="@color/headerBlue"
-                        />
-                </RelativeLayout>
-
-
-            </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true">
-
-
-            <ImageView
-                android:id="@+id/edit_button"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="12dp"
-                android:layout_toLeftOf="@id/delete_card"
-                android:src="@drawable/ic_edit"
-                android:tint="@color/gray0"
-                />
-            <ImageView
-                android:id="@+id/delete_card"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/ic_delete"
-                android:tint="@color/gray0"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/edit_layout_holder"
+        <RelativeLayout
+            android:id="@+id/cardInfoHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:visibility="gone"
-            android:gravity="center_horizontal"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            >
-
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/location_image2"
-                android:layout_centerHorizontal="true"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/fireston_img" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name"
-                android:textSize="16sp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="9dp"
-                />
-            <EditText
-                android:id="@+id/edit_card_name"
-                android:hint="McDonald's"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#000"
-                android:textSize="16sp"
-                android:paddingLeft="15dp"
-                android:paddingBottom="9dp"
-                android:paddingTop="9dp"
-                android:background="@drawable/edit_text_background"
-                />
+            android:layout_below="@+id/location_image"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="14dp"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/card_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description"
-                android:textSize="16sp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="9dp"
-                />
+                android:text="Hausboating"
+                android:textColor="@color/headerBlue"
+                android:textSize="24sp" />
 
-            <EditText
-                android:id="@+id/edit_card_info"
-                android:hint="20% off burgers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#000"
-                android:textSize="16sp"
-                android:paddingLeft="15dp"
-                android:paddingBottom="9dp"
-                android:paddingTop="9dp"
-                android:background="@drawable/edit_text_background"
-                />
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Address"
-                android:textSize="16sp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="9dp"
-                />
-            <EditText
-                android:id="@+id/edit_perk_address"
-                android:hint="123 Sesame Street"
-                android:textColor="#000"
-                android:textSize="16sp"
-                android:paddingLeft="15dp"
-                android:paddingBottom="9dp"
-                android:paddingTop="9dp"
-                android:layout_marginBottom="10dp"
+                android:id="@+id/card_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_background"
-                />
+                android:layout_below="@+id/card_name"
+                android:layout_marginTop="3dp"
+                android:text="Littest time of your life. Three boats, one lake. And most importantly, unlimited beer bongs."
+                android:textColor="#505050"
+                android:ellipsize="end"
+                android:maxLines="6"
+                android:textSize="13sp" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="10dp"
-                >
+                android:layout_below="@+id/card_description"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="22dp">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/sign_up"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    >
-
-                    <TextView
-                        android:id="@+id/cancel_edit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/button_bg"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-
-                        android:text="CANCEL"/>
-
-                    <TextView
-                        android:id="@+id/save_edit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/button_bg_red"
-                        android:textColor="@color/red"
-
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="15dp"
-                        android:textStyle="bold"
-                        android:paddingRight="15dp"
-                        android:text="SAVE CHANGES"/>
-                </LinearLayout>
+                    android:background="@drawable/button_bg_red"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="10dp"
+                    android:text="More Info"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
             </RelativeLayout>
 
 
-        </LinearLayout>
-
-
-    </RelativeLayout>
+        </RelativeLayout>
 
 
 

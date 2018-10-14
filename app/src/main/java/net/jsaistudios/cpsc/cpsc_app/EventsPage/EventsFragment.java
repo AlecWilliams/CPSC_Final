@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.roomorama.caldroid.CaldroidFragment;
 
+import net.jsaistudios.cpsc.cpsc_app.EventListViewController;
 import net.jsaistudios.cpsc.cpsc_app.ListViewController;
 import net.jsaistudios.cpsc.cpsc_app.ListViewModel;
 import net.jsaistudios.cpsc.cpsc_app.MainActivity;
@@ -55,7 +56,7 @@ public class EventsFragment extends Fragment {
         public Fragment getItem(int position) {
             if(position==0) {
                 ListViewModel listViewModel = new ListViewModel();
-                new ListViewController(new EventsFunctions(), context, listViewModel);
+                new EventListViewController(new EventsFunctions(), context, listViewModel);
                 return listViewModel;
             } else {
                 CaldroidFragment caldroidFragment = new CaldroidFragment();

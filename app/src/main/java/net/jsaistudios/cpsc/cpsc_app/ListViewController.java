@@ -22,8 +22,11 @@ import java.util.List;
 public class ListViewController {
     ListViewModel listViewModel;
     Context context;
-    private PageSpecificFunctions pageSpecificFunctions;
+    PageSpecificFunctions pageSpecificFunctions;
 
+    public ListViewController() {
+
+    }
     public ListViewController(PageSpecificFunctions funcs, Context c, ListViewModel lm) {
         listViewModel = lm;
         pageSpecificFunctions = funcs;
@@ -64,13 +67,5 @@ public class ListViewController {
                 // Failed to read value
             }
         });
-    }
-
-    public ListViewModel getListViewModel() {
-        return listViewModel;
-    }
-
-    public void setListViewModel(ListViewModel listViewModel) {
-        this.listViewModel = listViewModel;
     }
 }

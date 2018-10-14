@@ -2,106 +2,109 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <LinearLayout
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewViewBg"/>
+    <RelativeLayout
         android:id="@+id/normalLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:gravity="right"
         android:layout_centerVertical="true"
+        android:paddingBottom="80dp"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="245dp"
+            android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:text="Enter Email Address"
-            android:textSize="18dp" />
-
+            android:id="@+id/cpsc_logo"
+            android:src="@drawable/cpsclogo"/>
         <EditText
             android:id="@+id/loginEmailEditText"
-            android:layout_width="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:ems="10"
+            android:layout_below="@id/cpsc_logo"
+            android:hint="Email Address"
+            android:backgroundTint="@color/gray1"
+            android:background="@drawable/edit_text_background"
+            android:textSize="15dp"
+            android:textColorHint="@color/gray2"
+            android:textColor="@color/white"
+            android:padding="10dp"
             android:inputType="textEmailAddress" />
-
         <TextView
-            android:visibility="gone"
-            android:id="@+id/enterPIN"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:text="Enter PIN"
-            android:textSize="18dp" />
-
-        <EditText
-            android:visibility="gone"
-            android:id="@+id/adminPin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-             />
-
-        <Button
-            android:id="@+id/adminButtonLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:visibility="gone"
-            android:text="Button" />
-
-        <Button
             android:id="@+id/loginButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_below="@id/loginEmailEditText"
+            android:layout_alignRight="@id/loginEmailEditText"
+            android:layout_width="128dp"
+            android:layout_height="39dp"
+            android:layout_marginTop="8dp"
             android:layout_gravity="center"
-            android:layout_weight="1"
-
-            android:text="Button" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/adminLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/normalLogin"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_weight="1"
-        android:orientation="vertical">
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/colorAccent"
+            android:background="@drawable/edit_text_background"
+            android:text="Log In"/>
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/signupButton"
+            android:layout_below="@id/loginEmailEditText"
+            android:layout_alignLeft="@id/loginEmailEditText"
+            android:layout_width="128dp"
+            android:layout_height="39dp"
+            android:layout_marginTop="8dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:text="Enter Email Address"
-            android:textSize="18dp" />
-
-        <EditText
-            android:id="@+id/editText2"
+            android:gravity="center"
+            android:backgroundTint="@color/gray2"
+            android:textColor="@color/gray1"
+            android:background="@drawable/edit_text_background"
+            android:text="Sign Up"
+            />
+        <TextView
+            android:id="@+id/forgot_email"
+            android:layout_below="@id/signupButton"
+            android:layout_alignLeft="@id/loginEmailEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textEmailAddress" />
+            android:gravity="center"
+            android:text="Forgot your membership email?"
+            android:textColor="@color/gray_3"
+            android:textSize="13dp"
+            />
+        <TextView
+            android:layout_below="@id/signupButton"
+            android:layout_toRightOf="@id/forgot_email"
+            android:layout_alignRight="@id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Tap Here!"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="13dp"
+            />
 
-
-
-
-
-    </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/loginEmailEditText"
+            android:layout_alignRight="@+id/loginEmailEditText"
+            android:layout_alignTop="@+id/loginEmailEditText"
+            android:layout_below="@+id/loginEmailEditText"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="7dp"
+            android:layout_toEndOf="@+id/forgot_email"
+            android:elevation="1dp"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 </RelativeLayout>
