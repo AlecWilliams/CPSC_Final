@@ -104,7 +104,26 @@ public class MainActivity extends AppCompatActivity {
         mPager.setAdapter(mPagerAdapter);
         mPager.setOffscreenPageLimit(4);
 
-        topBar.setVisibility(View.GONE);
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position!=0) {
+                    topBar.setVisibility(View.GONE);
+                } else {
+                    topBar.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String userID = user.getUid();
@@ -119,26 +138,7 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 topBar.setVisibility(View.VISIBLE);
                             }
-                            mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                                @Override
-                                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                                }
-
-                                @Override
-                                public void onPageSelected(int position) {
-                                    if(position!=0) {
-                                        topBar.setVisibility(View.GONE);
-                                    } else {
-                                        topBar.setVisibility(View.VISIBLE);
-                                    }
-                                }
-
-                                @Override
-                                public void onPageScrollStateChanged(int state) {
-
-                                }
-                            });
                         }
                     }
 
@@ -169,11 +169,12 @@ public class MainActivity extends AppCompatActivity {
 
     void createBottomMenu() {
         AHBottomNavigation bottomNavigationBar = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
-
-        bottomNavigationBar.addItem(new AHBottomNavigationItem("Home", R.drawable.home));
-        bottomNavigationBar.addItem(new AHBottomNavigationItem("Events", R.drawable.event));
-        bottomNavigationBar.addItem(new AHBottomNavigationItem("Perks", R.drawable.tag));
-        bottomNavigationBar.addItem(new AHBottomNavigationItem("Board", R.drawable.board));
+        if(bottomNavigationBar.getItemsCount()==0) {
+            bottomNavigationBar.addItem(new AHBottomNavigationItem("Home", R.drawable.home));
+            bottomNavigationBar.addItem(new AHBottomNavigationItem("Events", R.drawable.event));
+            bottomNavigationBar.addItem(new AHBottomNavigationItem("Perks", R.drawable.tag));
+            bottomNavigationBar.addItem(new AHBottomNavigationItem("Board", R.drawable.board));
+        }
         bottomNavigationBar.manageFloatingActionButtonBehavior(fab);
         bottomNavigationBar.setAccentColor(ContextCompat.getColor(this, R.color.colorAccent));
         bottomNavigationBar.setInactiveColor(ContextCompat.getColor(this, R.color.gray_1));

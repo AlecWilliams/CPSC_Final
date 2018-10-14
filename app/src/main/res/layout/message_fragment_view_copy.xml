@@ -98,8 +98,7 @@
                     android:layout_height="wrap_content"
                     android:text="Austin"
                     android:textColor="@color/white"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
+                    android:textSize="17sp"/>
 
                 <TextView
                     android:id="@+id/card_description"
@@ -107,9 +106,9 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/card_name"
                     android:paddingLeft="5dp"
-                    android:textStyle="italic"
+                    android:textStyle="bold"
                     android:text="President"
-                    android:textColor="@color/gray_1"
+                    android:textColor="@color/gray0"
                     android:textSize="17sp" />
                 <TextView
                     android:id="@+id/card_bio"
@@ -140,22 +139,18 @@
                     />
                     -->
 
-                <TextView
+                <ImageView
                     android:id="@+id/message_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
                     android:background="@drawable/button_bg_red"
                     android:backgroundTint="@color/colorPrimary"
-                    android:textColor="@color/white"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:textStyle="bold"
+                    android:padding="8dp"
                     android:layout_alignRight="@+id/card_description"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="5dp"
-                    android:paddingRight="15dp"
-                    android:text="MESSAGE"/>
+                    android:src="@drawable/text_message_icon"
+                    android:tint="@color/white"/>
 
 
 

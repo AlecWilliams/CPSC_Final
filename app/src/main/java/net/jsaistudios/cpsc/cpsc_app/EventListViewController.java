@@ -29,12 +29,15 @@ import java.util.List;
 import java.util.Map;
 
 public class EventListViewController extends ListViewController {
-    String fbPageKey = "EAAfROW4QQZCABAEQhXphI8SJqhZAxuwD8Q18CzNiESFQU3MmB01qGhluCzNDWkxZAA48nAshoPHOfu9T4VhnODEJLwLaC3UZAin3IQCoAZBZA2UBAPkIAtoG2vaJMCd09T9faB6zoRvBUmFaTjkIOHp8B84msTtwGA0jZAmBlVqvIIPNDvoPC79xpps8wi41RA3qTyZC9ZCocggZDZD";
+    RequestQueue queue;
+    String fbPageKey = "EAAfROW4QQZCABAG7pP3oonYJTTJEqJ17jXRUh0I7yIvxIsZAHhfkZACChZCowTS3m33K9LtFJNcEV7gVlVJ4EenBcj1fWJqxXeyNQbZBz5R883qqANaLHZBVORztaA88f9elYwATNwEPPkYbP4bkdhHB5qG5vOB9sU9g9i89jWmhRUs02MctS4HZArFn9NG1C1TXCCCtKaxDAZDZD";
     public EventListViewController(PageSpecificFunctions funcs, Context c, ListViewModel lm) {
         listViewModel = lm;
+
         pageSpecificFunctions = funcs;
         lm.setPageSpecificFunctions(pageSpecificFunctions);
-        this.context = c;
+        context = c;
+        queue = Volley.newRequestQueue(context);
         listViewModel.setCreationObserver(new Observer() {
             @Override
             public void update() {
@@ -44,7 +47,6 @@ public class EventListViewController extends ListViewController {
         getDatabaseList();
     }
     private void getDatabaseList() {
-        RequestQueue queue = Volley.newRequestQueue(this.context);
         String url ="https://graph.facebook.com/v3.1/382506115285435/events";
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>()

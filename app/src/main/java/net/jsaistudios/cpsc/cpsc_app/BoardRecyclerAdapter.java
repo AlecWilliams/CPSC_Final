@@ -88,7 +88,7 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
         RelativeLayout rLayout, defaultLayout;
         ImageView myImage;// myEditButton;
         ImageView myEditImage;
-        TextView myMessageButton;
+        ImageView myMessageButton;
         ImageView myEditButton;
         TextView myEditSave, myEditCancel;
         View fragRoot;

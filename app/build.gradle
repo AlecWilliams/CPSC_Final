@@ -38,6 +38,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:12.0.1'
     compile 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
     compile 'com.github.yatindeokar:MyLoadingButton:v1.0.1'
+    compile 'com.dlazaro66.qrcodereaderview:qrcodereaderview:2.0.3'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
