@@ -3,11 +3,14 @@ package net.jsaistudios.cpsc.cpsc_app.EventsPage;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -23,7 +26,11 @@ import net.jsaistudios.cpsc.cpsc_app.ListViewModel;
 import net.jsaistudios.cpsc.cpsc_app.MainActivity;
 import net.jsaistudios.cpsc.cpsc_app.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by ip on 8/21/18.
@@ -60,12 +67,20 @@ public class EventsFragment extends Fragment {
                 new EventListViewController(new EventsFunctions(), context, listViewModel);
                 return listViewModel;
             } else {
-                CaldroidSampleCustomFragment caldroidFragment = new CaldroidSampleCustomFragment();
+                CaldroidFragment caldroidFragment = new CaldroidFragment();
                 Bundle args = new Bundle();
                 Calendar cal = Calendar.getInstance();
                 args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
                 args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
                 caldroidFragment.setArguments(args);
+
+                HashMap hm = new HashMap();
+                // Put elements to the map
+
+                hm.put(new Date(), ContextCompat.getDrawable(getContext(), R.color.colorPrimary));
+                if (caldroidFragment != null) {
+                    caldroidFragment.setBackgroundDrawableForDates(hm);
+                }
 
                 return caldroidFragment;
             }

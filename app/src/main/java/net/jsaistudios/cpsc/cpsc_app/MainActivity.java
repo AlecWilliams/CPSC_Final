@@ -1,6 +1,8 @@
 package net.jsaistudios.cpsc.cpsc_app;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +17,8 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -26,10 +30,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import net.jsaistudios.cpsc.cpsc_app.Dialogs.EventCreationDialog;
 import net.jsaistudios.cpsc.cpsc_app.Dialogs.NotificationCreationDialog;
 import net.jsaistudios.cpsc.cpsc_app.Dialogs.PerkCreationDialog;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Calendar;
+
+public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private Context context;
     private ViewPager mPager;
@@ -135,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleNewPage(int position, boolean admin) {
-        if(position==1 || position==3 || !admin) {
+        if(position==3 || !admin) {
             fab.setVisibility(View.GONE);
         } else {
             fab.setVisibility(View.VISIBLE);
@@ -152,6 +159,26 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         new NotificationCreationDialog().show(getFragmentManager(), "Make Notif");
+                    }
+                });
+            } else if(position==1) {
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final Calendar calendar = Calendar.getInstance();
+
+                        new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                                new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                                        new EventCreationDialog().show(getFragmentManager(), "Make Event");
+                                    }
+                                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
+                            }
+                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+
                     }
                 });
             }
@@ -274,6 +301,11 @@ public class MainActivity extends AppCompatActivity {
             getCloseObserver().update();
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
