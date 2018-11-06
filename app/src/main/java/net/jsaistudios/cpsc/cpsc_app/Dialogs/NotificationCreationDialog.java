@@ -1,4 +1,4 @@
-package net.jsaistudios.cpsc.cpsc_app;
+package net.jsaistudios.cpsc.cpsc_app.Dialogs;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

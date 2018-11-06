@@ -11,6 +11,14 @@ import net.jsaistudios.cpsc.cpsc_app.PageSpecificFunctions;
 import net.jsaistudios.cpsc.cpsc_app.PerkPage.PerkObject;
 import net.jsaistudios.cpsc.cpsc_app.PerkPage.PerkRecyclerAdapter;
 import net.jsaistudios.cpsc.cpsc_app.R;
+import net.jsaistudios.cpsc.cpsc_app.RecyclerModel;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ip on 8/18/18.
@@ -39,9 +47,34 @@ public class EventsFunctions extends PageSpecificFunctions {
         return new EventsObject("Events Fireston", "free pizza", R.drawable.fireston_img);
     }
 
+    public Date makeDate(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
+        try {
+            return sdf.parse(date);
+        } catch (ParseException e) {
+            return new Date(0);
+        }
+    }
+
     @Override
     public RecyclerView.Adapter getRecyclerAdapter(Context context, ListViewModel listViewModel) {
-        return new EventsRecyclerAdapter(context, listViewModel.getModelView().getDataModelList());
+        List mData = listViewModel.getModelView().getDataModelList();
+        Comparator stringDateComparator = new Comparator<RecyclerModel>() {
+            @Override
+            public int compare(RecyclerModel recyclerModel, RecyclerModel t1) {
+                return makeDate(((EventsObject)recyclerModel.getItemObject()).getDate()).compareTo(makeDate(((EventsObject)t1.getItemObject()).getDate()));
+            }
+        };
+        Collections.sort(mData, stringDateComparator);
+        for(int i =0; i< listViewModel.getModelView().getDataModelList().size(); i++) {
+            if(makeDate(((EventsObject)listViewModel.getModelView().getDataModelList().get(i).getItemObject()).getDate()).getTime() - new Date().getTime()>0) {
+                listViewModel.scrollTo=i;
+                listViewModel.scrollRecycler(i);
+            } else {
+                ((EventsObject) listViewModel.getModelView().getDataModelList().get(i).getItemObject()).setOld(true);
+            }
+        }
+        return new EventsRecyclerAdapter(context, mData);
     }
 
 }

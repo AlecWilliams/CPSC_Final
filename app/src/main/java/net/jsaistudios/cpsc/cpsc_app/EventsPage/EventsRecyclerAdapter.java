@@ -28,6 +28,11 @@ import com.google.firebase.database.ValueEventListener;
 import net.jsaistudios.cpsc.cpsc_app.R;
 import net.jsaistudios.cpsc.cpsc_app.RecyclerModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,18 +56,32 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
         View view = mInflater.inflate(R.layout.event_item_view, parent, false);
         return new ViewHolder(view);
     }
-
+    public Date makeDate(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
+        try {
+            return sdf.parse(date);
+        } catch (ParseException e) {
+            return new Date(0);
+        }
+    }
+    public String formattedDate(String date) {
+        String strDateFormat = "MMM dd',' yy";
+        SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
+        return sdf.format(makeDate(date));
+    }
     @Override
     public void onBindViewHolder(EventsRecyclerAdapter.ViewHolder holder, int position) {
-
         final EventsObject eventsObject = (EventsObject) mData.get(position).getItemObject();
-
         holder.myLocationInfo.setText(eventsObject.getInfo());
         holder.myTextView.setText(eventsObject.getName());
         holder.myDatabaseRef = mData.get(position).getDatabaseNodeReference();
         holder.myImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.firestone));
-        holder.dateAndPlace.setText(eventsObject.getDate() + " • " + eventsObject.getPlace());
-
+        holder.dateAndPlace.setText(eventsObject.getPlace() + " • " + formattedDate(eventsObject.getDate()));
+        if(eventsObject.isOld()) {
+            holder.myRoot.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.gray_4));
+        } else {
+            holder.myRoot.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.white));
+        }
     }
 
     @Override
@@ -81,7 +100,7 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
         ImageView myImage, myEditButton;
         ImageView myEditImage;
         TextView myEditSave, myEditCancel;
-        View fragRoot;
+        View fragRoot, myRoot;
         SwipeLayout swipeLayout;
 
 
@@ -91,6 +110,7 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
             myLocationInfo = itemView.findViewById(R.id.card_description);
             dateAndPlace = itemView.findViewById(R.id.dateandplace);
             fragRoot = itemView.getRootView();
+            myRoot = itemView.findViewById(R.id.event_root);
             rLayout = itemView.findViewById(R.id.cardInfoHolder);
             myImage = itemView.findViewById(R.id.location_image);
             moreInfo = itemView.findViewById(R.id.more_info);

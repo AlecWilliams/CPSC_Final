@@ -8,6 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import net.jsaistudios.cpsc.cpsc_app.EventsPage.EventsFunctions;
+import net.jsaistudios.cpsc.cpsc_app.EventsPage.EventsObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+
 /**
  * Created by Alec on 8/16/2018.
  */
@@ -18,6 +27,7 @@ public class ListViewModel extends android.support.v4.app.Fragment {
     private RecyclerView recyclerView;
     private ListModelView modelView = new ListModelView();
     private Observer creationObserver;
+    public int scrollTo = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,20 +44,37 @@ public class ListViewModel extends android.support.v4.app.Fragment {
 
         setupDataList();
 
+        if(scrollTo!=-1)
+            scrollRecycler(scrollTo);
+
         return baseFragmentView;
     }
+
+    public void scrollRecycler(int pos) {
+        if(recyclerView!=null) {
+            recyclerView.scrollToPosition(pos);
+            scrollTo = -1;
+        }
+    }
     void setupDataList() {
-        modelView.getDataModelList().setListObserver(new ListeningList.ListObserver() {
+        final ListeningList.ListObserver listWatcher = new ListeningList.ListObserver() {
             @Override
             public void notifyItemChanged(int i) {
-                getRecyclerAdapter().notifyItemChanged(i);
+                getRecyclerAdapter().notifyDataSetChanged();
             }
 
             @Override
             public void notifyDataSetChanged() {
                 getRecyclerAdapter().notifyDataSetChanged();
             }
-        });
+        };
+        modelView.listObserver = new Observer2<ListeningList<RecyclerModel>>() {
+            @Override
+            public void update(ListeningList<RecyclerModel> inp) {
+                inp.setListObserver(listWatcher);
+            }
+        };
+        modelView.getDataModelList().setListObserver(listWatcher);
     }
 
     public void addCard() {

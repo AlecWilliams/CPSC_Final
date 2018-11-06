@@ -9,6 +9,7 @@ import net.jsaistudios.cpsc.cpsc_app.ItemObject;
 public class EventsObject extends ItemObject {
     private String info, date, place;
     private String id;
+    private boolean old=false;
 
     public EventsObject() {
         super();
@@ -16,6 +17,14 @@ public class EventsObject extends ItemObject {
     public EventsObject(String n, String inf, int im) {
         super(n);
         info = inf;
+    }
+
+    public boolean isOld() {
+        return old;
+    }
+
+    public void setOld(boolean old) {
+        this.old = old;
     }
 
     public String getInfo() {

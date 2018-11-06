@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 
@@ -13,6 +14,9 @@ import net.jsaistudios.cpsc.cpsc_app.ListViewModel;
 import net.jsaistudios.cpsc.cpsc_app.MainActivity;
 import net.jsaistudios.cpsc.cpsc_app.PageSpecificFunctions;
 import net.jsaistudios.cpsc.cpsc_app.R;
+import net.jsaistudios.cpsc.cpsc_app.RecyclerModel;
+
+import java.util.Comparator;
 
 /**
  * Created by ip on 8/18/18.
@@ -35,9 +39,11 @@ public class PerkFunctions extends PageSpecificFunctions {
 
     public ItemObject getListItemObject(DataSnapshot child) {
         PerkObject perkObject = new PerkObject();
-        perkObject.setName(child.child("name").getValue(String.class));
-        perkObject.setInfo(child.child("info").getValue(String.class));
         try {
+            perkObject.setName(child.child("name").getValue(String.class));
+            perkObject.setInfo(child.child("info").getValue(String.class));
+            perkObject.setUrl(child.child("url").getValue(String.class));
+            Log.d("hioshioj", perkObject.getUrl());
             perkObject.setImage(Integer.valueOf(child.child("image").getValue(String.class)));
         } catch (Exception e) {
         }
@@ -55,5 +61,22 @@ public class PerkFunctions extends PageSpecificFunctions {
 
     public MainActivity getMainActivity() {
         return mainActivity;
+    }
+
+    @Override
+    public void sortList(ListViewModel listViewModel) {
+        listViewModel.getModelView().getSortedDataModeLList(new Comparator<RecyclerModel>() {
+            @Override
+            public int compare(RecyclerModel recyclerModel, RecyclerModel t1) {
+                try {
+                    PerkObject object = (PerkObject) recyclerModel.getItemObject();
+                    PerkObject object2 = (PerkObject) t1.getItemObject();
+                    return object.getName().compareTo(object2.getName());
+                } catch (Exception e) {
+
+                }
+                return 0;
+            }
+        });
     }
 }

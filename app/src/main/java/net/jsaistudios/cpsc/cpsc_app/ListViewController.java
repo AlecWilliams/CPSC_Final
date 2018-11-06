@@ -12,14 +12,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import net.jsaistudios.cpsc.cpsc_app.EventsPage.EventsFunctions;
+import net.jsaistudios.cpsc.cpsc_app.EventsPage.EventsObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by ip on 8/18/18.
  */
 
-public class ListViewController {
+public class ListViewController<T extends PageSpecificFunctions> {
     ListViewModel listViewModel;
     Context context;
     PageSpecificFunctions pageSpecificFunctions;
@@ -40,7 +48,14 @@ public class ListViewController {
         });
         getDatabaseList();
     }
-
+    public Date makeDate(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
+        try {
+            return sdf.parse(date);
+        } catch (ParseException e) {
+            return new Date(0);
+        }
+    }
     protected void getDatabaseList() {
         FirebaseApp.initializeApp(context);
         FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -60,6 +75,8 @@ public class ListViewController {
                 }
                 listViewModel.getModelView().getDataModelList().clear();
                 listViewModel.getModelView().getDataModelList().addAll(responseList);
+                listViewModel.getRecyclerAdapter().notifyDataSetChanged();
+                ((T)pageSpecificFunctions).sortList(listViewModel);
             }
 
             @Override

@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
+    android:id="@+id/event_root"
     android:layout_marginBottom="15dp"
     android:elevation="2dp"
     android:background="@drawable/card_background"
@@ -87,7 +88,9 @@
                 android:id="@+id/dateandplace"
                 android:layout_toRightOf="@id/sign_up_holder"
                 android:layout_marginLeft="20dp"
+                android:textSize="13dp"
                 android:maxLines="2"
+                android:gravity="right|bottom"
                 android:text="9/27"
                 android:layout_alignParentRight="true"
                 android:layout_alignBottom="@id/sign_up_holder"/>

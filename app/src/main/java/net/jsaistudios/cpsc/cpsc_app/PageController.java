@@ -30,17 +30,17 @@ public class PageController {
         ListViewModel listViewModel = new ListViewModel();
         switch (enumType) {
             case HOME:
-                new ListViewController(new HomeFunctions(activity, mainActivity), context, listViewModel);
+                new ListViewController<HomeFunctions>(new HomeFunctions(activity, mainActivity), context, listViewModel);
                 return listViewModel;
             case EVENTS:
                 EventsFragment fragment = new EventsFragment();
                 fragment.setContext(context);
                 return fragment;
             case PERKS:
-                new ListViewController(new PerkFunctions(activity, mainActivity), context, listViewModel);
+                new ListViewController<PerkFunctions>(new PerkFunctions(activity, mainActivity), context, listViewModel);
                 return listViewModel;
             case BOARD:
-                new ListViewController(new BoardFunctions(), context, listViewModel);
+                new ListViewController<BoardFunctions>(new BoardFunctions(), context, listViewModel);
                 return listViewModel;
             case MESSAGING:
                 return new MessagingFragment();

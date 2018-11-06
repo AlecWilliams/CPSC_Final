@@ -1,26 +1,21 @@
 package net.jsaistudios.cpsc.cpsc_app;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
-import com.ashokvarma.bottomnavigation.BottomNavigationBar;
-import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,12 +25,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
 
-import net.jsaistudios.cpsc.cpsc_app.EventsPage.EventsFunctions;
-import net.jsaistudios.cpsc.cpsc_app.PerkPage.PerkFunctions;
-
-import java.util.ArrayList;
+import net.jsaistudios.cpsc.cpsc_app.Dialogs.NotificationCreationDialog;
+import net.jsaistudios.cpsc.cpsc_app.Dialogs.PerkCreationDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,42 +37,70 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private  MainActivity mainActivity;
     private AppCompatActivity activity;
-    private View topBar, checkInButton;
+    private View topBar;
     private static FragmentManager fragmentManager=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
+
         activity = this;
         mainActivity = this;
         topBar = findViewById(R.id.top_bar);
-        checkInButton = findViewById(R.id.checkin_button);
+        View checkInButton = findViewById(R.id.checkin_button);
         checkInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 createCheckIn();
+                if(fab!=null) {
+                    fab.setVisibility(View.GONE);
+                }
             }
         });
 
-        FirebaseAuth.getInstance().signOut();
+        View logooutButton = findViewById(R.id.logout_button);
+        logooutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                getFragManager().popBackStack();
+                createLogin();
+            }
+        });
+        start();
+
+    }
+    private void start() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             createApp();
-            FirebaseMessaging.getInstance().subscribeToTopic("pushNotifications");
         } else {
             createLogin();
         }
     }
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        try {
+            inputMethodManager.hideSoftInputFromWindow(
+                    activity.getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
 
+        }
+    }
     private Login createLogin() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        final View loginHolder =findViewById(R.id.login_holder);
         Login fragment = new Login();
+        loginHolder.setVisibility(View.VISIBLE);
         fragment.loginListener = new Login.LoginListener() {
             @Override
             public void loggedIn(boolean isAdmin, boolean isNew) {
                 createApp();
-                findViewById(R.id.login_holder).setVisibility(View.GONE);
+                loginHolder.setVisibility(View.GONE);
+                hideSoftKeyboard(mainActivity);
             }
         };
         fragment.activity = activity;
@@ -93,14 +113,29 @@ public class MainActivity extends AppCompatActivity {
     private CheckInFragment createCheckIn() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         CheckInFragment fragment = new CheckInFragment();
+        fragment.closeObserver = getCloseObserver();
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.add(R.id.checkin_holder, fragment, "CheckIn Frag");
         fragmentTransaction.commitAllowingStateLoss();
         return fragment;
     }
+    private Observer closeObserver;
+    private Observer getCloseObserver() {
+        if(closeObserver==null) {
+            closeObserver = new Observer() {
+                @Override
+                public void update() {
+                    if (fab != null) {
+                        fab.setVisibility(View.VISIBLE);
+                    }
+                }
+            };
+        }
+        return closeObserver;
+    }
 
     private void handleNewPage(int position, boolean admin) {
-        if(position==1 || position==3) {
+        if(position==1 || position==3 || !admin) {
             fab.setVisibility(View.GONE);
         } else {
             fab.setVisibility(View.VISIBLE);
@@ -108,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ListViewModel fragment = (ListViewModel) mPagerAdapter.getRegisteredFragment(mPager.getCurrentItem());
-                        fragment.addCard();
+                        new PerkCreationDialog().show(getFragmentManager(), "Make Perk");
+
                     }
                 });
             } else if (position == 0) {
@@ -234,6 +269,10 @@ public class MainActivity extends AppCompatActivity {
 //            // Otherwise, select the previous step.
 //            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
 //        }
+        Fragment fragmentA = getFragManager().findFragmentByTag("CheckIn Frag");
+        if (fragmentA != null) {
+            getCloseObserver().update();
+        }
         super.onBackPressed();
     }
 

@@ -20,6 +20,13 @@
             android:layout_height="match_parent"
 
             >
+            <View
+                android:layout_width="match_parent"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:layout_height="1px"
+                android:background="@android:color/darker_gray"
+                android:layout_alignParentBottom="true"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -80,8 +87,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Firestone"
-                                android:textColor="@color/headerBlue"
-                                android:textSize="18sp"
+                                android:textSize="19sp"
+                                android:textColor="@color/white"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -91,16 +98,54 @@
                                 android:layout_below="@+id/card_name"
                                 android:text="20% off all beers"
                                 android:textColor="@color/white"
+                                android:layout_toLeftOf="@id/buttonsHolder"
+                                android:layout_marginRight="40dp"
                                 android:textSize="15sp" />
 
-                            <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:id="@+id/buttonsHolder"
+                            android:gravity="right">
+
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/website"
+                            android:text="Website"
+                            android:layout_alignLeft="@id/googlelogo"
+                            android:layout_alignRight="@id/googlelogo"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:paddingRight="10dp"
+                            android:paddingLeft="10dp"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/white"
+                            android:background="@drawable/edit_text_background"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:id="@+id/googlelogo"
                                 android:layout_marginRight="10dp"
-                                android:src="@drawable/googlelogo"
-                                android:layout_centerVertical="true"
-                                android:layout_alignParentRight="true"/>
+                                android:text="Directions"
+                                android:backgroundTint="@color/black"
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp"
+                                android:paddingRight="10dp"
+                                android:paddingLeft="10dp"
+                                android:layout_below="@id/website"
+
+                                android:layout_marginTop="9dp"
+
+                                android:textColor="@color/white"
+                                android:background="@drawable/edit_text_background"/>
+                        </RelativeLayout>
 
 
                         </RelativeLayout>

@@ -7,7 +7,7 @@ import net.jsaistudios.cpsc.cpsc_app.ItemObject;
  */
 
 public class PerkObject extends ItemObject {
-    private String info, address;
+    private String info, address, url="";
     private int image;
 
     public PerkObject() {
@@ -22,6 +22,14 @@ public class PerkObject extends ItemObject {
     public PerkObject(String n, String a) {
         super(n);
         setAddress(a);
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getInfo() {

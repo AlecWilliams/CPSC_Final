@@ -28,6 +28,9 @@ import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +53,56 @@ public class EventListViewController extends ListViewController {
                 listViewModel.setRecyclerAdapter(pageSpecificFunctions.getRecyclerAdapter(context, listViewModel));
             }
         });
-        getFacebookList();
+        parseJSONEventList(input);
+    }
+    private void parseJSONEventList(String response) {
+        try {
+            JSONObject events = new JSONObject(response);
+            final JSONArray eList = events.getJSONArray("data");
+            List<RecyclerModel> responseList = new ArrayList<>();
+            for (int i=0; i<eList.length(); i++) {
+                RecyclerModel pm = new RecyclerModel();
+                EventsObject object = new EventsObject();
+                final JSONObject ev = eList.getJSONObject(i);
+                object.setName(ev.getString("name"));
+                object.setInfo(ev.getString("description"));
+                object.setDate(fbDateToNormal(ev.getString("start_time")));
+                object.setId(ev.getString("id"));
+                object.setPlace(ev.getJSONObject("place").getString("name").replace("T", " ").replace("-0700",""));
+                pm.setItemObject(object);
+                responseList.add(pm);
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference myRef = database.getReference("events");
+                myRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        try {
+                            if(!dataSnapshot.hasChild(ev.getString("id"))) {
+                                DatabaseReference newEv = myRef.child(ev.getString("id"));
+                                newEv.child("name").setValue(ev.getString("name"));
+                                newEv.child("info").setValue(ev.getString("description"));
+                                newEv.child("fbId").setValue(ev.getString("id"));
+                                newEv.child("date").setValue(fbDateToNormal(ev.getString("start_time")));
+                                newEv.child("place").setValue(ev.getJSONObject("place").getString("name").replace("T", " ").replace("-0700",""));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+                    }
+                });
+
+            }
+            listViewModel.getModelView().getDataModelList().clear();
+            listViewModel.getModelView().getDataModelList().addAll(responseList);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     private void getFacebookList() {
         String url ="https://graph.facebook.com/v3.1/382506115285435/events";
@@ -59,54 +111,7 @@ public class EventListViewController extends ListViewController {
                 {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("Response FB", response);
-                        try {
-                            JSONObject events = new JSONObject(response);
-                            final JSONArray eList = events.getJSONArray("data");
-                            List<RecyclerModel> responseList = new ArrayList<>();
-                            for (int i=0; i<eList.length(); i++) {
-                                RecyclerModel pm = new RecyclerModel();
-                                EventsObject object = new EventsObject();
-                                final JSONObject ev = eList.getJSONObject(i);
-                                object.setName(ev.getString("name"));
-                                object.setInfo(ev.getString("description"));
-                                object.setDate(fbDateToNormal(ev.getString("start_time")));
-                                object.setId(ev.getString("id"));
-                                object.setPlace(ev.getJSONObject("place").getString("name").replace("T", " ").replace("-0700",""));
-                                pm.setItemObject(object);
-                                responseList.add(pm);
-
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                final DatabaseReference myRef = database.getReference("events");
-                                myRef.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        try {
-                                            if(!dataSnapshot.hasChild(ev.getString("id"))) {
-                                                DatabaseReference newEv = myRef.child(ev.getString("id"));
-                                                newEv.child("name").setValue(ev.getString("name"));
-                                                newEv.child("info").setValue(ev.getString("description"));
-                                                newEv.child("fbId").setValue(ev.getString("id"));
-                                                newEv.child("date").setValue(fbDateToNormal(ev.getString("start_time")));
-                                                newEv.child("place").setValue(ev.getJSONObject("place").getString("name").replace("T", " ").replace("-0700",""));
-                                            }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError error) {
-                                        // Failed to read value
-                                    }
-                                });
-
-                            }
-                            listViewModel.getModelView().getDataModelList().clear();
-                            listViewModel.getModelView().getDataModelList().addAll(responseList);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        parseJSONEventList(response);
                     }
                 },
                 new Response.ErrorListener()
@@ -137,6 +142,9 @@ public class EventListViewController extends ListViewController {
             result.append(datesplit[1]);
             result.append("/");
             result.append(datesplit[2]);
+            result.append("/");
+            result.append(datesplit[0].charAt(2));
+            result.append(datesplit[0].charAt(3));
             result.append(" at ");
             String[] timesplit = split[1].split(":");
             int tim = Integer.valueOf(timesplit[0]);

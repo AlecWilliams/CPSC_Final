@@ -8,6 +8,7 @@
     android:layout_marginBottom="10dp"
     android:elevation="2dp"
     android:background="@drawable/card_bg_smallradius"
+    android:backgroundTint="@color/gray1"
     android:clipChildren="false"
     android:padding="10dp"
     android:clipToPadding="false"
@@ -18,7 +19,7 @@
         android:layout_height="wrap_content"
         android:text="Firestone"
         android:layout_marginTop="1dp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="16sp" />
 
@@ -29,7 +30,7 @@
         android:layout_below="@+id/card_name"
         android:text="20% off all beers"
         android:layout_marginTop="5dp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="15sp" />
 
     <TextView
@@ -40,6 +41,6 @@
         android:text="20% off all beers"
         android:layout_marginTop="5dp"
         android:gravity="right"
-        android:textColor="#232323"
+        android:textColor="@color/gray_4"
         android:textSize="15sp" />
 </RelativeLayout>

@@ -21,75 +21,120 @@
             android:layout_height="wrap_content"
             android:id="@+id/cpsc_logo"
             android:src="@drawable/cpsclogo"/>
+
         <EditText
             android:id="@+id/loginEmailEditText"
-            android:layout_marginTop="20dp"
             android:layout_width="265dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="false"
             android:layout_below="@id/cpsc_logo"
-            android:hint="Email Address"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_background"
             android:backgroundTint="@color/gray1"
-            android:background="@drawable/edit_text_background"
-            android:textSize="15dp"
-            android:textColorHint="@color/gray2"
-            android:textColor="@color/white"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
             android:padding="10dp"
-            android:inputType="textEmailAddress" />
-        <TextView
-            android:id="@+id/loginButton"
-            android:layout_below="@id/loginEmailEditText"
-            android:layout_alignRight="@id/loginEmailEditText"
-            android:layout_width="128dp"
-            android:layout_height="39dp"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center"
-            android:gravity="center"
             android:textColor="@color/white"
-            android:backgroundTint="@color/colorAccent"
-            android:background="@drawable/edit_text_background"
-            android:text="Log In"/>
+            android:textColorHint="@color/gray2"
+            android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/signupButton"
-            android:layout_below="@id/loginEmailEditText"
-            android:layout_alignLeft="@id/loginEmailEditText"
-            android:layout_width="128dp"
-            android:layout_height="39dp"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:backgroundTint="@color/gray2"
-            android:textColor="@color/gray1"
-            android:background="@drawable/edit_text_background"
-            android:text="Sign Up"
-            />
-        <TextView
-            android:id="@+id/forgot_email"
-            android:layout_below="@id/signupButton"
-            android:layout_alignLeft="@id/loginEmailEditText"
+        <RelativeLayout
+            android:id="@+id/bottom_holder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Forgot your membership email?"
-            android:textColor="@color/gray_3"
-            android:textSize="13dp"
-            />
-        <TextView
-            android:layout_below="@id/signupButton"
-            android:layout_toRightOf="@id/forgot_email"
-            android:layout_alignRight="@id/loginButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Tap Here!"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:textSize="13dp"
-            />
+            android:layout_below="@+id/loginEmailEditText"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/loginButton"
+                android:layout_width="128dp"
+                android:layout_height="39dp"
+                android:layout_alignRight="@id/loginEmailEditText"
+                android:layout_below="@+id/loginPasswordEditText"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text_background"
+                android:backgroundTint="@color/colorAccent"
+                android:gravity="center"
+                android:text="Log In"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/loginButton2"
+                android:layout_width="128dp"
+                android:layout_height="39dp"
+                android:layout_alignRight="@id/loginEmailEditText"
+                android:layout_below="@+id/loginPasswordEditText"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text_background"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center"
+                android:text="Admin Sign In"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/loginButton"
+                android:layout_below="@id/signupButton"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/forgot_email"
+                android:gravity="center"
+                android:text="Tap Here!"
+                android:textColor="@color/white"
+                android:textSize="13dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/forgot_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/loginEmailEditText"
+                android:layout_below="@id/signupButton"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Forgot your membership email?"
+                android:textColor="@color/gray_3"
+                android:textSize="13dp" />
+
+            <EditText
+                android:id="@+id/loginPasswordEditText"
+                android:layout_width="265dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/loginEmailEditText"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_background"
+                android:backgroundTint="@color/gray1"
+                android:elevation="10dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/gray2"
+                android:textSize="15dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/signupButton"
+                android:layout_width="128dp"
+                android:layout_height="39dp"
+                android:layout_alignParentRight="false"
+                android:layout_below="@+id/loginPasswordEditText"
+                android:layout_gravity="center"
+                android:layout_marginLeft="9dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@+id/loginButton"
+                android:background="@drawable/edit_text_background"
+                android:backgroundTint="@color/gray2"
+                android:gravity="center"
+                android:text="Sign Up"
+                android:textColor="@color/gray1" />
+        </RelativeLayout>
 
         <ProgressBar
             android:id="@+id/progressBar"

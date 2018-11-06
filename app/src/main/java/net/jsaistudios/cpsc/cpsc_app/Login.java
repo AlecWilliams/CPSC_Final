@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -38,6 +39,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -48,10 +51,11 @@ import java.util.List;
 
 public class Login extends Fragment {
 
-    private EditText emailLogin;
+    private EditText emailLogin, passwordLogin;
     private EditText adminPin;
     private View loginButton, adminLoginButton, signupButton;
     private String enteredEmail;
+    private TextView login2;
     private VideoView vw;
 
     public Context context;
@@ -72,6 +76,8 @@ public class Login extends Fragment {
         baseFragmentView = inflater.inflate(R.layout.login_page, container, false);
 
         emailLogin = (EditText) baseFragmentView.findViewById(R.id.loginEmailEditText);
+        passwordLogin = (EditText) baseFragmentView.findViewById(R.id.loginPasswordEditText);
+        login2 = baseFragmentView.findViewById(R.id.loginButton2);
 
         vw = baseFragmentView.findViewById(R.id.viewViewBg);
         vw.setVideoURI(Uri.parse("https://firebasestorage.googleapis.com/v0/b/cpscdatabase.appspot.com/o/skiflip1.mp4?alt=media&token=e065ce9f-9e3a-402b-a38e-c23c52ac1fff"));
@@ -85,7 +91,7 @@ public class Login extends Fragment {
 
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        android.widget.RelativeLayout.LayoutParams params = (android.widget.RelativeLayout.LayoutParams) vw.getLayoutParams();
+        final android.widget.RelativeLayout.LayoutParams params = (android.widget.RelativeLayout.LayoutParams) vw.getLayoutParams();
         params.width =  metrics.widthPixels;
         params.height = metrics.heightPixels;
         params.leftMargin = 0;
@@ -105,11 +111,52 @@ public class Login extends Fragment {
             }
         });
 
+        login2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String email = emailLogin.getText().toString().toLowerCase();
+                if (passwordLogin.getText().toString().equals("ski")) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("users");
+                    myRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Iterator<DataSnapshot>  iterator = dataSnapshot.getChildren().iterator();
+                            while(iterator.hasNext()) {
+                                final DataSnapshot snap = iterator.next();
+                                FirebaseAuth.getInstance().signInWithEmailAndPassword(email, snap.child("pass").getValue().toString())
+                                        .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()) {
+                                                    loginListener.loggedIn(false, false);
+                                                } else {
+                                                    progressBar.setVisibility(View.GONE);
+                                                    emailLogin.setBackgroundResource(R.drawable.edit_text_background_border);
+                                                    emailLogin.setBackgroundTintList(null);
+
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            }
+        });
+
+
+
         loginButton.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
                final String email = emailLogin.getText().toString().toLowerCase();
-               progressBar.setVisibility(View.VISIBLE);
                emailLogin.setBackgroundResource(R.drawable.edit_text_background);
                emailLogin.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.gray1));
                FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -117,23 +164,31 @@ public class Login extends Fragment {
                myRef.addValueEventListener(new ValueEventListener() {
                    @Override
                    public void onDataChange(DataSnapshot dataSnapshot) {
+                       progressBar.setVisibility(View.VISIBLE);
+                       login2.setVisibility(View.VISIBLE);
                        Iterator<DataSnapshot>  iterator = dataSnapshot.getChildren().iterator();
                        while(iterator.hasNext()) {
-                           DataSnapshot snap = iterator.next();
-                           if(snap.child("email").getValue().toString().equals(email)) {
-                               FirebaseAuth.getInstance().signInWithEmailAndPassword(email, snap.child("pass").getValue().toString())
-                                       .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
-                                           @Override
-                                           public void onComplete(@NonNull Task<AuthResult> task) {
-                                               if (task.isSuccessful()) {
-                                                    loginListener.loggedIn(false, false);
-                                               } else {
-                                                   progressBar.setVisibility(View.GONE);
-                                                   emailLogin.setBackgroundResource(R.drawable.edit_text_background_border);
-                                                   emailLogin.setBackgroundTintList(null);
+                           final DataSnapshot snap = iterator.next();
+                           if (snap.child("clearance").getValue().toString().equals("admin")) {
+                               passwordLogin.setVisibility(View.VISIBLE);
+                               passwordLogin.requestFocus();
+
+                           } else {
+                               if (snap.child("email").getValue().toString().equals(email)) {
+                                   FirebaseAuth.getInstance().signInWithEmailAndPassword(email, snap.child("pass").getValue().toString())
+                                           .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                                               @Override
+                                               public void onComplete(@NonNull Task<AuthResult> task) {
+                                                   if (task.isSuccessful()) {
+                                                       loginListener.loggedIn(false, false);
+                                                   } else {
+                                                       progressBar.setVisibility(View.GONE);
+                                                       emailLogin.setBackgroundResource(R.drawable.edit_text_background_border);
+                                                       emailLogin.setBackgroundTintList(null);
+                                                   }
                                                }
-                                           }
-                                       });
+                                           });
+                               }
                            }
                        }
                    }

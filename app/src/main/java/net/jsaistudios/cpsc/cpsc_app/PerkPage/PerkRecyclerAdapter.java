@@ -88,6 +88,34 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
                 context.startActivity(mapIntent);
             }
         });
+        String site = ((PerkObject) mData.get(position).getItemObject()).getUrl();
+        if(site==null || site.equals("")) {
+            holder.urlButton.setVisibility(View.INVISIBLE);
+        } else {
+            holder.urlButton.setVisibility(View.VISIBLE);
+            holder.urlButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        String prefix = "https://";
+                        String site = ((PerkObject) mData.get(position).getItemObject()).getUrl();
+                        if (!site.substring(0, prefix.length()).equals(prefix)) {
+                            site = prefix + site;
+                        }
+                        if (!site.equals("")) {
+                            Uri uri = Uri.parse(site); // missing 'http://' will cause crashed
+                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            context.startActivity(intent);
+                        }
+                    } catch (Exception e) {
+
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://google.com"));
+                        context.startActivity(intent);
+                    }
+                }
+            });
+        }
+
     }
 
     @Override
@@ -103,7 +131,8 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
         LinearLayout editLayout;
         RelativeLayout rLayout, defaultLayout;
         ImageView myEditButton;
-        ImageView myEditImage, googleLogo;
+        ImageView myEditImage;
+        TextView googleLogo, urlButton;
         TextView myEditSave, myEditCancel;
         View fragRoot;
         ViewHolder me;
@@ -115,6 +144,7 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
             super(itemView);
             myTextView = itemView.findViewById(R.id.card_name);
             googleLogo = itemView.findViewById(R.id.googlelogo);
+            urlButton = itemView.findViewById(R.id.website);
             myLocationInfo = itemView.findViewById(R.id.card_description);
             myDeleteButton = itemView.findViewById(R.id.delete_card);
             myEditButton = itemView.findViewById(R.id.edit_button);
