@@ -20,6 +20,7 @@ public class NotificationCreationDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LinearLayout lila1=  new LinearLayout(getContext());
+        lila1.setPadding(30,0,30,0);
         lila1.setOrientation(LinearLayout.VERTICAL);
         final EditText input = new EditText(getContext());
         input.setHint("Title (Optional)");

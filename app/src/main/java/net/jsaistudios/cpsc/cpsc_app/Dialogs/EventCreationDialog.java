@@ -30,10 +30,17 @@ public class EventCreationDialog extends DialogFragment implements DatePickerDia
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LinearLayout lila1=  new LinearLayout(getContext());
         lila1.setOrientation(LinearLayout.VERTICAL);
+        lila1.setPadding(30,0,30,0);
+
         final EditText input = new EditText(getContext());
         input.setHint("Name");
-
         lila1.addView(input);
+        final EditText input1 = new EditText(getContext());
+        input1.setHint("Info");
+        lila1.addView(input1);
+        final EditText input2 = new EditText(getContext());
+        input2.setHint("Place");
+        lila1.addView(input2);
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -41,9 +48,14 @@ public class EventCreationDialog extends DialogFragment implements DatePickerDia
                 .setPositiveButton("Full Send", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         FirebaseDatabase db = FirebaseDatabase.getInstance();
-                        DatabaseReference myDatabaseRef = db.getReference("notifications").push();
+                        DatabaseReference myDatabaseRef = db.getReference("events").push();
 
                         myDatabaseRef.child("name").setValue(input.getText().toString());
+                        myDatabaseRef.child("info").setValue(input1.getText().toString());
+                        myDatabaseRef.child("place").setValue(input2.getText().toString());
+                        myDatabaseRef.child("date").setValue(getArguments().getInt("date"));
+                        myDatabaseRef.child("time").setValue(getArguments().getInt("time"));
+
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

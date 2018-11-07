@@ -36,7 +36,7 @@ import net.jsaistudios.cpsc.cpsc_app.Dialogs.PerkCreationDialog;
 
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class MainActivity extends AppCompatActivity {
 
     private Context context;
     private ViewPager mPager;
@@ -169,11 +169,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
                         new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
                             @Override
-                            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                            public void onDateSet(DatePicker datePicker, final int y, final int m, final int d) {
                                 new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
                                     @Override
                                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                                        new EventCreationDialog().show(getFragmentManager(), "Make Event");
+                                        Bundle args = new Bundle();
+                                        args.putString("date", String.format("%02d", y)+"/"+String.format("%02d", m)+"/"+String.format("%02d", d));
+                                        args.putString("time", String.format("%02d", selectedHour)+":"+String.format("%02d", selectedMinute));
+                                        EventCreationDialog eventCreationDialog = new EventCreationDialog();
+                                        eventCreationDialog.setArguments(args);
+                                        eventCreationDialog.show(getFragmentManager(), "Make Event");
                                     }
                                 }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
                             }
@@ -301,11 +306,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             getCloseObserver().update();
         }
         super.onBackPressed();
-    }
-
-    @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

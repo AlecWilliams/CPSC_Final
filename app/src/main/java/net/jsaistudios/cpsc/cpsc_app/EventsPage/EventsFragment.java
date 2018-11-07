@@ -17,6 +17,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.roomorama.caldroid.CaldroidFragment;
 
 import net.jsaistudios.cpsc.cpsc_app.Calendar.CaldroidSampleCustomFragment;
@@ -25,12 +31,15 @@ import net.jsaistudios.cpsc.cpsc_app.ListViewController;
 import net.jsaistudios.cpsc.cpsc_app.ListViewModel;
 import net.jsaistudios.cpsc.cpsc_app.MainActivity;
 import net.jsaistudios.cpsc.cpsc_app.R;
+import net.jsaistudios.cpsc.cpsc_app.RecyclerModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by ip on 8/21/18.
@@ -54,6 +63,7 @@ public class EventsFragment extends Fragment {
         tabLayout.setupWithViewPager(mPager);
         return baseFragmentView;
     }
+    HashMap hm = new HashMap();
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
         public ScreenSlidePagerAdapter(android.support.v4.app.FragmentManager fm) {
@@ -74,10 +84,27 @@ public class EventsFragment extends Fragment {
                 args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
                 caldroidFragment.setArguments(args);
 
-                HashMap hm = new HashMap();
-                // Put elements to the map
 
-                hm.put(new Date(), ContextCompat.getDrawable(getContext(), R.color.colorPrimary));
+                FirebaseApp.initializeApp(context);
+                FirebaseDatabase db = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = db.getReference("events");
+
+                myRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Iterable<DataSnapshot> iterable = dataSnapshot.getChildren();
+                        List<RecyclerModel> responseList = new ArrayList<>();
+                        while(iterable.iterator().hasNext()){
+                            DataSnapshot child = iterable.iterator().next();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+                    }
+                });
+
                 if (caldroidFragment != null) {
                     caldroidFragment.setBackgroundDrawableForDates(hm);
                 }

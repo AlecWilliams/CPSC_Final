@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,8 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
     private View adminPanel, memberPanel, closebutton;
     public Observer closeObserver;
     private QRCodeReaderView qrCodeReaderView;
+    private String currentName = "";
+    private String currentUid="";
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         baseFragmentView = inflater.inflate(R.layout.check_in_frag, container, false);
@@ -57,6 +60,17 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
         context = this;
         userResult =  baseFragmentView.findViewById(R.id.userResultView);
         closebutton = baseFragmentView.findViewById(R.id.close_button);
+        baseFragmentView.findViewById(R.id.close_button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!currentName.equals("")) {
+                    FirebaseDatabase db = FirebaseDatabase.getInstance();
+                    DatabaseReference myDatabaseRef = db.getReference("checkin").child(currentUid);
+                    myDatabaseRef.setValue(currentName);
+                }
+                createEventCheckin();
+            }
+        });
         qrCodeReaderView = (QRCodeReaderView) baseFragmentView.findViewById(R.id.qrdecoderview);
         memberSearch = baseFragmentView.findViewById(R.id.member_search);
         qrImage = baseFragmentView.findViewById(R.id.qr_code);
@@ -159,6 +173,15 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
         return baseFragmentView;
     }
 
+    private EventCheckInFragment createEventCheckin() {
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        EventCheckInFragment fragment = new EventCheckInFragment();
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.add(R.id.event_check_in_holder, fragment, "CheckIn Frag");
+        fragmentTransaction.commitAllowingStateLoss();
+        return fragment;
+    }
+
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(
@@ -204,7 +227,9 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChild(id)) {
-                    userResult.setText("Member Name: "+dataSnapshot.child(id).child("name").getValue().toString());
+                    currentUid = id;
+                    currentName = dataSnapshot.child(id).child("name").getValue().toString();
+                    userResult.setText("Member Name: "+ currentName);
                     userEmailText.setText("EmailL " + dataSnapshot.child(id).child("email").getValue().toString());
                 }
             }
