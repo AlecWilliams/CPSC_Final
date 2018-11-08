@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
     private CheckInFragment createCheckIn() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         CheckInFragment fragment = new CheckInFragment();
+        fragment.activity = this;
         fragment.closeObserver = getCloseObserver();
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.add(R.id.checkin_holder, fragment, "CheckIn Frag");

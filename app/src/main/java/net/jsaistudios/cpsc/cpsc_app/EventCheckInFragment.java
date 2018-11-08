@@ -1,15 +1,19 @@
 package net.jsaistudios.cpsc.cpsc_app;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -24,7 +28,9 @@ import java.util.List;
 public class EventCheckInFragment extends Fragment {
     View baseFragmentView;
     LinearLayout listCheckIn;
+    TextView clearButton, closeButton;
     ArrayList<String> recyclerList = new ArrayList<>();
+    public Activity activity;
     int count=0;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,20 +38,29 @@ public class EventCheckInFragment extends Fragment {
         listCheckIn = baseFragmentView.findViewById(R.id.checkin_rv);
         FirebaseApp.initializeApp(getContext());
         FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = db.getReference("checkin");
-        recyclerList.add("hi");
-        recyclerList.add("he");
-        recyclerList.add("hwhji");
-        recyclerList.add("iojoi");
-        for(String s: recyclerList) {
-            createEventCheckin(s);
-        }
+        final DatabaseReference myRef = db.getReference("checkin");
+        clearButton = baseFragmentView.findViewById(R.id.clear_button);
+        closeButton = baseFragmentView.findViewById(R.id.close_button);
 
-
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myRef.setValue(null);
+            }
+        });
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().popBackStack();
+            }
+        });
         myRef.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
+                                            if(listCheckIn.getChildCount() > 0)
+                                                listCheckIn.removeAllViews();
                                             for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                                                createEventCheckin(snap.getValue(String.class));
                                             }
                                         }
             @Override
@@ -58,12 +73,20 @@ public class EventCheckInFragment extends Fragment {
 
     private CheckinItemFrag createEventCheckin(String name) {
         count++;
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         CheckinItemFrag fragment = new CheckinItemFrag();
         fragment.name = name;
         fragmentTransaction.add(R.id.checkin_rv, fragment, "Check In Item" + count);
         fragmentTransaction.commitAllowingStateLoss();
         return fragment;
+    }
+
+    public FragmentManager getHostFragmentManager() {
+        FragmentManager fm = getFragmentManager();
+        if (fm == null && isAdded()) {
+            fm = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+        }
+        return fm;
     }
 
 }

@@ -42,24 +42,39 @@ import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
 public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCodeReadListener {
-    private View baseFragmentView;
+    private View baseFragmentView, checkinHolder;
     private ImageView qrImage;
     private TextView emailView, titleView, userResult, userEmailText;
+    private ImageView clearButton;
     private CheckInFragment context;
     private AutoCompleteTextView memberSearch;
     private View adminPanel, memberPanel, closebutton;
     public Observer closeObserver;
     private QRCodeReaderView qrCodeReaderView;
     private String currentName = "";
+    public Activity activity;
     private String currentUid="";
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         baseFragmentView = inflater.inflate(R.layout.check_in_frag, container, false);
         titleView =  baseFragmentView.findViewById(R.id.title_checkin);
         userEmailText =  baseFragmentView.findViewById(R.id.userResultEmail);
+        checkinHolder = baseFragmentView.findViewById(R.id.event_check_in_holder);
         context = this;
         userResult =  baseFragmentView.findViewById(R.id.userResultView);
         closebutton = baseFragmentView.findViewById(R.id.close_button);
+        clearButton = baseFragmentView.findViewById(R.id.clear);
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentUid = "";
+                currentName = "";
+                memberSearch.setText("");
+                userEmailText.setText("");
+                userResult.setText("Member Name:");
+            }
+        });
         baseFragmentView.findViewById(R.id.close_button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,9 +83,11 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
                     DatabaseReference myDatabaseRef = db.getReference("checkin").child(currentUid);
                     myDatabaseRef.setValue(currentName);
                 }
-                createEventCheckin();
+                checkinHolder.setVisibility(View.VISIBLE);
             }
         });
+        createEventCheckin();
+        checkinHolder.setVisibility(View.GONE);
         qrCodeReaderView = (QRCodeReaderView) baseFragmentView.findViewById(R.id.qrdecoderview);
         memberSearch = baseFragmentView.findViewById(R.id.member_search);
         qrImage = baseFragmentView.findViewById(R.id.qr_code);
@@ -174,8 +191,9 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
     }
 
     private EventCheckInFragment createEventCheckin() {
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         EventCheckInFragment fragment = new EventCheckInFragment();
+        fragment.activity = activity;
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.add(R.id.event_check_in_holder, fragment, "CheckIn Frag");
         fragmentTransaction.commitAllowingStateLoss();
@@ -230,7 +248,7 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
                     currentUid = id;
                     currentName = dataSnapshot.child(id).child("name").getValue().toString();
                     userResult.setText("Member Name: "+ currentName);
-                    userEmailText.setText("EmailL " + dataSnapshot.child(id).child("email").getValue().toString());
+                    userEmailText.setText("Email: " + dataSnapshot.child(id).child("email").getValue().toString());
                 }
             }
 

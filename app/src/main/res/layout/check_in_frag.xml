@@ -63,10 +63,21 @@
             android:paddingLeft="15dp"
             android:id="@+id/member_search"
             android:layout_marginTop="15dp"
-            android:paddingRight="15dp"
+            android:paddingRight="30dp"
             android:completionThreshold="1"
             android:hint="example@gmail.com"
             android:background="@drawable/edit_text_background"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/clear"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:layout_alignRight="@id/member_search"
+            android:layout_alignTop="@id/member_search"
+            android:layout_alignBottom="@id/member_search"
+            android:src="@drawable/clear_button"
+            android:tint="@color/gray0"/>
 
         <View
             android:layout_width="match_parent"
