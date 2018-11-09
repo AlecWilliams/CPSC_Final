@@ -1,6 +1,7 @@
 package net.jsaistudios.cpsc.cpsc_app.PerkPage;
 
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +32,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import net.jsaistudios.cpsc.cpsc_app.AutocompleteFragment;
+import net.jsaistudios.cpsc.cpsc_app.Dialogs.PerkCreationDialog;
+import net.jsaistudios.cpsc.cpsc_app.Dialogs.PerkEditDialog;
 import net.jsaistudios.cpsc.cpsc_app.ListViewModel;
 import net.jsaistudios.cpsc.cpsc_app.MainActivity;
 import net.jsaistudios.cpsc.cpsc_app.PageSpecificFunctions;
@@ -196,35 +199,16 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
             myEditButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    enterEditState();
+                    FirebaseDatabase db = FirebaseDatabase.getInstance();
+                    PerkEditDialog perkEditDialog = new PerkEditDialog();
+                    Bundle args = new Bundle();
+                    args.putString("dbKey", myDatabaseRef.getKey());
                     final PerkObject perkObject = (PerkObject)mData.get(getAdapterPosition()).getItemObject();
-                    nameEditText.setText(perkObject.getName());
-                    descriptionEditText.setText(perkObject.getInfo());
-                }
-            });
-            myEditCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(myDatabaseRef==null) {
-                        int pos=getAdapterPosition();
-                        viewModel.getModelView().getDataModelList().remove(pos);
-                        notifyDataSetChanged();
-                    } else {
-                        enterDefaultState();
-                    }
-                }
-            });
-            myEditSave.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(myDatabaseRef==null) {
-                        FirebaseDatabase db = FirebaseDatabase.getInstance();
-                        DatabaseReference myRef = db.getReference(pageSpecificFunctions.getListDatabaseKey());
-                        myDatabaseRef = myRef.push();
-                    }
-                    myDatabaseRef.child("name").setValue(nameEditText.getText().toString());
-                    myDatabaseRef.child("info").setValue(descriptionEditText.getText().toString());
-                    enterDefaultState();
+                    args.putString("name", perkObject.getName());
+                    args.putString("info", perkObject.getInfo());
+                    args.putString("url", perkObject.getUrl());
+                    perkEditDialog.setArguments(args);
+                    perkEditDialog.show(mainActivity.getFragmentManager(), "Edit Perk");
                 }
             });
             myDeleteButton.setOnClickListener(new View.OnClickListener(){
@@ -235,13 +219,6 @@ public class PerkRecyclerAdapter extends RecyclerView.Adapter<PerkRecyclerAdapte
                     }
                     int pos=getAdapterPosition();
                     mData.remove(pos);
-                }
-            });
-            nameEditText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-//                    viewModel.getRecyclerView().setVisibility(View.INVISIBLE);
-                    mainActivity.createAutocompleteFrag("autoFrag", nameEditText.getText().toString());
                 }
             });
         }

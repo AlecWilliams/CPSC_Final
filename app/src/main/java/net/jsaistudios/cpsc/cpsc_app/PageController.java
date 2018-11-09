@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import net.jsaistudios.cpsc.cpsc_app.EventsPage.EventsFragment;
+import net.jsaistudios.cpsc.cpsc_app.EventsPage.EventsFunctions;
 import net.jsaistudios.cpsc.cpsc_app.HomePage.HomeFunctions;
 import net.jsaistudios.cpsc.cpsc_app.PerkPage.PerkFunctions;
 
@@ -33,9 +34,8 @@ public class PageController {
                 new ListViewController<HomeFunctions>(new HomeFunctions(activity, mainActivity), context, listViewModel);
                 return listViewModel;
             case EVENTS:
-                EventsFragment fragment = new EventsFragment();
-                fragment.setContext(context);
-                return fragment;
+                new EventListViewController(new EventsFunctions(), context, listViewModel);
+                return listViewModel;
             case PERKS:
                 new ListViewController<PerkFunctions>(new PerkFunctions(activity, mainActivity), context, listViewModel);
                 return listViewModel;

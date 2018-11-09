@@ -116,6 +116,7 @@ public class Login extends Fragment {
             public void onClick(View view) {
                 final String email = emailLogin.getText().toString().toLowerCase();
                 if (passwordLogin.getText().toString().equals("ski")) {
+                    progressBar.setVisibility(View.VISIBLE);
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference("users");
                     myRef.addValueEventListener(new ValueEventListener() {
@@ -129,6 +130,7 @@ public class Login extends Fragment {
                                             @Override
                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                 if (task.isSuccessful()) {
+                                                    progressBar.setVisibility(View.GONE);
                                                     loginListener.loggedIn(false, false);
                                                 } else {
                                                     progressBar.setVisibility(View.GONE);
@@ -161,26 +163,27 @@ public class Login extends Fragment {
                emailLogin.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.gray1));
                FirebaseDatabase database = FirebaseDatabase.getInstance();
                DatabaseReference myRef = database.getReference("users");
+               progressBar.setVisibility(View.VISIBLE);
                myRef.addValueEventListener(new ValueEventListener() {
                    @Override
                    public void onDataChange(DataSnapshot dataSnapshot) {
-                       progressBar.setVisibility(View.VISIBLE);
-                       login2.setVisibility(View.VISIBLE);
                        Iterator<DataSnapshot>  iterator = dataSnapshot.getChildren().iterator();
                        while(iterator.hasNext()) {
                            final DataSnapshot snap = iterator.next();
-                           if (snap.child("clearance").getValue().toString().equals("admin")) {
-                               passwordLogin.setVisibility(View.VISIBLE);
-                               passwordLogin.requestFocus();
-
-                           } else {
-                               if (snap.child("email").getValue().toString().equals(email)) {
+                           if (snap.child("email").getValue().toString().equals(email)) {
+                               if (snap.child("clearance").getValue().toString().equals("admin")) {
+                                   passwordLogin.setVisibility(View.VISIBLE);
+                                   passwordLogin.requestFocus();
+                                   login2.setVisibility(View.VISIBLE);
+                                   progressBar.setVisibility(View.GONE);
+                               } else {
                                    FirebaseAuth.getInstance().signInWithEmailAndPassword(email, snap.child("pass").getValue().toString())
                                            .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                                                @Override
                                                public void onComplete(@NonNull Task<AuthResult> task) {
                                                    if (task.isSuccessful()) {
                                                        loginListener.loggedIn(false, false);
+                                                       progressBar.setVisibility(View.GONE);
                                                    } else {
                                                        progressBar.setVisibility(View.GONE);
                                                        emailLogin.setBackgroundResource(R.drawable.edit_text_background_border);

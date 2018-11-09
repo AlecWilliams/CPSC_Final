@@ -138,18 +138,16 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="10dp"
+            android:layout_width="22dp"
+            android:layout_marginRight="8dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/loginEmailEditText"
             android:layout_alignRight="@+id/loginEmailEditText"
             android:layout_alignTop="@+id/loginEmailEditText"
             android:layout_below="@+id/loginEmailEditText"
-            android:layout_marginBottom="7dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="7dp"
-            android:layout_toEndOf="@+id/forgot_email"
-            android:elevation="1dp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:elevation="1dp"/>
     </RelativeLayout>
 
 </RelativeLayout>

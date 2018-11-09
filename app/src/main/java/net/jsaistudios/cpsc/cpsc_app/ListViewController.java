@@ -74,6 +74,9 @@ public class ListViewController<T extends PageSpecificFunctions> {
                     responseList.add(pm);
                 }
                 listViewModel.getModelView().getDataModelList().clear();
+                if(pageSpecificFunctions.getListDatabaseKey().equals("notifications")) {
+                    Collections.reverse(responseList);
+                }
                 listViewModel.getModelView().getDataModelList().addAll(responseList);
                 listViewModel.getRecyclerAdapter().notifyDataSetChanged();
                 ((T)pageSpecificFunctions).sortList(listViewModel);

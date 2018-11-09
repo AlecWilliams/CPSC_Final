@@ -85,6 +85,13 @@ public class EventListViewController extends ListViewController {
                 }
                 listViewModel.getModelView().getDataModelList().clear();
                 listViewModel.getModelView().getDataModelList().addAll(responseList);
+                Comparator stringDateComparator = new Comparator<RecyclerModel>() {
+                    @Override
+                    public int compare(RecyclerModel recyclerModel, RecyclerModel t1) {
+                        return ((EventsObject)t1.getItemObject()).getDate().compareTo(((EventsObject)recyclerModel.getItemObject()).getDate());
+                    }
+                };
+                Collections.sort(listViewModel.getModelView().getDataModelList(), stringDateComparator);
                 parseJSONEventList(input);
             }
 

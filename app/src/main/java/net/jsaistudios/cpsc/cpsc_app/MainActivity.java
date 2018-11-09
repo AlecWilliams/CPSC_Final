@@ -2,26 +2,33 @@ package net.jsaistudios.cpsc.cpsc_app;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.NotificationManager;
 import android.app.TimePickerDialog;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +36,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import net.jsaistudios.cpsc.cpsc_app.Dialogs.EventCreationDialog;
 import net.jsaistudios.cpsc.cpsc_app.Dialogs.NotificationCreationDialog;
@@ -55,15 +63,24 @@ public class MainActivity extends AppCompatActivity {
 
         activity = this;
         mainActivity = this;
+
+        FirebaseMessaging.getInstance().subscribeToTopic("skimembers").addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "subscribed success";
+                        if (!task.isSuccessful()) {
+                            msg = "failed to subscribe";
+                        }
+                        Log.d("subscriber", msg);
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
         topBar = findViewById(R.id.top_bar);
         View checkInButton = findViewById(R.id.checkin_button);
         checkInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 createCheckIn();
-                if(fab!=null) {
-                    fab.setVisibility(View.GONE);
-                }
             }
         });
 
@@ -122,25 +139,11 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         CheckInFragment fragment = new CheckInFragment();
         fragment.activity = this;
-        fragment.closeObserver = getCloseObserver();
-        fragmentTransaction.addToBackStack(null);
+        fragment.mainActivity = this;
+        fragmentTransaction.addToBackStack("CheckIn Frag");
         fragmentTransaction.add(R.id.checkin_holder, fragment, "CheckIn Frag");
         fragmentTransaction.commitAllowingStateLoss();
         return fragment;
-    }
-    private Observer closeObserver;
-    private Observer getCloseObserver() {
-        if(closeObserver==null) {
-            closeObserver = new Observer() {
-                @Override
-                public void update() {
-                    if (fab != null) {
-                        fab.setVisibility(View.VISIBLE);
-                    }
-                }
-            };
-        }
-        return closeObserver;
     }
 
     private void handleNewPage(int position, boolean admin) {
@@ -153,14 +156,20 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         new PerkCreationDialog().show(getFragmentManager(), "Make Perk");
-
                     }
                 });
             } else if (position == 0) {
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new NotificationCreationDialog().show(getFragmentManager(), "Make Notif");
+                        NotificationCompat.Builder mBuilder =
+                                new NotificationCompat.Builder(context)
+                                        .setSmallIcon(R.drawable.cpsclogo)
+                                        .setContentTitle("title")
+                                        .setContentText("ishan");
+                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        mNotificationManager.notify((int)(Math.random()*100), mBuilder.build());
+//                        new NotificationCreationDialog().show(getFragmentManager(), "Make Notif");
                     }
                 });
             } else if(position==1) {
@@ -304,10 +313,6 @@ public class MainActivity extends AppCompatActivity {
 //            // Otherwise, select the previous step.
 //            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
 //        }
-        Fragment fragmentA = getFragManager().findFragmentByTag("CheckIn Frag");
-        if (fragmentA != null) {
-            getCloseObserver().update();
-        }
         super.onBackPressed();
     }
 

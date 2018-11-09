@@ -6,7 +6,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/scroll_view">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -16,8 +17,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
+        android:text=""
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:textSize="18sp" />
 
@@ -65,7 +67,7 @@
             android:layout_marginTop="15dp"
             android:paddingRight="30dp"
             android:completionThreshold="1"
-            android:hint="example@gmail.com"
+            android:hint="Ex: Ron Caballero"
             android:background="@drawable/edit_text_background"/>
         <ImageView
             android:layout_width="wrap_content"
@@ -85,8 +87,8 @@
             android:background="@color/gray_1"
             android:layout_below="@id/member_search"
             android:id="@+id/divider"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="15sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -118,7 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="210dp"
             android:layout_below="@id/qrText"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="15dp" />
 
         <View
             android:layout_width="match_parent"
@@ -126,8 +128,8 @@
             android:background="@color/gray_1"
             android:layout_below="@id/qrdecoderview"
             android:id="@+id/divider2"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="23dp"/>
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="12dp"/>
         <TextView
             android:id="@+id/userResultView"
             android:layout_width="wrap_content"
@@ -139,52 +141,109 @@
         <TextView
             android:id="@+id/userResultEmail"
             android:layout_width="wrap_content"
+            android:textSize="15sp"
             android:layout_height="wrap_content"
             android:layout_below="@id/userResultView"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
-
-            <LinearLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
+                android:layout_height="1dp"
+                android:background="@color/gray_1"
                 android:layout_below="@id/adminCheckIn"
-                android:layout_marginTop="20dp"
+                android:id="@+id/divider3"
+                android:layout_marginTop="15dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider3"
+                android:layout_marginTop="18dp"
+                android:id="@+id/checkin_buttons_holder"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/close_button2"
+                    android:id="@+id/checkin_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_background"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:backgroundTint="@color/colorAccent"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="45dp"
-                    android:paddingRight="45dp"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
                     android:paddingTop="8dp"
                     android:text="Check In"
                     android:textColor="@color/white"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="15dp"
                     android:textSize="18sp"
                     android:textStyle="bold" />
                 <TextView
-                    android:id="@+id/close_button"
+                    android:id="@+id/event_list"
                     android:layout_width="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_background"
-                    android:backgroundTint="@color/red3"
+                    android:backgroundTint="@color/colorAccent"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="45dp"
-                    android:paddingRight="45dp"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
                     android:paddingTop="8dp"
-                    android:text="Close"
+                    android:text="Event List"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
         </RelativeLayout>
     </ScrollView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="15dp"
+        android:layout_alignParentBottom="true">
+    <TextView
+        android:id="@+id/close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_background"
+        android:backgroundTint="@color/red3"
+        android:paddingBottom="10dp"
+        android:paddingLeft="45dp"
+        android:paddingRight="45dp"
+        android:paddingTop="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Close"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/add_event_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Event"
+                android:textColor="@color/colorAccent"
+                android:textSize="15sp"
+                android:layout_toLeftOf="@id/add_event"
+                android:layout_alignTop="@id/add_event"
+                android:gravity="center_vertical"
+                android:paddingRight="7dp"
+                android:textStyle="bold"/>
+            <ImageView
+                android:id="@+id/add_event"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_plus2"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/close_button"
+                android:tint="@color/colorAccent"
+                android:background="@drawable/plus_button"
+                android:padding="4dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="9dp" />
+    </RelativeLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

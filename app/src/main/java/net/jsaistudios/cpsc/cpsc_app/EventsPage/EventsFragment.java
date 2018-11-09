@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -50,6 +51,7 @@ public class EventsFragment extends Fragment {
     Context context;
     ViewPager mPager;
     PagerAdapter mPagerAdapter;
+    CaldroidFragment caldroidFragment;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,9 +63,28 @@ public class EventsFragment extends Fragment {
 
         TabLayout tabLayout = (TabLayout) baseFragmentView.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(mPager);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference("events");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap: dataSnapshot.getChildren()) {
+                    hm.put(EventsFunctions.fbDateToNormal(snap.child("date").getValue(String.class)),
+                            ContextCompat.getDrawable(context, R.color.colorPrimary));
+                }
+                hm.put(new Date(),
+                        ContextCompat.getDrawable(context, R.color.colorPrimary));
+                caldroidFragment.setBackgroundDrawableForDates(hm);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
         return baseFragmentView;
     }
-    HashMap hm = new HashMap();
+    HashMap<Date, Drawable> hm = new HashMap<>();
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
         public ScreenSlidePagerAdapter(android.support.v4.app.FragmentManager fm) {
@@ -77,38 +98,13 @@ public class EventsFragment extends Fragment {
                 new EventListViewController(new EventsFunctions(), context, listViewModel);
                 return listViewModel;
             } else {
-                CaldroidFragment caldroidFragment = new CaldroidFragment();
+                caldroidFragment = new CaldroidFragment();
                 Bundle args = new Bundle();
                 Calendar cal = Calendar.getInstance();
                 args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
                 args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
                 caldroidFragment.setArguments(args);
-
-
-                FirebaseApp.initializeApp(context);
-                FirebaseDatabase db = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = db.getReference("events");
-
-                myRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Iterable<DataSnapshot> iterable = dataSnapshot.getChildren();
-                        List<RecyclerModel> responseList = new ArrayList<>();
-                        while(iterable.iterator().hasNext()){
-                            DataSnapshot child = iterable.iterator().next();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed to read value
-                    }
-                });
-
-                if (caldroidFragment != null) {
-                    caldroidFragment.setBackgroundDrawableForDates(hm);
-                }
-
+                caldroidFragment.setBackgroundDrawableForDates(hm);
                 return caldroidFragment;
             }
         }
