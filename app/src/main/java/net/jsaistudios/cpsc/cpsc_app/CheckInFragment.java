@@ -83,11 +83,10 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
                     DatabaseReference myDatabaseRef = db.getReference("checkin").child(currentUid);
                     myDatabaseRef.setValue(currentName);
                 }
+                createEventCheckin();
                 checkinHolder.setVisibility(View.VISIBLE);
             }
         });
-        createEventCheckin();
-        checkinHolder.setVisibility(View.GONE);
         qrCodeReaderView = (QRCodeReaderView) baseFragmentView.findViewById(R.id.qrdecoderview);
         memberSearch = baseFragmentView.findViewById(R.id.member_search);
         qrImage = baseFragmentView.findViewById(R.id.qr_code);

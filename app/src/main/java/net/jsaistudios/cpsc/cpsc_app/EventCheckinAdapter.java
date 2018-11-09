@@ -12,16 +12,17 @@ import java.util.ArrayList;
 public class EventCheckinAdapter extends RecyclerView.Adapter<EventCheckinAdapter.PlanetViewHolder> {
 
     ArrayList<String> data;
+    private LayoutInflater mInflater;
 
-    public EventCheckinAdapter(ArrayList<String> planetList) {
+    public EventCheckinAdapter(Context context, ArrayList<String> planetList) {
+        this.mInflater = LayoutInflater.from(context);
         this.data = planetList;
     }
 
     @Override
     public EventCheckinAdapter.PlanetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.event_checkin_item,parent,false);
-        PlanetViewHolder viewHolder=new PlanetViewHolder(v);
-        return viewHolder;
+        View v= mInflater.inflate(R.layout.event_checkin_item,parent,false);
+        return new PlanetViewHolder(v);
     }
 
     @Override

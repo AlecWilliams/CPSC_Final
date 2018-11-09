@@ -27,7 +27,8 @@ import java.util.List;
 
 public class EventCheckInFragment extends Fragment {
     View baseFragmentView;
-    LinearLayout listCheckIn;
+    RecyclerView rv;
+    private EventCheckinAdapter eventCheckinAdapter;
     TextView clearButton, closeButton;
     ArrayList<String> recyclerList = new ArrayList<>();
     public Activity activity;
@@ -35,7 +36,10 @@ public class EventCheckInFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         baseFragmentView = inflater.inflate(R.layout.event_checkin_frag, container, false);
-        listCheckIn = baseFragmentView.findViewById(R.id.checkin_rv);
+        rv = baseFragmentView.findViewById(R.id.checkin_rv);
+        rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        eventCheckinAdapter = new EventCheckinAdapter(getContext(), recyclerList);
+        rv.setAdapter(eventCheckinAdapter);
         FirebaseApp.initializeApp(getContext());
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = db.getReference("checkin");
@@ -57,11 +61,11 @@ public class EventCheckInFragment extends Fragment {
         myRef.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                            if(listCheckIn.getChildCount() > 0)
-                                                listCheckIn.removeAllViews();
+                                            recyclerList.clear();
                                             for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                                                createEventCheckin(snap.getValue(String.class));
+                                                recyclerList.add(snap.getValue(String.class));
                                             }
+                                            eventCheckinAdapter.notifyDataSetChanged();
                                         }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -69,24 +73,6 @@ public class EventCheckInFragment extends Fragment {
             }
         });
         return baseFragmentView;
-    }
-
-    private CheckinItemFrag createEventCheckin(String name) {
-        count++;
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        CheckinItemFrag fragment = new CheckinItemFrag();
-        fragment.name = name;
-        fragmentTransaction.add(R.id.checkin_rv, fragment, "Check In Item" + count);
-        fragmentTransaction.commitAllowingStateLoss();
-        return fragment;
-    }
-
-    public FragmentManager getHostFragmentManager() {
-        FragmentManager fm = getFragmentManager();
-        if (fm == null && isAdded()) {
-            fm = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-        }
-        return fm;
     }
 
 }

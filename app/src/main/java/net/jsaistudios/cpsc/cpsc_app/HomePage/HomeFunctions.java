@@ -12,6 +12,8 @@ import net.jsaistudios.cpsc.cpsc_app.MainActivity;
 import net.jsaistudios.cpsc.cpsc_app.PageSpecificFunctions;
 import net.jsaistudios.cpsc.cpsc_app.R;
 
+import java.util.Collections;
+
 public class HomeFunctions extends PageSpecificFunctions {
     private AppCompatActivity myActivity;
     private MainActivity mainActivity;
@@ -29,7 +31,7 @@ public class HomeFunctions extends PageSpecificFunctions {
 
     public ItemObject getListItemObject(DataSnapshot child) {
         HomeObject perkObject = new HomeObject();
-        perkObject.setName(child.child("title").getValue(String.class));
+        perkObject.setName(child.child("name").getValue(String.class));
         perkObject.setBody(child.child("body").getValue(String.class));
         perkObject.setDate(child.child("date").getValue(String.class));
         return perkObject;

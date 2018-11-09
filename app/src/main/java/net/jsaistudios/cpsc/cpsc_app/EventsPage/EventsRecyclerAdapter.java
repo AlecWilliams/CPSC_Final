@@ -56,18 +56,10 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
         View view = mInflater.inflate(R.layout.event_item_view, parent, false);
         return new ViewHolder(view);
     }
-    public Date makeDate(String date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
-        try {
-            return sdf.parse(date);
-        } catch (ParseException e) {
-            return new Date(0);
-        }
-    }
-    public String formattedDate(String date) {
-        String strDateFormat = "MMM dd',' yy";
+    public String formattedDate(Date date) {
+        String strDateFormat = "MMM dd',' yyyy h:mm a";
         SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
-        return sdf.format(makeDate(date));
+        return sdf.format(date).replace("PM", "pm").replace("AM", "am");
     }
     @Override
     public void onBindViewHolder(EventsRecyclerAdapter.ViewHolder holder, int position) {
@@ -77,7 +69,12 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
         holder.myDatabaseRef = mData.get(position).getDatabaseNodeReference();
         holder.myImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.firestone));
         holder.dateAndPlace.setText(eventsObject.getPlace() + " • " + formattedDate(eventsObject.getDate()));
-        if(eventsObject.isOld()) {
+        if(((EventsObject) mData.get(position).getItemObject()).getId().equals("CPSCCustom")) {
+            holder.moreInfo.setVisibility(View.GONE);
+        } else {
+            holder.moreInfo.setVisibility(View.VISIBLE);
+        }
+        if(eventsObject.getDate().before(new Date())) {
             holder.myRoot.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.gray_4));
         } else {
             holder.myRoot.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.white));

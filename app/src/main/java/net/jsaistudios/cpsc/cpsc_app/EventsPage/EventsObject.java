@@ -2,14 +2,16 @@ package net.jsaistudios.cpsc.cpsc_app.EventsPage;
 
 import net.jsaistudios.cpsc.cpsc_app.ItemObject;
 
+import java.util.Date;
+
 /**
  * Created by ip on 8/18/18.
  */
 
 public class EventsObject extends ItemObject {
-    private String info, date, place;
+    private String info, place;
+    private Date date;
     private String id;
-    private boolean old=false;
 
     public EventsObject() {
         super();
@@ -18,15 +20,6 @@ public class EventsObject extends ItemObject {
         super(n);
         info = inf;
     }
-
-    public boolean isOld() {
-        return old;
-    }
-
-    public void setOld(boolean old) {
-        this.old = old;
-    }
-
     public String getInfo() {
         return info;
     }
@@ -35,7 +28,7 @@ public class EventsObject extends ItemObject {
         this.info = info;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -47,7 +40,7 @@ public class EventsObject extends ItemObject {
         this.id = id;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

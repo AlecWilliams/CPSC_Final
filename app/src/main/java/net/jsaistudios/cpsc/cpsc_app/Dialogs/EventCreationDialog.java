@@ -53,8 +53,7 @@ public class EventCreationDialog extends DialogFragment implements DatePickerDia
                         myDatabaseRef.child("name").setValue(input.getText().toString());
                         myDatabaseRef.child("info").setValue(input1.getText().toString());
                         myDatabaseRef.child("place").setValue(input2.getText().toString());
-                        myDatabaseRef.child("date").setValue(getArguments().getInt("date"));
-                        myDatabaseRef.child("time").setValue(getArguments().getInt("time"));
+                        myDatabaseRef.child("date").setValue(getArguments().getString("date"));
 
                     }
                 })

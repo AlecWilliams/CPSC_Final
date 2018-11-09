@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import net.jsaistudios.cpsc.cpsc_app.Dialogs.EventCreationDialog;
 import net.jsaistudios.cpsc.cpsc_app.Dialogs.NotificationCreationDialog;
 import net.jsaistudios.cpsc.cpsc_app.Dialogs.PerkCreationDialog;
+import net.jsaistudios.cpsc.cpsc_app.EventsPage.EventsFunctions;
 
 import java.util.Calendar;
 
@@ -175,8 +176,9 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                                         Bundle args = new Bundle();
-                                        args.putString("date", String.format("%02d", y)+"/"+String.format("%02d", m)+"/"+String.format("%02d", d));
-                                        args.putString("time", String.format("%02d", selectedHour)+":"+String.format("%02d", selectedMinute));
+                                        Calendar calendar = Calendar.getInstance();
+                                        calendar.set(y, m, d, selectedHour, selectedMinute);
+                                        args.putString("date", EventsFunctions.normalDateToFb(calendar.getTime()));
                                         EventCreationDialog eventCreationDialog = new EventCreationDialog();
                                         eventCreationDialog.setArguments(args);
                                         eventCreationDialog.show(getFragmentManager(), "Make Event");

@@ -38,9 +38,27 @@ public class EventsFunctions extends PageSpecificFunctions {
         object.setName(child.child("name").getValue(String.class));
         object.setInfo(child.child("info").getValue(String.class));
         object.setPlace(child.child("place").getValue(String.class));
-        object.setDate(child.child("date").getValue(String.class));
+        object.setDate(fbDateToNormal(child.child("date").getValue(String.class)));
         object.setId(child.child("fbId").getValue(String.class));
         return object;
+    }
+
+    public static Date fbDateToNormal(String fbDate) {
+        try {
+            SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            return inFormat.parse(fbDate);
+        } catch (Exception e) {
+            return new Date();
+        }
+    }
+
+    public static String normalDateToFb(Date date) {
+        try {
+            SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            return inFormat.format(date);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     public ItemObject getAddItemObject() {
@@ -59,21 +77,6 @@ public class EventsFunctions extends PageSpecificFunctions {
     @Override
     public RecyclerView.Adapter getRecyclerAdapter(Context context, ListViewModel listViewModel) {
         List mData = listViewModel.getModelView().getDataModelList();
-        Comparator stringDateComparator = new Comparator<RecyclerModel>() {
-            @Override
-            public int compare(RecyclerModel recyclerModel, RecyclerModel t1) {
-                return makeDate(((EventsObject)recyclerModel.getItemObject()).getDate()).compareTo(makeDate(((EventsObject)t1.getItemObject()).getDate()));
-            }
-        };
-        Collections.sort(mData, stringDateComparator);
-        for(int i =0; i< listViewModel.getModelView().getDataModelList().size(); i++) {
-            if(makeDate(((EventsObject)listViewModel.getModelView().getDataModelList().get(i).getItemObject()).getDate()).getTime() - new Date().getTime()>0) {
-                listViewModel.scrollTo=i;
-                listViewModel.scrollRecycler(i);
-            } else {
-                ((EventsObject) listViewModel.getModelView().getDataModelList().get(i).getItemObject()).setOld(true);
-            }
-        }
         return new EventsRecyclerAdapter(context, mData);
     }
 

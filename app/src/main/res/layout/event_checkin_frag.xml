@@ -5,15 +5,14 @@
     android:background="@color/white">
 
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/checkin_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:layout_height="match_parent"
         android:paddingTop="20dp"
         android:layout_below="@id/buttons_holder"
-        android:clipToPadding="false"></LinearLayout>
+        android:layout_above="@id/close_button"
+        android:clipToPadding="false"></android.support.v7.widget.RecyclerView>
     <LinearLayout
         android:id="@+id/buttons_holder"
         android:layout_width="match_parent"
@@ -39,19 +38,36 @@
             android:textSize="18sp"
             android:textStyle="bold" />
         <TextView
-            android:id="@+id/close_button"
+            android:id="@+id/close_event_button"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
-            android:backgroundTint="@color/red3"
+            android:backgroundTint="@color/gray0"
             android:paddingBottom="10dp"
             android:paddingLeft="45dp"
             android:paddingRight="45dp"
             android:paddingTop="8dp"
-            android:text="Close"
+            android:text="End Event"
             android:textColor="@color/white"
+            android:layout_marginLeft="10dp"
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_background"
+        android:backgroundTint="@color/red3"
+        android:paddingBottom="10dp"
+        android:paddingLeft="45dp"
+        android:paddingRight="45dp"
+        android:paddingTop="8dp"
+        android:text="Close"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="17dp"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 </RelativeLayout>
