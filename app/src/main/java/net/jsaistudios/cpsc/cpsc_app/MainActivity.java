@@ -63,18 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
         activity = this;
         mainActivity = this;
-
-        FirebaseMessaging.getInstance().subscribeToTopic("skimembers").addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "subscribed success";
-                        if (!task.isSuccessful()) {
-                            msg = "failed to subscribe";
-                        }
-                        Log.d("subscriber", msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
         topBar = findViewById(R.id.top_bar);
         View checkInButton = findViewById(R.id.checkin_button);
         checkInButton.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +87,16 @@ public class MainActivity extends AppCompatActivity {
     private void start() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
+            FirebaseMessaging.getInstance().subscribeToTopic("skimembers").addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    String msg = "subscribed success";
+                    if (!task.isSuccessful()) {
+                        msg = "failed to subscribe";
+                    }
+                    Log.d("subscriber", msg);
+                }
+            });
             createApp();
         } else {
             createLogin();
@@ -162,14 +160,14 @@ public class MainActivity extends AppCompatActivity {
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        NotificationCompat.Builder mBuilder =
-                                new NotificationCompat.Builder(context)
-                                        .setSmallIcon(R.drawable.cpsclogo)
-                                        .setContentTitle("title")
-                                        .setContentText("ishan");
-                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                        mNotificationManager.notify((int)(Math.random()*100), mBuilder.build());
-//                        new NotificationCreationDialog().show(getFragmentManager(), "Make Notif");
+//                        NotificationCompat.Builder mBuilder =
+//                                new NotificationCompat.Builder(context)
+//                                        .setSmallIcon(R.drawable.cpsclogo)
+//                                        .setContentTitle("title")
+//                                        .setContentText("ishan");
+//                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                        mNotificationManager.notify((int)(Math.random()*100), mBuilder.build());
+                        new NotificationCreationDialog().show(getFragmentManager(), "Make Notif");
                     }
                 });
             } else if(position==1) {
