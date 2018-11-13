@@ -55,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatActivity activity;
     private View topBar;
     private static FragmentManager fragmentManager=null;
+
+
+
+    public void fillInDatabase(String input) {
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         fragment.activity = activity;
+        fragment.fragmentManager = getFragmentManager();
         fragment.context = this;
         fragmentTransaction.add(R.id.login_holder, fragment, "Login Frag");
         fragmentTransaction.commitAllowingStateLoss();

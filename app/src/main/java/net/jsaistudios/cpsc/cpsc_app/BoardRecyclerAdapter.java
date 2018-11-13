@@ -163,10 +163,6 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<BoardRecyclerAdap
                 @Override
                 public void onClick(View view) {
                     final int dur = 500;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-
-
-                    }
                         String phoneNumber;
                     phoneNumber = "7863091616";
                         Intent sendIntent = new Intent(Intent.ACTION_VIEW);

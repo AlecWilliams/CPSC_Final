@@ -165,7 +165,6 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         if (dataSnapshot.getValue().toString().equals("admin")) {
-
                             memberPanel.setVisibility(View.GONE);
                             adminPanel.setVisibility(View.VISIBLE);
                             eventButton.setVisibility(View.VISIBLE);
@@ -186,7 +185,7 @@ public class CheckInFragment extends Fragment implements QRCodeReaderView.OnQRCo
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                         userList.add(snapshot.getKey());
-                                        namesAndEmails.add(snapshot.child("name").getValue().toString() + " (" +snapshot.child("email").getValue().toString()+")");
+                                        namesAndEmails.add(snapshot.child("email").getValue().toString());
                                     }
                                 }
 

@@ -35,15 +35,6 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimary" />
 
-        <service
-            android:name=".MyFirebaseMessagingService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
         <activity android:name=".CheckInEventsActivity"></activity>
     </application>
 

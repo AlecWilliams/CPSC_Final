@@ -50,7 +50,6 @@
                 android:id="@+id/loginButton"
                 android:layout_width="128dp"
                 android:layout_height="39dp"
-                android:layout_alignRight="@id/loginEmailEditText"
                 android:layout_below="@+id/loginPasswordEditText"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
@@ -64,7 +63,6 @@
                 android:id="@+id/loginButton2"
                 android:layout_width="128dp"
                 android:layout_height="39dp"
-                android:layout_alignRight="@id/loginEmailEditText"
                 android:layout_below="@+id/loginPasswordEditText"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
@@ -76,24 +74,9 @@
                 android:visibility="gone" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@id/loginButton"
-                android:layout_below="@id/signupButton"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_toRightOf="@id/forgot_email"
-                android:gravity="center"
-                android:text="Tap Here!"
-                android:textColor="@color/white"
-                android:textSize="13dp"
-                android:textStyle="bold" />
-
-            <TextView
                 android:id="@+id/forgot_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/loginEmailEditText"
                 android:layout_below="@id/signupButton"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
@@ -106,7 +89,6 @@
                 android:id="@+id/loginPasswordEditText"
                 android:layout_width="265dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/loginEmailEditText"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edit_text_background"
                 android:backgroundTint="@color/gray1"
