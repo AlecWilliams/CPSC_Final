@@ -51,6 +51,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Alec on 9/2/2018.
@@ -64,6 +65,7 @@ public class Login extends Fragment {
     private String enteredEmail;
     private TextView login2, forgotEmail;
     private VideoView vw;
+    private boolean paused=false;
 
     public Context context;
     public Activity activity;
@@ -73,6 +75,7 @@ public class Login extends Fragment {
     private View progressBar;
     View baseFragmentView;
     public FragmentManager fragmentManager;
+    private EmailHolder emailHolder = new EmailHolder();
 
     public interface LoginListener {
         void loggedIn(boolean isAdmin, boolean newUser);
@@ -87,7 +90,6 @@ public class Login extends Fragment {
         passwordLogin = (EditText) baseFragmentView.findViewById(R.id.loginPasswordEditText);
         login2 = baseFragmentView.findViewById(R.id.loginButton2);
         forgotEmail = baseFragmentView.findViewById(R.id.forgot_email);
-        updateUserList();
 
         forgotEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +138,7 @@ public class Login extends Fragment {
         loginButton = baseFragmentView.findViewById(R.id.loginButton);
         signupButton = baseFragmentView.findViewById(R.id.signupButton);
         progressBar = baseFragmentView.findViewById(R.id.progressBar);
+
         emailLogin.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -162,112 +165,131 @@ public class Login extends Fragment {
 
             }
         });
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference fbRef = database.getReference("users");
+
+        emailHolder.readyObserver = new Observer2<Boolean>() {
+            @Override
+            public void update(Boolean x) {
+                if (emailHolder.isReady()) {
+                    ArrayList<String> unAddedAccounts = new ArrayList<>(emailHolder.wordPressEmails);
+//                    unAddedAccounts.removeAll(emailHolder.firebaseEmails);
+//                    for(String email : unAddedAccounts) {
+//                        DatabaseReference newFbUser = fbRef.push();
+//                        newFbUser.child("email").setValue(email);
+//                        newFbUser.child("name").setValue("New User");
+//                        newFbUser.child("clearance").setValue("member");
+//                        newFbUser.child("pass").setValue("skiski");
+//                        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, "skiski");
+//                    }
+                    if(unAddedAccounts.size()>0)
+                        addAllEmailsAuth(unAddedAccounts);
+                }
+            }
+        };
+        fbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot dataSnapshot) {
+                 for(DataSnapshot snap :dataSnapshot.getChildren()) {
+                     emailHolder.addFirebaseEmail(snap.child("email").getValue().toString().toLowerCase().trim());
+                 }
+             }
+
+             @Override
+             public void onCancelled(@NonNull DatabaseError databaseError) {
+
+             }
+         });
+
+        final DatabaseReference wpRef = database.getReference("wpusersmasterSheet");
+        wpRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snap :dataSnapshot.getChildren()) {
+                    emailHolder.addWordPressEmail(snap.child("1").getValue().toString().toLowerCase().trim());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
         loginButton.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               final String email = emailLogin.getText().toString().toLowerCase();
-               emailLogin.setBackgroundResource(R.drawable.edit_text_background);
-               emailLogin.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.gray1));
-               final FirebaseDatabase database = FirebaseDatabase.getInstance();
-               final DatabaseReference myRef = database.getReference("users");
-               progressBar.setVisibility(View.VISIBLE);
-               myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                   @Override
-                   public void onDataChange(DataSnapshot dataSnapshot) {
-                       boolean found =false;
-                       for(DataSnapshot snap :dataSnapshot.getChildren()) {
-                           if (snap.child("email").getValue().toString().equals(email)) {
-                               found=true;
-                               if (snap.hasChild("clearance") && snap.child("clearance").getValue().toString().equals("admin")) {
-                                   passwordLogin.setVisibility(View.VISIBLE);
-                                   passwordLogin.requestFocus();
-                                   login2.setVisibility(View.VISIBLE);
-                                   progressBar.setVisibility(View.GONE);
-                                   final DataSnapshot curSnap = snap;
-                                   login2.setOnClickListener(new View.OnClickListener() {
-                                       @Override
-                                       public void onClick(View view) {
-                                           final String email = emailLogin.getText().toString().toLowerCase().trim();
-                                           if (passwordLogin.getText().toString().equals("ski")) {
-                                               progressBar.setVisibility(View.VISIBLE);
-                                               FirebaseAuth.getInstance().signInWithEmailAndPassword(email, "skiski")
-                                                       .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
-                                                           @Override
-                                                           public void onComplete(@NonNull Task<AuthResult> task) {
-                                                               if (task.isSuccessful()) {
-                                                                   progressBar.setVisibility(View.GONE);
-                                                                   loginListener.loggedIn(false, false);
-                                                               } else {
-                                                                   progressBar.setVisibility(View.GONE);
-                                                                   emailLogin.setBackgroundResource(R.drawable.edit_text_background_border);
-                                                                   emailLogin.setBackgroundTintList(null);
-                                                                   BasicAlertDialog.create("There was an issue contacting the server.", fragmentManager);
-                                                               }
-                                                           }
-                                                       });
 
-                                           } else {
-                                               BasicAlertDialog.create("Incorrect password.", fragmentManager);
-
-                                           }
-                                       }
-                                   });
-                               } else {
-                                   FirebaseAuth.getInstance().signInWithEmailAndPassword(email, snap.child("pass").getValue().toString())
-                                           .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
-                                               @Override
-                                               public void onComplete(@NonNull Task<AuthResult> task) {
-                                                   if (task.isSuccessful()) {
-                                                       loginListener.loggedIn(false, false);
-                                                       progressBar.setVisibility(View.GONE);
-                                                   } else {
-                                                       BasicAlertDialog.create("Sorry! Could not sign in with this email.", fragmentManager);
-                                                       progressBar.setVisibility(View.GONE);
-                                                       emailLogin.setBackgroundResource(R.drawable.edit_text_background_border);
-                                                       emailLogin.setBackgroundTintList(null);
-                                                   }
-                                               }
-                                           });
-                               }
-                           }
-                       }
-                       if(!found) {
-                           DatabaseReference newRef = database.getReference("wpusersmasterSheet");
-                           newRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                               @Override
-                               public void onDataChange(@NonNull DataSnapshot dS) {
-                                   boolean found = false;
-                                   for(DataSnapshot mySnap :dS.getChildren()) {
-                                       if (mySnap.child("1").getValue().toString().toLowerCase().equals(email.toLowerCase())) {
-                                           found = true;
-                                           createUser(email);
-                                       }
-                                   }
-                                   if(!found) {
-                                       BasicAlertDialog.create("Sorry! Could not find this email.", fragmentManager);
-                                       progressBar.setVisibility(View.GONE);
-                                       emailLogin.setBackgroundResource(R.drawable.edit_text_background_border);
-                                       emailLogin.setBackgroundTintList(null);
-                                   }
-                               }
-
-                               @Override
-                               public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                               }
-                           });
-
-                       }
-                   }
-
-                   @Override
-                   public void onCancelled(DatabaseError error) {
-                       // Failed to read value
-                   }
-               });
            }
-        }) ;
+        });
         return baseFragmentView;
+    }
+    private void addAllEmailsAuth(final ArrayList<String> list) {
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(list.get(0), "skiski").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseAuth.getInstance().signOut();
+                    try {
+                        TimeUnit.SECONDS.sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    addAllEmailsAuth(new ArrayList<>(list.subList(1, list.size())));
+                }
+            }
+        });
+    }
+    class EmailHolder {
+        private ArrayList<String> firebaseEmails = new ArrayList<>(), wordPressEmails = new ArrayList<>();
+        private boolean ready=false;
+        public Observer2<Boolean> readyObserver;
+        public ArrayList<String> getFirebaseEmails() {
+            return firebaseEmails;
+        }
+
+        public void setFirebaseEmails(ArrayList<String> firebaseEmails) {
+            this.firebaseEmails = firebaseEmails;
+        }
+
+        public void addFirebaseEmail(String firebaseEmail) {
+            if(firebaseEmails.size()>0&&wordPressEmails.size()>0) {
+                setReady(true);
+            }
+            this.firebaseEmails.add(firebaseEmail);
+        }
+
+        public ArrayList<String> getWordPressEmails() {
+            return wordPressEmails;
+        }
+
+        public void setWordPressEmails(ArrayList<String> wordPressEmails) {
+            this.wordPressEmails = wordPressEmails;
+        }
+
+        public void addWordPressEmail(String wordPressEmail) {
+            if(firebaseEmails.size()>0&&wordPressEmails.size()>0) {
+                setReady(true);
+            }
+            this.wordPressEmails.add(wordPressEmail);
+        }
+
+        public boolean isReady() {
+            return ready;
+        }
+
+        public void setReady(boolean ready) {
+            if(readyObserver!=null) {
+                readyObserver.update(ready);
+            }
+            this.ready = ready;
+        }
     }
     private void createUser(String enteredEmail) {
         try {
