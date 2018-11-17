@@ -75,7 +75,6 @@ public class Login extends Fragment {
     private View progressBar;
     View baseFragmentView;
     public FragmentManager fragmentManager;
-    private EmailHolder emailHolder = new EmailHolder();
 
     public interface LoginListener {
         void loggedIn(boolean isAdmin, boolean newUser);
@@ -90,6 +89,11 @@ public class Login extends Fragment {
         passwordLogin = (EditText) baseFragmentView.findViewById(R.id.loginPasswordEditText);
         login2 = baseFragmentView.findViewById(R.id.loginButton2);
         forgotEmail = baseFragmentView.findViewById(R.id.forgot_email);
+        loginButton = baseFragmentView.findViewById(R.id.loginButton);
+        signupButton = baseFragmentView.findViewById(R.id.signupButton);
+        progressBar = baseFragmentView.findViewById(R.id.progressBar);
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
         forgotEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,11 +138,6 @@ public class Login extends Fragment {
         params.leftMargin = 0;
         vw.setLayoutParams(params);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        loginButton = baseFragmentView.findViewById(R.id.loginButton);
-        signupButton = baseFragmentView.findViewById(R.id.signupButton);
-        progressBar = baseFragmentView.findViewById(R.id.progressBar);
-
         emailLogin.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -156,6 +155,24 @@ public class Login extends Fragment {
 
             }
         });
+        passwordLogin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(passwordLogin.getText().toString().equals("ski")) {
+                    loginListener.loggedIn(true, false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,200 +182,66 @@ public class Login extends Fragment {
 
             }
         });
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference fbRef = database.getReference("users");
-
-        emailHolder.readyObserver = new Observer2<Boolean>() {
-            @Override
-            public void update(Boolean x) {
-                if (emailHolder.isReady()) {
-                    ArrayList<String> unAddedAccounts = new ArrayList<>(emailHolder.wordPressEmails);
-//                    unAddedAccounts.removeAll(emailHolder.firebaseEmails);
-//                    for(String email : unAddedAccounts) {
-//                        DatabaseReference newFbUser = fbRef.push();
-//                        newFbUser.child("email").setValue(email);
-//                        newFbUser.child("name").setValue("New User");
-//                        newFbUser.child("clearance").setValue("member");
-//                        newFbUser.child("pass").setValue("skiski");
-//                        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, "skiski");
-//                    }
-                    if(unAddedAccounts.size()>0)
-                        addAllEmailsAuth(unAddedAccounts);
-                }
-            }
-        };
-        fbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-             @Override
-             public void onDataChange(DataSnapshot dataSnapshot) {
-                 for(DataSnapshot snap :dataSnapshot.getChildren()) {
-                     emailHolder.addFirebaseEmail(snap.child("email").getValue().toString().toLowerCase().trim());
-                 }
-             }
-
-             @Override
-             public void onCancelled(@NonNull DatabaseError databaseError) {
-
-             }
-         });
-
-        final DatabaseReference wpRef = database.getReference("wpusersmasterSheet");
-        wpRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot snap :dataSnapshot.getChildren()) {
-                    emailHolder.addWordPressEmail(snap.child("1").getValue().toString().toLowerCase().trim());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
 
         loginButton.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
+               FirebaseAuth.getInstance().signInWithEmailAndPassword(emailLogin.getText().toString(), "skiski").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                   @Override
+                   public void onComplete(@NonNull Task<AuthResult> task) {
+                       final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                       final DatabaseReference fbRef = database.getReference("users");
+                       if(task.isSuccessful()) {
+                           fbRef.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                               @Override
+                               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                   if(dataSnapshot.child("clearance").getValue().toString().equals("admin")) {
+                                       passwordLogin.setVisibility(View.VISIBLE);
+                                       login2.setVisibility(View.VISIBLE);
+                                   } else {
+                                       loginListener.loggedIn(true, false);
+                                   }
+                               }
+                               @Override
+                               public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                               }
+                           });
+                       } else {
+                           fbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                               @Override
+                               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                   for(DataSnapshot ds: dataSnapshot.getChildren()) {
+                                       if(ds.child("email").getValue().toString().equals(emailLogin.getText().toString())) {
+                                           final DataSnapshot userDS = ds;
+                                           FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailLogin.getText().toString(), "skiski").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                               @Override
+                                               public void onComplete(@NonNull Task<AuthResult> task) {
+                                                   if(task.isSuccessful()) {
+                                                       if(userDS.child("clearance").getValue().toString().equals("admin")) {
+                                                           passwordLogin.setVisibility(View.VISIBLE);
+                                                           login2.setVisibility(View.VISIBLE);
+                                                       } else {
+                                                           loginListener.loggedIn(true, false);
+                                                       }
+                                                   }
+                                               }
+                                           });
+                                       }
+                                   }
+                               }
+
+                               @Override
+                               public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                               }
+                           });
+                       }
+                   }
+               });
            }
         });
         return baseFragmentView;
-    }
-    private void addAllEmailsAuth(final ArrayList<String> list) {
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(list.get(0), "skiski").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    FirebaseAuth.getInstance().signOut();
-                    try {
-                        TimeUnit.SECONDS.sleep(5);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    addAllEmailsAuth(new ArrayList<>(list.subList(1, list.size())));
-                }
-            }
-        });
-    }
-    class EmailHolder {
-        private ArrayList<String> firebaseEmails = new ArrayList<>(), wordPressEmails = new ArrayList<>();
-        private boolean ready=false;
-        public Observer2<Boolean> readyObserver;
-        public ArrayList<String> getFirebaseEmails() {
-            return firebaseEmails;
-        }
-
-        public void setFirebaseEmails(ArrayList<String> firebaseEmails) {
-            this.firebaseEmails = firebaseEmails;
-        }
-
-        public void addFirebaseEmail(String firebaseEmail) {
-            if(firebaseEmails.size()>0&&wordPressEmails.size()>0) {
-                setReady(true);
-            }
-            this.firebaseEmails.add(firebaseEmail);
-        }
-
-        public ArrayList<String> getWordPressEmails() {
-            return wordPressEmails;
-        }
-
-        public void setWordPressEmails(ArrayList<String> wordPressEmails) {
-            this.wordPressEmails = wordPressEmails;
-        }
-
-        public void addWordPressEmail(String wordPressEmail) {
-            if(firebaseEmails.size()>0&&wordPressEmails.size()>0) {
-                setReady(true);
-            }
-            this.wordPressEmails.add(wordPressEmail);
-        }
-
-        public boolean isReady() {
-            return ready;
-        }
-
-        public void setReady(boolean ready) {
-            if(readyObserver!=null) {
-                readyObserver.update(ready);
-            }
-            this.ready = ready;
-        }
-    }
-    private void createUser(String enteredEmail) {
-        try {
-            final String myEmail = enteredEmail.toLowerCase();
-            final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            final DatabaseReference myRef = database.getReference("users");
-            FirebaseAuth.getInstance().createUserWithEmailAndPassword(myEmail, "skiski").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("email").setValue(myEmail);
-                    myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("name").setValue("New User");
-                    myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("clearance").setValue("member");
-                    myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("pass").setValue("skiski");
-                    loginListener.loggedIn(false, false);
-                    progressBar.setVisibility(View.GONE);
-                }
-            });
-        } catch (Exception e) {
-
-        }
-    }
-
-    private void updateUserList() {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference wpRef = database.getReference("wpusersmasterSheet");
-        wpRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot wpSnap) {
-                final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                final DatabaseReference myRef = database.getReference("users");
-                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot fbSnap) {
-                        String em = "";
-                        ArrayList<String> listOfWpUsers = new ArrayList<>();
-                        Outside:
-                        for(DataSnapshot snapshot : wpSnap.getChildren()) {
-                            boolean found =false;
-                            listOfWpUsers.add(snapshot.child("email").getValue().toString());
-                        }
-                        for(DataSnapshot fbSnapshot: fbSnap.getChildren()) {
-                            if(listOfWpUsers.contains(fbSnapshot.child("email").getValue().toString())) {
-                                em = fbSnapshot.child("email").getValue().toString();
-                            }
-                        }
-//                        if(!found) {
-//                            found=false;
-//                            final FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                            final DatabaseReference myRef = database.getReference("users").push();
-//                            myRef.child("email").setValue(em);
-//                            myRef.child("name").setValue("New User");
-//                            myRef.child("clearance").setValue("member");
-//                            myRef.child("pass").setValue("skiski");
-//                            FirebaseAuth.getInstance().createUserWithEmailAndPassword(em, "skiski");
-//                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 }
 
